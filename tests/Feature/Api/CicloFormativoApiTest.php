@@ -1,0 +1,355 @@
+<?php
+
+namespace Tests\Feature\Api;
+
+use App\Models\CicloFormativo;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use Laravel\Sanctum\Sanctum;
+
+class CicloFormativoApiTest extends TestCase
+{
+    use RefreshDatabase, WithFaker;
+
+    protected User $user;
+    
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        $this->user = User::factory()->create();
+        Sanctum::actingAs($this->user);
+        
+    }
+
+    /** @test */
+    public function can_list_cicloFormativos()
+    {
+        // Arrange
+        CicloFormativo::factory()->count(3)->create();
+
+        // Act
+        $response = $this->getJson('/api/v1/ciclos-formativos');
+
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data' => [
+                         '*' => ['id', 'familia_profesional_id', 'nombre', 'codigo', 'grado', 'descripcion', 'created_at', 'updated_at']
+                     ],
+                     'links',
+                     'meta'
+                 ]);
+        
+        $this->assertCount(3, $response->json('data'));
+    }
+
+    /** @test */
+    public function can_create_cicloFormativo()
+    {
+        // Arrange
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+
+        // Act
+        $response = $this->postJson('/api/v1/ciclos-formativos', $data);
+
+        // Assert
+        $response->assertCreated()
+                 ->assertJsonStructure([
+                     'data' => ['id', 'familia_profesional_id', 'nombre', 'codigo', 'grado', 'descripcion', 'created_at', 'updated_at']
+                 ]);
+
+        $this->assertDatabaseHas('ciclos_formativos', [
+            'nombre' => $data['nombre'],
+            'codigo' => $data['codigo'],
+            'grado' => $data['grado'],
+            'descripcion' => $data['descripcion']
+        ]);
+    }
+
+    /** @test */
+    public function can_show_cicloFormativo()
+    {
+        // Arrange
+        $cicloFormativo = CicloFormativo::factory()->create();
+
+        // Act
+        $response = $this->getJson('/api/v1/ciclos-formativos/{$cicloFormativo->id}');
+
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data' => ['id', 'familia_profesional_id', 'nombre', 'codigo', 'grado', 'descripcion', 'created_at', 'updated_at']
+                 ]);
+    }
+
+    /** @test */
+    public function can_update_cicloFormativo()
+    {
+        // Arrange
+        $cicloFormativo = CicloFormativo::factory()->create();
+        $updateData = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+
+        // Act
+        $response = $this->putJson('/api/v1/ciclos-formativos/{$cicloFormativo->id}', $updateData);
+
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data' => ['id', 'familia_profesional_id', 'nombre', 'codigo', 'grado', 'descripcion', 'created_at', 'updated_at']
+                 ]);
+
+        $cicloFormativo->refresh();
+        $this->assertEquals($updateData['nombre'], $cicloFormativo->$field['name']));
+        $this->assertEquals($updateData['codigo'], $cicloFormativo->$field['name']));
+        $this->assertEquals($updateData['grado'], $cicloFormativo->$field['name']));
+        $this->assertEquals($updateData['descripcion'], $cicloFormativo->$field['name']));
+    }
+
+    /** @test */
+    public function can_delete_cicloFormativo()
+    {
+        // Arrange
+        $cicloFormativo = CicloFormativo::factory()->create();
+
+        // Act
+        $response = $this->deleteJson('/api/v1/ciclos-formativos/{$cicloFormativo->id}');
+
+        // Assert
+        $response->assertOk()
+                 ->assertJson([
+                     'message' => 'CicloFormativo eliminado correctamente'
+                 ]);
+
+        $this->assertSoftDeleted('ciclos_formativos', [
+            'id' => $cicloFormativo->id
+        ]);
+    }
+
+    /** @test */
+    public function can_search_cicloFormativos()
+    {
+        // Arrange
+        $searchTerm = 'test search';
+        $cicloFormativo1 = CicloFormativo::factory()->create([
+            'nombre' => 'Contains test search term',
+            
+        ]);
+        $cicloFormativo2 = CicloFormativo::factory()->create([
+            'nombre' => 'Different content',
+            
+        ]);
+
+        // Act
+        $response = $this->getJson('/api/v1/ciclos-formativos?search=' . urlencode($searchTerm));
+
+        // Assert
+        $response->assertOk();
+        $data = $response->json('data');
+        
+        $this->assertCount(1, $data);
+        $this->assertEquals($cicloFormativo1->id, $data[0]['id']);
+    }
+
+    /** @test */
+    public function can_paginate_cicloFormativos()
+    {
+        // Arrange
+        CicloFormativo::factory()->count(25)->create();
+
+        // Act
+        $response = $this->getJson('/api/v1/ciclos-formativos?per_page=10');
+
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data',
+                     'links' => ['first', 'last', 'prev', 'next'],
+                     'meta' => ['current_page', 'total', 'per_page']
+                 ]);
+        
+        $this->assertCount(10, $response->json('data'));
+        $this->assertEquals(25, $response->json('meta.total'));
+    }
+
+
+    /** @test */
+    public function test_requires_familia_profesional_id_field()
+    {
+        // Arrange
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+        unset($data['familia_profesional_id']);
+
+        // Act
+        $response = $this->postJson('/api/v1ciclos-formativos', $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                 ->assertJsonValidationErrors('familia_profesional_id');
+    }
+    /** @test */
+    public function test_requires_nombre_field()
+    {
+        // Arrange
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+        unset($data['nombre']);
+
+        // Act
+        $response = $this->postJson('/api/v1ciclos-formativos', $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                 ->assertJsonValidationErrors('nombre');
+    }
+    /** @test */
+    public function test_requires_codigo_field()
+    {
+        // Arrange
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+        unset($data['codigo']);
+
+        // Act
+        $response = $this->postJson('/api/v1ciclos-formativos', $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                 ->assertJsonValidationErrors('codigo');
+    }
+    /** @test */
+    public function test_requires_grado_field()
+    {
+        // Arrange
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+        unset($data['grado']);
+
+        // Act
+        $response = $this->postJson('/api/v1ciclos-formativos', $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                 ->assertJsonValidationErrors('grado');
+    }
+    /** @test */
+    public function test_requires_descripcion_field()
+    {
+        // Arrange
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+        unset($data['descripcion']);
+
+        // Act
+        $response = $this->postJson('/api/v1ciclos-formativos', $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                 ->assertJsonValidationErrors('descripcion');
+    }
+    /** @test */
+    public function test_codigo_must_be_unique()
+    {
+        // Arrange
+        $existing = CicloFormativo::factory()->create();
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+        $data['codigo'] = $existing->codigo;
+
+        // Act
+        $response = $this->postJson('/api/v1ciclos-formativos', $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                 ->assertJsonValidationErrors('codigo');
+    }
+    /** @test */
+    public function test_grado_accepts_valid_values()
+    {
+        foreach (['basico', 'medio', 'superior'] as $value) {
+            $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+            $data['grado'] = $value;
+
+            $response = $this->postJson('/api/v1ciclos-formativos', $data);
+            $response->assertCreated();
+        }
+    }
+
+    /** @test */
+    public function test_grado_rejects_invalid_values()
+    {
+        // Arrange
+        $data = [
+            'nombre' => \$this->faker->words(3, true),
+            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => \$this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => \$this->faker->paragraph()
+        ];
+        $data['grado'] = 'invalid_value';
+
+        // Act
+        $response = $this->postJson('/api/v1ciclos-formativos', $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                 ->assertJsonValidationErrors('grado');
+    }
+
+    /** @test */
+    public function requires_authentication()
+    {
+        // Arrange
+        Sanctum::actingAs(null);
+
+        // Act
+        $response = $this->getJson('/api/v1/ciclos-formativos');
+
+        // Assert
+        $response->assertUnauthorized();
+    }
+
+
+}
