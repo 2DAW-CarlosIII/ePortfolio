@@ -9,6 +9,192 @@ use App\Http\Requests\UpdateEvidenciaRequest;
 use App\Http\Resources\EvidenciaResource;
 use Illuminate\Http\Request;
 
+
+/**
+ * @OA\Tag(
+ *     name="Evidencia",
+ *     description="Operations related to Evidencia"
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/criterios-evaluacion/{parent_id}/evidencias",
+ *     tags={"Evidencia"},
+ *     summary="List all evidencias",
+ *     description="Retrieve a paginated list of evidencias",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent CriteriosEvaluacion",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         description="Search term",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=15)
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Evidencia")),
+ *             @OA\Property(property="links", type="object"),
+ *             @OA\Property(property="meta", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Post(
+ *     path="/criterios-evaluacion/{parent_id}/evidencias",
+ *     tags={"Evidencia"},
+ *     summary="Create a new evidencia",
+ *     description="Create a new evidencia resource",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent CriteriosEvaluacion",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreEvidenciaRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/Evidencia")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/criterios-evaluacion/{parent_id}/evidencias/{id}",
+ *     tags={"Evidencia"},
+ *     summary="Show a specific evidencia",
+ *     description="Retrieve a specific evidencia by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent CriteriosEvaluacion",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the evidencia",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/Evidencia")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Put(
+ *     path="/criterios-evaluacion/{parent_id}/evidencias/{id}",
+ *     tags={"Evidencia"},
+ *     summary="Update a specific evidencia",
+ *     description="Update a specific evidencia by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent CriteriosEvaluacion",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the evidencia",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateEvidenciaRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/Evidencia")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Delete(
+ *     path="/criterios-evaluacion/{parent_id}/evidencias/{id}",
+ *     tags={"Evidencia"},
+ *     summary="Delete a specific evidencia",
+ *     description="Delete a specific evidencia by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID
+ 
+ 
+ 
+  *         description="Resource deleted successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Evidencia eliminado correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
 class EvidenciaController extends Controller
 {
     public function index(Request $request)

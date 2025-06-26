@@ -10,6 +10,192 @@ use App\Http\Resources\EvaluacionEvidenciaResource;
 use Illuminate\Http\Request;
 use App\Models\Evidencia;
 
+
+/**
+ * @OA\Tag(
+ *     name="EvaluacionEvidencia",
+ *     description="Operations related to EvaluacionEvidencia"
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/users/{parent_id}/evaluaciones-evidencias",
+ *     tags={"EvaluacionEvidencia"},
+ *     summary="List all evaluacionevidencias",
+ *     description="Retrieve a paginated list of evaluacionevidencias",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         description="Search term",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=15)
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/EvaluacionEvidencia")),
+ *             @OA\Property(property="links", type="object"),
+ *             @OA\Property(property="meta", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Post(
+ *     path="/users/{parent_id}/evaluaciones-evidencias",
+ *     tags={"EvaluacionEvidencia"},
+ *     summary="Create a new evaluacionevidencia",
+ *     description="Create a new evaluacionevidencia resource",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreEvaluacionEvidenciaRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/EvaluacionEvidencia")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/users/{parent_id}/evaluaciones-evidencias/{id}",
+ *     tags={"EvaluacionEvidencia"},
+ *     summary="Show a specific evaluacionevidencia",
+ *     description="Retrieve a specific evaluacionevidencia by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the evaluacionevidencia",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/EvaluacionEvidencia")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Put(
+ *     path="/users/{parent_id}/evaluaciones-evidencias/{id}",
+ *     tags={"EvaluacionEvidencia"},
+ *     summary="Update a specific evaluacionevidencia",
+ *     description="Update a specific evaluacionevidencia by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the evaluacionevidencia",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateEvaluacionEvidenciaRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/EvaluacionEvidencia")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Delete(
+ *     path="/users/{parent_id}/evaluaciones-evidencias/{id}",
+ *     tags={"EvaluacionEvidencia"},
+ *     summary="Delete a specific evaluacionevidencia",
+ *     description="Delete a specific evaluacionevidencia by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID
+ 
+ 
+ 
+  *         description="Resource deleted successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="EvaluacionEvidencia eliminado correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
 class EvaluacionEvidenciaController extends Controller
 {
     public function index(Request $request, Evidencia $evidencia)

@@ -9,6 +9,192 @@ use App\Http\Requests\UpdateModuloFormativoRequest;
 use App\Http\Resources\ModuloFormativoResource;
 use Illuminate\Http\Request;
 
+
+/**
+ * @OA\Tag(
+ *     name="ModuloFormativo",
+ *     description="Operations related to ModuloFormativo"
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/users/{parent_id}/modulos-formativos",
+ *     tags={"ModuloFormativo"},
+ *     summary="List all moduloformativos",
+ *     description="Retrieve a paginated list of moduloformativos",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         description="Search term",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=15)
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/ModuloFormativo")),
+ *             @OA\Property(property="links", type="object"),
+ *             @OA\Property(property="meta", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Post(
+ *     path="/users/{parent_id}/modulos-formativos",
+ *     tags={"ModuloFormativo"},
+ *     summary="Create a new moduloformativo",
+ *     description="Create a new moduloformativo resource",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreModuloFormativoRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/ModuloFormativo")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/users/{parent_id}/modulos-formativos/{id}",
+ *     tags={"ModuloFormativo"},
+ *     summary="Show a specific moduloformativo",
+ *     description="Retrieve a specific moduloformativo by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the moduloformativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/ModuloFormativo")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Put(
+ *     path="/users/{parent_id}/modulos-formativos/{id}",
+ *     tags={"ModuloFormativo"},
+ *     summary="Update a specific moduloformativo",
+ *     description="Update a specific moduloformativo by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the moduloformativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateModuloFormativoRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/ModuloFormativo")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Delete(
+ *     path="/users/{parent_id}/modulos-formativos/{id}",
+ *     tags={"ModuloFormativo"},
+ *     summary="Delete a specific moduloformativo",
+ *     description="Delete a specific moduloformativo by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID
+ 
+ 
+ 
+  *         description="Resource deleted successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="ModuloFormativo eliminado correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
 class ModuloFormativoController extends Controller
 {
     public function index(Request $request)

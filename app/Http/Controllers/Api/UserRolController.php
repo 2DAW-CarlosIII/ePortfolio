@@ -10,6 +10,192 @@ use App\Http\Resources\UserRolResource;
 use Illuminate\Http\Request;
 use App\Models\Rol;
 
+
+/**
+ * @OA\Tag(
+ *     name="UserRol",
+ *     description="Operations related to UserRol"
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/modulos-formativos/{parent_id}/user-roles",
+ *     tags={"UserRol"},
+ *     summary="List all userrols",
+ *     description="Retrieve a paginated list of userrols",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         description="Search term",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=15)
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/UserRol")),
+ *             @OA\Property(property="links", type="object"),
+ *             @OA\Property(property="meta", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Post(
+ *     path="/modulos-formativos/{parent_id}/user-roles",
+ *     tags={"UserRol"},
+ *     summary="Create a new userrol",
+ *     description="Create a new userrol resource",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreUserRolRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/UserRol")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/modulos-formativos/{parent_id}/user-roles/{id}",
+ *     tags={"UserRol"},
+ *     summary="Show a specific userrol",
+ *     description="Retrieve a specific userrol by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the userrol",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/UserRol")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Put(
+ *     path="/modulos-formativos/{parent_id}/user-roles/{id}",
+ *     tags={"UserRol"},
+ *     summary="Update a specific userrol",
+ *     description="Update a specific userrol by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the userrol",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateUserRolRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/UserRol")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Delete(
+ *     path="/modulos-formativos/{parent_id}/user-roles/{id}",
+ *     tags={"UserRol"},
+ *     summary="Delete a specific userrol",
+ *     description="Delete a specific userrol by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID
+ 
+ 
+ 
+  *         description="Resource deleted successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="UserRol eliminado correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
 class UserRolController extends Controller
 {
     public function index(Request $request, Rol $rol)

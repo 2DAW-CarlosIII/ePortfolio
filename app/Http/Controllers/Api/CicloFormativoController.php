@@ -9,6 +9,192 @@ use App\Http\Requests\UpdateCicloFormativoRequest;
 use App\Http\Resources\CicloFormativoResource;
 use Illuminate\Http\Request;
 
+
+/**
+ * @OA\Tag(
+ *     name="CicloFormativo",
+ *     description="Operations related to CicloFormativo"
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/familias-profesionales/{parent_id}/ciclos-formativos",
+ *     tags={"CicloFormativo"},
+ *     summary="List all cicloformativos",
+ *     description="Retrieve a paginated list of cicloformativos",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent FamiliaProfesional",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         description="Search term",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=15)
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/CicloFormativo")),
+ *             @OA\Property(property="links", type="object"),
+ *             @OA\Property(property="meta", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Post(
+ *     path="/familias-profesionales/{parent_id}/ciclos-formativos",
+ *     tags={"CicloFormativo"},
+ *     summary="Create a new cicloformativo",
+ *     description="Create a new cicloformativo resource",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent FamiliaProfesional",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreCicloFormativoRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/CicloFormativo")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Get(
+ *     path="/familias-profesionales/{parent_id}/ciclos-formativos/{id}",
+ *     tags={"CicloFormativo"},
+ *     summary="Show a specific cicloformativo",
+ *     description="Retrieve a specific cicloformativo by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent FamiliaProfesional",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the cicloformativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/CicloFormativo")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Put(
+ *     path="/familias-profesionales/{parent_id}/ciclos-formativos/{id}",
+ *     tags={"CicloFormativo"},
+ *     summary="Update a specific cicloformativo",
+ *     description="Update a specific cicloformativo by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent FamiliaProfesional",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the cicloformativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateCicloFormativoRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/CicloFormativo")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+/**
+ * @OA\Delete(
+ *     path="/familias-profesionales/{parent_id}/ciclos-formativos/{id}",
+ *     tags={"CicloFormativo"},
+ *     summary="Delete a specific cicloformativo",
+ *     description="Delete a specific cicloformativo by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID
+ 
+ 
+ 
+  *         description="Resource deleted successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="CicloFormativo eliminado correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
 class CicloFormativoController extends Controller
 {
     public function index(Request $request)
