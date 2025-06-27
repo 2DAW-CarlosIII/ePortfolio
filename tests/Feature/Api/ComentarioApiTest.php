@@ -6,12 +6,12 @@ use App\Models\Comentario;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class ComentarioApiTest extends TestCase
+class ComentarioApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     protected Evidencia $parent;
@@ -26,8 +26,7 @@ class ComentarioApiTest extends TestCase
         $this->evidencia = Evidencia::factory()->create();
     }
 
-    /** @test */
-    public function can_list_comentarios()
+    public function test_can_list_comentarios()
     {
         // Arrange
         Comentario::factory()->count(3)->create(['evidencia_id' => $this->evidencia->id]);
@@ -48,13 +47,12 @@ class ComentarioApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_comentario()
+    public function test_can_create_comentario()
     {
         // Arrange
         $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
         ];
 
         // Act
@@ -72,8 +70,7 @@ class ComentarioApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_comentario()
+    public function test_can_show_comentario()
     {
         // Arrange
         $comentario = Comentario::factory()->create(['evidencia_id' => $this->evidencia->id]);
@@ -88,14 +85,13 @@ class ComentarioApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_comentario()
+    public function test_can_update_comentario()
     {
         // Arrange
         $comentario = Comentario::factory()->create(['evidencia_id' => $this->evidencia->id]);
         $updateData = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
         ];
 
         // Act
@@ -108,12 +104,11 @@ class ComentarioApiTest extends TestCase
                  ]);
 
         $comentario->refresh();
-        $this->assertEquals($updateData['contenido'], $comentario->$field['name']));
-        $this->assertEquals($updateData['tipo'], $comentario->$field['name']));
+        $this->assertEquals($updateData['contenido'], $comentario->$field['name']);
+        $this->assertEquals($updateData['tipo'], $comentario->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_comentario()
+    public function test_can_delete_comentario()
     {
         // Arrange
         $comentario = Comentario::factory()->create(['evidencia_id' => $this->evidencia->id]);
@@ -132,8 +127,7 @@ class ComentarioApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_comentarios()
+    public function test_can_search_comentarios()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -157,8 +151,7 @@ class ComentarioApiTest extends TestCase
         $this->assertEquals($comentario1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_comentarios()
+    public function test_can_paginate_comentarios()
     {
         // Arrange
         Comentario::factory()->count(25)->create(['evidencia_id' => $this->evidencia->id]);
@@ -179,109 +172,102 @@ class ComentarioApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_evidencia_id_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
-        ];
-        unset($data['evidencia_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('evidencia_id');
-    }
-    /** @test */
-    public function test_requires_docente_id_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
-        ];
-        unset($data['docente_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('docente_id');
-    }
-    /** @test */
-    public function test_requires_contenido_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
-        ];
-        unset($data['contenido']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('contenido');
-    }
-    /** @test */
-    public function test_requires_tipo_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
-        ];
-        unset($data['tipo']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('tipo');
-    }
-    /** @test */
-    public function test_tipo_accepts_valid_values()
-    {
-        foreach (['feedback', 'mejora', 'felicitacion'] as $value) {
+        public function test_requires_evidencia_id_field()
+        {
+            // Arrange
             $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
         ];
-            $data['tipo'] = $value;
+            unset($data['evidencia_id']);
 
+            // Act
             $response = $this->postJson('/api/v1comentarios', $data);
-            $response->assertCreated();
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('evidencia_id');
         }
-    }
-
-    /** @test */
-    public function test_tipo_rejects_invalid_values()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo' => \$this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+        public function test_requires_docente_id_field()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
         ];
-        $data['tipo'] = 'invalid_value';
+            unset($data['docente_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1comentarios', $data);
+            // Act
+            $response = $this->postJson('/api/v1comentarios', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('tipo');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('docente_id');
+        }
+        public function test_requires_contenido_field()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+        ];
+            unset($data['contenido']);
 
-    /** @test */
-    public function requires_authentication()
+            // Act
+            $response = $this->postJson('/api/v1comentarios', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('contenido');
+        }
+        public function test_requires_tipo_field()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+        ];
+            unset($data['tipo']);
+
+            // Act
+            $response = $this->postJson('/api/v1comentarios', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('tipo');
+        }
+        public function test_tipo_accepts_valid_values()
+        {
+            foreach (['feedback', 'mejora', 'felicitacion'] as $value) {
+                $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+        ];
+                $data['tipo'] = $value;
+
+                $response = $this->postJson('/api/v1comentarios', $data);
+                $response->assertCreated();
+            }
+        }
+
+        public function test_tipo_rejects_invalid_values()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo' => $this->faker->randomElement(['feedback', 'mejora', 'felicitacion'])
+        ];
+            $data['tipo'] = 'invalid_value';
+
+            // Act
+            $response = $this->postJson('/api/v1comentarios', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('tipo');
+        }
+
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);
@@ -294,35 +280,33 @@ class ComentarioApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function cannot_access_comentario_from_wrong_parent()
-    {
-        // Arrange
-        $otherEvidencia = Evidencia::factory()->create();
-        $comentario = Comentario::factory()->create([
-            'evidencia_id' => $this->evidencia->id
-        ]);
+        public function test_cannot_access_comentario_from_wrong_parent()
+        {
+            // Arrange
+            $otherEvidencia = Evidencia::factory()->create();
+            $comentario = Comentario::factory()->create([
+                'evidencia_id' => $this->evidencia->id
+            ]);
 
-        // Act
-        $response = $this->getJson("/api/v1/evidencias/{$otherEvidencia->id}/comentario/{$comentario->id}");
+            // Act
+            $response = $this->getJson("/api/v1/evidencias/{$otherEvidencia->id}/comentario/{$comentario->id}");
 
-        // Assert
-        $response->assertNotFound();
-    }
+            // Assert
+            $response->assertNotFound();
+        }
 
-    /** @test */
-    public function comentario_belongs_to_correct_parent()
-    {
-        // Arrange
-        $comentario = Comentario::factory()->create([
-            'evidencia_id' => $this->evidencia->id
-        ]);
+        public function test_comentario_belongs_to_correct_parent()
+        {
+            // Arrange
+            $comentario = Comentario::factory()->create([
+                'evidencia_id' => $this->evidencia->id
+            ]);
 
-        // Act
-        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/comentario/{$comentario->id}");
+            // Act
+            $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/comentario/{$comentario->id}");
 
-        // Assert
-        $response->assertOk();
-        $this->assertEquals($this->evidencia->id, $response->json('data.evidencia_id'));
-    }
+            // Assert
+            $response->assertOk();
+            $this->assertEquals($this->evidencia->id, $response->json('data.evidencia_id'));
+        }
 }

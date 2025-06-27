@@ -6,12 +6,12 @@ use App\Models\ComentarioPar;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class ComentarioParApiTest extends TestCase
+class ComentarioParApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class ComentarioParApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_comentarioPars()
+    public function test_can_list_comentarioPars()
     {
         // Arrange
         ComentarioPar::factory()->count(3)->create();
@@ -47,13 +46,12 @@ class ComentarioParApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_comentarioPar()
+    public function test_can_create_comentarioPar()
     {
         // Arrange
         $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
         ];
 
         // Act
@@ -71,8 +69,7 @@ class ComentarioParApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_comentarioPar()
+    public function test_can_show_comentarioPar()
     {
         // Arrange
         $comentarioPar = ComentarioPar::factory()->create();
@@ -87,14 +84,13 @@ class ComentarioParApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_comentarioPar()
+    public function test_can_update_comentarioPar()
     {
         // Arrange
         $comentarioPar = ComentarioPar::factory()->create();
         $updateData = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
         ];
 
         // Act
@@ -107,12 +103,11 @@ class ComentarioParApiTest extends TestCase
                  ]);
 
         $comentarioPar->refresh();
-        $this->assertEquals($updateData['contenido'], $comentarioPar->$field['name']));
-        $this->assertEquals($updateData['tipo_comentario'], $comentarioPar->$field['name']));
+        $this->assertEquals($updateData['contenido'], $comentarioPar->$field['name']);
+        $this->assertEquals($updateData['tipo_comentario'], $comentarioPar->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_comentarioPar()
+    public function test_can_delete_comentarioPar()
     {
         // Arrange
         $comentarioPar = ComentarioPar::factory()->create();
@@ -131,8 +126,7 @@ class ComentarioParApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_comentarioPars()
+    public function test_can_search_comentarioPars()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -156,8 +150,7 @@ class ComentarioParApiTest extends TestCase
         $this->assertEquals($comentarioPar1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_comentarioPars()
+    public function test_can_paginate_comentarioPars()
     {
         // Arrange
         ComentarioPar::factory()->count(25)->create();
@@ -178,109 +171,102 @@ class ComentarioParApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_asignacion_revision_id_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
-        ];
-        unset($data['asignacion_revision_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('asignacion_revision_id');
-    }
-    /** @test */
-    public function test_requires_revisor_id_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
-        ];
-        unset($data['revisor_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('revisor_id');
-    }
-    /** @test */
-    public function test_requires_contenido_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
-        ];
-        unset($data['contenido']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('contenido');
-    }
-    /** @test */
-    public function test_requires_tipo_comentario_field()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
-        ];
-        unset($data['tipo_comentario']);
-
-        // Act
-        $response = $this->postJson('/api/v1comentarios-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('tipo_comentario');
-    }
-    /** @test */
-    public function test_tipo_comentario_accepts_valid_values()
-    {
-        foreach (['positivo', 'mejora', 'critico'] as $value) {
+        public function test_requires_asignacion_revision_id_field()
+        {
+            // Arrange
             $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
         ];
-            $data['tipo_comentario'] = $value;
+            unset($data['asignacion_revision_id']);
 
+            // Act
             $response = $this->postJson('/api/v1comentarios-pares', $data);
-            $response->assertCreated();
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('asignacion_revision_id');
         }
-    }
-
-    /** @test */
-    public function test_tipo_comentario_rejects_invalid_values()
-    {
-        // Arrange
-        $data = [
-            'contenido' => \$this->faker->paragraph(),
-            'tipo_comentario' => \$this->faker->randomElement(['positivo', 'mejora', 'critico'])
+        public function test_requires_revisor_id_field()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
         ];
-        $data['tipo_comentario'] = 'invalid_value';
+            unset($data['revisor_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1comentarios-pares', $data);
+            // Act
+            $response = $this->postJson('/api/v1comentarios-pares', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('tipo_comentario');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('revisor_id');
+        }
+        public function test_requires_contenido_field()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
+        ];
+            unset($data['contenido']);
 
-    /** @test */
-    public function requires_authentication()
+            // Act
+            $response = $this->postJson('/api/v1comentarios-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('contenido');
+        }
+        public function test_requires_tipo_comentario_field()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
+        ];
+            unset($data['tipo_comentario']);
+
+            // Act
+            $response = $this->postJson('/api/v1comentarios-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('tipo_comentario');
+        }
+        public function test_tipo_comentario_accepts_valid_values()
+        {
+            foreach (['positivo', 'mejora', 'critico'] as $value) {
+                $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
+        ];
+                $data['tipo_comentario'] = $value;
+
+                $response = $this->postJson('/api/v1comentarios-pares', $data);
+                $response->assertCreated();
+            }
+        }
+
+        public function test_tipo_comentario_rejects_invalid_values()
+        {
+            // Arrange
+            $data = [
+            'contenido' => $this->faker->paragraph(),
+            'tipo_comentario' => $this->faker->randomElement(['positivo', 'mejora', 'critico'])
+        ];
+            $data['tipo_comentario'] = 'invalid_value';
+
+            // Act
+            $response = $this->postJson('/api/v1comentarios-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('tipo_comentario');
+        }
+
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

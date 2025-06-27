@@ -6,12 +6,12 @@ use App\Models\ModuloFormativo;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class ModuloFormativoApiTest extends TestCase
+class ModuloFormativoApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class ModuloFormativoApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_moduloFormativos()
+    public function test_can_list_moduloFormativos()
     {
         // Arrange
         ModuloFormativo::factory()->count(3)->create();
@@ -47,17 +46,16 @@ class ModuloFormativoApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_moduloFormativo()
+    public function test_can_create_moduloFormativo()
     {
         // Arrange
         $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
 
         // Act
@@ -79,8 +77,7 @@ class ModuloFormativoApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_moduloFormativo()
+    public function test_can_show_moduloFormativo()
     {
         // Arrange
         $moduloFormativo = ModuloFormativo::factory()->create();
@@ -95,18 +92,17 @@ class ModuloFormativoApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_moduloFormativo()
+    public function test_can_update_moduloFormativo()
     {
         // Arrange
         $moduloFormativo = ModuloFormativo::factory()->create();
         $updateData = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
 
         // Act
@@ -119,16 +115,15 @@ class ModuloFormativoApiTest extends TestCase
                  ]);
 
         $moduloFormativo->refresh();
-        $this->assertEquals($updateData['nombre'], $moduloFormativo->$field['name']));
-        $this->assertEquals($updateData['codigo'], $moduloFormativo->$field['name']));
-        $this->assertEquals($updateData['horas_totales'], $moduloFormativo->$field['name']));
-        $this->assertEquals($updateData['curso_escolar'], $moduloFormativo->$field['name']));
-        $this->assertEquals($updateData['centro'], $moduloFormativo->$field['name']));
-        $this->assertEquals($updateData['descripcion'], $moduloFormativo->$field['name']));
+        $this->assertEquals($updateData['nombre'], $moduloFormativo->$field['name']);
+        $this->assertEquals($updateData['codigo'], $moduloFormativo->$field['name']);
+        $this->assertEquals($updateData['horas_totales'], $moduloFormativo->$field['name']);
+        $this->assertEquals($updateData['curso_escolar'], $moduloFormativo->$field['name']);
+        $this->assertEquals($updateData['centro'], $moduloFormativo->$field['name']);
+        $this->assertEquals($updateData['descripcion'], $moduloFormativo->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_moduloFormativo()
+    public function test_can_delete_moduloFormativo()
     {
         // Arrange
         $moduloFormativo = ModuloFormativo::factory()->create();
@@ -147,8 +142,7 @@ class ModuloFormativoApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_moduloFormativos()
+    public function test_can_search_moduloFormativos()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -172,8 +166,7 @@ class ModuloFormativoApiTest extends TestCase
         $this->assertEquals($moduloFormativo1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_moduloFormativos()
+    public function test_can_paginate_moduloFormativos()
     {
         // Arrange
         ModuloFormativo::factory()->count(25)->create();
@@ -194,177 +187,168 @@ class ModuloFormativoApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_ciclo_formativo_id_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+        public function test_requires_ciclo_formativo_id_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['ciclo_formativo_id']);
+            unset($data['ciclo_formativo_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('ciclo_formativo_id');
-    }
-    /** @test */
-    public function test_requires_nombre_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('ciclo_formativo_id');
+        }
+        public function test_requires_nombre_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['nombre']);
+            unset($data['nombre']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('nombre');
-    }
-    /** @test */
-    public function test_requires_codigo_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('nombre');
+        }
+        public function test_requires_codigo_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['codigo']);
+            unset($data['codigo']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('codigo');
-    }
-    /** @test */
-    public function test_requires_horas_totales_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('codigo');
+        }
+        public function test_requires_horas_totales_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['horas_totales']);
+            unset($data['horas_totales']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('horas_totales');
-    }
-    /** @test */
-    public function test_requires_curso_escolar_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('horas_totales');
+        }
+        public function test_requires_curso_escolar_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['curso_escolar']);
+            unset($data['curso_escolar']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('curso_escolar');
-    }
-    /** @test */
-    public function test_requires_centro_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('curso_escolar');
+        }
+        public function test_requires_centro_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['centro']);
+            unset($data['centro']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('centro');
-    }
-    /** @test */
-    public function test_requires_docente_id_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('centro');
+        }
+        public function test_requires_docente_id_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['docente_id']);
+            unset($data['docente_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('docente_id');
-    }
-    /** @test */
-    public function test_requires_descripcion_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'horas_totales' => \$this->faker->numberBetween(20, 200),
-            'curso_escolar' => \$this->faker->words(3, true),
-            'centro' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('docente_id');
+        }
+        public function test_requires_descripcion_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'horas_totales' => $this->faker->numberBetween(20, 200),
+            'curso_escolar' => $this->faker->words(3, true),
+            'centro' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['descripcion']);
+            unset($data['descripcion']);
 
-        // Act
-        $response = $this->postJson('/api/v1modulos-formativos', $data);
+            // Act
+            $response = $this->postJson('/api/v1modulos-formativos', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('descripcion');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('descripcion');
+        }
 
-    /** @test */
-    public function requires_authentication()
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

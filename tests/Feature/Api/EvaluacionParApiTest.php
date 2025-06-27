@@ -6,12 +6,12 @@ use App\Models\EvaluacionPar;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class EvaluacionParApiTest extends TestCase
+class EvaluacionParApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class EvaluacionParApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_evaluacionPars()
+    public function test_can_list_evaluacionPars()
     {
         // Arrange
         EvaluacionPar::factory()->count(3)->create();
@@ -47,14 +46,13 @@ class EvaluacionParApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_evaluacionPar()
+    public function test_can_create_evaluacionPar()
     {
         // Arrange
         $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
         ];
 
         // Act
@@ -74,8 +72,7 @@ class EvaluacionParApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_evaluacionPar()
+    public function test_can_show_evaluacionPar()
     {
         // Arrange
         $evaluacionPar = EvaluacionPar::factory()->create();
@@ -90,15 +87,14 @@ class EvaluacionParApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_evaluacionPar()
+    public function test_can_update_evaluacionPar()
     {
         // Arrange
         $evaluacionPar = EvaluacionPar::factory()->create();
         $updateData = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
         ];
 
         // Act
@@ -111,14 +107,13 @@ class EvaluacionParApiTest extends TestCase
                  ]);
 
         $evaluacionPar->refresh();
-        $this->assertEquals($updateData['puntuacion_sugerida'], $evaluacionPar->$field['name']));
-        $this->assertEquals($updateData['recomendacion'], $evaluacionPar->$field['name']));
-        $this->assertEquals($updateData['justificacion'], $evaluacionPar->$field['name']));
-        $this->assertEquals($updateData['fecha_evaluacion'], $evaluacionPar->$field['name']));
+        $this->assertEquals($updateData['puntuacion_sugerida'], $evaluacionPar->$field['name']);
+        $this->assertEquals($updateData['recomendacion'], $evaluacionPar->$field['name']);
+        $this->assertEquals($updateData['justificacion'], $evaluacionPar->$field['name']);
+        $this->assertEquals($updateData['fecha_evaluacion'], $evaluacionPar->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_evaluacionPar()
+    public function test_can_delete_evaluacionPar()
     {
         // Arrange
         $evaluacionPar = EvaluacionPar::factory()->create();
@@ -137,8 +132,7 @@ class EvaluacionParApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_evaluacionPars()
+    public function test_can_search_evaluacionPars()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -162,8 +156,7 @@ class EvaluacionParApiTest extends TestCase
         $this->assertEquals($evaluacionPar1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_evaluacionPars()
+    public function test_can_paginate_evaluacionPars()
     {
         // Arrange
         EvaluacionPar::factory()->count(25)->create();
@@ -184,151 +177,142 @@ class EvaluacionParApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_asignacion_revision_id_field()
-    {
-        // Arrange
-        $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
-        ];
-        unset($data['asignacion_revision_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1evaluaciones-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('asignacion_revision_id');
-    }
-    /** @test */
-    public function test_requires_revisor_id_field()
-    {
-        // Arrange
-        $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
-        ];
-        unset($data['revisor_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1evaluaciones-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('revisor_id');
-    }
-    /** @test */
-    public function test_requires_puntuacion_sugerida_field()
-    {
-        // Arrange
-        $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
-        ];
-        unset($data['puntuacion_sugerida']);
-
-        // Act
-        $response = $this->postJson('/api/v1evaluaciones-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('puntuacion_sugerida');
-    }
-    /** @test */
-    public function test_requires_recomendacion_field()
-    {
-        // Arrange
-        $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
-        ];
-        unset($data['recomendacion']);
-
-        // Act
-        $response = $this->postJson('/api/v1evaluaciones-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('recomendacion');
-    }
-    /** @test */
-    public function test_requires_justificacion_field()
-    {
-        // Arrange
-        $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
-        ];
-        unset($data['justificacion']);
-
-        // Act
-        $response = $this->postJson('/api/v1evaluaciones-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('justificacion');
-    }
-    /** @test */
-    public function test_requires_fecha_evaluacion_field()
-    {
-        // Arrange
-        $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
-        ];
-        unset($data['fecha_evaluacion']);
-
-        // Act
-        $response = $this->postJson('/api/v1evaluaciones-pares', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('fecha_evaluacion');
-    }
-    /** @test */
-    public function test_recomendacion_accepts_valid_values()
-    {
-        foreach (['aprobar', 'mejorar', 'rechazar'] as $value) {
+        public function test_requires_asignacion_revision_id_field()
+        {
+            // Arrange
             $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
         ];
-            $data['recomendacion'] = $value;
+            unset($data['asignacion_revision_id']);
 
+            // Act
             $response = $this->postJson('/api/v1evaluaciones-pares', $data);
-            $response->assertCreated();
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('asignacion_revision_id');
         }
-    }
-
-    /** @test */
-    public function test_recomendacion_rejects_invalid_values()
-    {
-        // Arrange
-        $data = [
-            'puntuacion_sugerida' => \$this->faker->randomFloat(2, 0, 100),
-            'recomendacion' => \$this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
-            'justificacion' => \$this->faker->paragraph()
+        public function test_requires_revisor_id_field()
+        {
+            // Arrange
+            $data = [
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
         ];
-        $data['recomendacion'] = 'invalid_value';
+            unset($data['revisor_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1evaluaciones-pares', $data);
+            // Act
+            $response = $this->postJson('/api/v1evaluaciones-pares', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('recomendacion');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('revisor_id');
+        }
+        public function test_requires_puntuacion_sugerida_field()
+        {
+            // Arrange
+            $data = [
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
+        ];
+            unset($data['puntuacion_sugerida']);
 
-    /** @test */
-    public function requires_authentication()
+            // Act
+            $response = $this->postJson('/api/v1evaluaciones-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('puntuacion_sugerida');
+        }
+        public function test_requires_recomendacion_field()
+        {
+            // Arrange
+            $data = [
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
+        ];
+            unset($data['recomendacion']);
+
+            // Act
+            $response = $this->postJson('/api/v1evaluaciones-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('recomendacion');
+        }
+        public function test_requires_justificacion_field()
+        {
+            // Arrange
+            $data = [
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
+        ];
+            unset($data['justificacion']);
+
+            // Act
+            $response = $this->postJson('/api/v1evaluaciones-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('justificacion');
+        }
+        public function test_requires_fecha_evaluacion_field()
+        {
+            // Arrange
+            $data = [
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
+        ];
+            unset($data['fecha_evaluacion']);
+
+            // Act
+            $response = $this->postJson('/api/v1evaluaciones-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('fecha_evaluacion');
+        }
+        public function test_recomendacion_accepts_valid_values()
+        {
+            foreach (['aprobar', 'mejorar', 'rechazar'] as $value) {
+                $data = [
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
+        ];
+                $data['recomendacion'] = $value;
+
+                $response = $this->postJson('/api/v1evaluaciones-pares', $data);
+                $response->assertCreated();
+            }
+        }
+
+        public function test_recomendacion_rejects_invalid_values()
+        {
+            // Arrange
+            $data = [
+            'puntuacion_sugerida' => $this->faker->randomFloat(2, 0, 100),
+            'recomendacion' => $this->faker->randomElement(['aprobar', 'mejorar', 'rechazar']),
+            'justificacion' => $this->faker->paragraph()
+        ];
+            $data['recomendacion'] = 'invalid_value';
+
+            // Act
+            $response = $this->postJson('/api/v1evaluaciones-pares', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('recomendacion');
+        }
+
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

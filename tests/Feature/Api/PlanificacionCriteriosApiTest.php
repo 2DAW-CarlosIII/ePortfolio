@@ -6,12 +6,12 @@ use App\Models\PlanificacionCriterios;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class PlanificacionCriteriosApiTest extends TestCase
+class PlanificacionCriteriosApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class PlanificacionCriteriosApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_planificacionCriterioss()
+    public function test_can_list_planificacionCriterioss()
     {
         // Arrange
         PlanificacionCriterios::factory()->count(3)->create();
@@ -47,15 +46,14 @@ class PlanificacionCriteriosApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_planificacionCriterios()
+    public function test_can_create_planificacionCriterios()
     {
         // Arrange
         $data = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
 
         // Act
@@ -75,8 +73,7 @@ class PlanificacionCriteriosApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_planificacionCriterios()
+    public function test_can_show_planificacionCriterios()
     {
         // Arrange
         $planificacionCriterios = PlanificacionCriterios::factory()->create();
@@ -91,16 +88,15 @@ class PlanificacionCriteriosApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_planificacionCriterios()
+    public function test_can_update_planificacionCriterios()
     {
         // Arrange
         $planificacionCriterios = PlanificacionCriterios::factory()->create();
         $updateData = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
 
         // Act
@@ -113,14 +109,13 @@ class PlanificacionCriteriosApiTest extends TestCase
                  ]);
 
         $planificacionCriterios->refresh();
-        $this->assertEquals($updateData['fecha_apertura'], $planificacionCriterios->$field['name']));
-        $this->assertEquals($updateData['fecha_cierre'], $planificacionCriterios->$field['name']));
-        $this->assertEquals($updateData['activo'], $planificacionCriterios->$field['name']));
-        $this->assertEquals($updateData['observaciones'], $planificacionCriterios->$field['name']));
+        $this->assertEquals($updateData['fecha_apertura'], $planificacionCriterios->$field['name']);
+        $this->assertEquals($updateData['fecha_cierre'], $planificacionCriterios->$field['name']);
+        $this->assertEquals($updateData['activo'], $planificacionCriterios->$field['name']);
+        $this->assertEquals($updateData['observaciones'], $planificacionCriterios->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_planificacionCriterios()
+    public function test_can_delete_planificacionCriterios()
     {
         // Arrange
         $planificacionCriterios = PlanificacionCriterios::factory()->create();
@@ -139,8 +134,7 @@ class PlanificacionCriteriosApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_planificacionCriterioss()
+    public function test_can_search_planificacionCriterioss()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -164,8 +158,7 @@ class PlanificacionCriteriosApiTest extends TestCase
         $this->assertEquals($planificacionCriterios1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_planificacionCriterioss()
+    public function test_can_paginate_planificacionCriterioss()
     {
         // Arrange
         PlanificacionCriterios::factory()->count(25)->create();
@@ -186,123 +179,116 @@ class PlanificacionCriteriosApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_criterio_evaluacion_id_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+        public function test_requires_criterio_evaluacion_id_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
-        unset($data['criterio_evaluacion_id']);
+            unset($data['criterio_evaluacion_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1planificacion-criterios', $data);
+            // Act
+            $response = $this->postJson('/api/v1planificacion-criterios', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('criterio_evaluacion_id');
-    }
-    /** @test */
-    public function test_requires_modulo_formativo_id_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('criterio_evaluacion_id');
+        }
+        public function test_requires_modulo_formativo_id_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
-        unset($data['modulo_formativo_id']);
+            unset($data['modulo_formativo_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1planificacion-criterios', $data);
+            // Act
+            $response = $this->postJson('/api/v1planificacion-criterios', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('modulo_formativo_id');
-    }
-    /** @test */
-    public function test_requires_fecha_apertura_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('modulo_formativo_id');
+        }
+        public function test_requires_fecha_apertura_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
-        unset($data['fecha_apertura']);
+            unset($data['fecha_apertura']);
 
-        // Act
-        $response = $this->postJson('/api/v1planificacion-criterios', $data);
+            // Act
+            $response = $this->postJson('/api/v1planificacion-criterios', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('fecha_apertura');
-    }
-    /** @test */
-    public function test_requires_fecha_cierre_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('fecha_apertura');
+        }
+        public function test_requires_fecha_cierre_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
-        unset($data['fecha_cierre']);
+            unset($data['fecha_cierre']);
 
-        // Act
-        $response = $this->postJson('/api/v1planificacion-criterios', $data);
+            // Act
+            $response = $this->postJson('/api/v1planificacion-criterios', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('fecha_cierre');
-    }
-    /** @test */
-    public function test_requires_activo_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('fecha_cierre');
+        }
+        public function test_requires_activo_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
-        unset($data['activo']);
+            unset($data['activo']);
 
-        // Act
-        $response = $this->postJson('/api/v1planificacion-criterios', $data);
+            // Act
+            $response = $this->postJson('/api/v1planificacion-criterios', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('activo');
-    }
-    /** @test */
-    public function test_requires_observaciones_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_apertura' => \$this->faker->date(),
-            'fecha_cierre' => \$this->faker->date(),
-            'activo' => \$this->faker->boolean(),
-            'observaciones' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('activo');
+        }
+        public function test_requires_observaciones_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_apertura' => $this->faker->date(),
+            'fecha_cierre' => $this->faker->date(),
+            'activo' => $this->faker->boolean(),
+            'observaciones' => $this->faker->paragraph()
         ];
-        unset($data['observaciones']);
+            unset($data['observaciones']);
 
-        // Act
-        $response = $this->postJson('/api/v1planificacion-criterios', $data);
+            // Act
+            $response = $this->postJson('/api/v1planificacion-criterios', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('observaciones');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('observaciones');
+        }
 
-    /** @test */
-    public function requires_authentication()
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

@@ -7,12 +7,11 @@ use App\Models\Evidencia;
 use App\Models\ModuloFormativo;
 use App\Models\Matricula;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class StatsApiTest extends TestCase
+class StatsApiTest extends FeatureTestCase
 {
-    use RefreshDatabase;
 
     protected User $user;
 
@@ -24,8 +23,7 @@ class StatsApiTest extends TestCase
         Sanctum::actingAs($this->user);
     }
 
-    /** @test */
-    public function can_get_general_stats()
+    public function test_can_get_general_stats()
     {
         // Arrange
         User::factory()->count(10)->create();
@@ -45,8 +43,7 @@ class StatsApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_get_students_stats()
+    public function test_can_get_students_stats()
     {
         // Act
         $response = $this->getJson('/api/v1/stats/estudiantes');
@@ -60,8 +57,7 @@ class StatsApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_get_evidences_stats()
+    public function test_can_get_evidences_stats()
     {
         // Act
         $response = $this->getJson('/api/v1/stats/evidencias');
@@ -75,8 +71,7 @@ class StatsApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_filter_students_stats_by_module()
+    public function test_can_filter_students_stats_by_module()
     {
         // Arrange
         $modulo = ModuloFormativo::factory()->create();
@@ -88,8 +83,7 @@ class StatsApiTest extends TestCase
         $response->assertOk();
     }
 
-    /** @test */
-    public function can_filter_evidences_stats_by_criteria()
+    public function test_can_filter_evidences_stats_by_criteria()
     {
         // Arrange
         $criterio = CriterioEvaluacion::factory()->create();
@@ -101,8 +95,7 @@ class StatsApiTest extends TestCase
         $response->assertOk();
     }
 
-    /** @test */
-    public function requires_authentication_for_stats()
+    public function test_requires_authentication_for_stats()
     {
         // Arrange
         Sanctum::actingAs(null);

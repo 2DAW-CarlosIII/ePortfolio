@@ -6,12 +6,12 @@ use App\Models\UserRol;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class UserRolApiTest extends TestCase
+class UserRolApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     protected Rol $parent;
@@ -26,8 +26,7 @@ class UserRolApiTest extends TestCase
         $this->rol = Rol::factory()->create();
     }
 
-    /** @test */
-    public function can_list_userRols()
+    public function test_can_list_userRols()
     {
         // Arrange
         UserRol::factory()->count(3)->create(['role_id' => $this->rol->id]);
@@ -48,8 +47,7 @@ class UserRolApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_userRol()
+    public function test_can_create_userRol()
     {
         // Arrange
         $data = [
@@ -70,8 +68,7 @@ class UserRolApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_userRol()
+    public function test_can_show_userRol()
     {
         // Arrange
         $userRol = UserRol::factory()->create(['role_id' => $this->rol->id]);
@@ -86,8 +83,7 @@ class UserRolApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_userRol()
+    public function test_can_update_userRol()
     {
         // Arrange
         $userRol = UserRol::factory()->create(['role_id' => $this->rol->id]);
@@ -108,8 +104,7 @@ class UserRolApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_delete_userRol()
+    public function test_can_delete_userRol()
     {
         // Arrange
         $userRol = UserRol::factory()->create(['role_id' => $this->rol->id]);
@@ -128,8 +123,7 @@ class UserRolApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_userRols()
+    public function test_can_search_userRols()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -153,8 +147,7 @@ class UserRolApiTest extends TestCase
         $this->assertEquals($userRol1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_userRols()
+    public function test_can_paginate_userRols()
     {
         // Arrange
         UserRol::factory()->count(25)->create(['role_id' => $this->rol->id]);
@@ -175,57 +168,53 @@ class UserRolApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_user_id_field()
-    {
-        // Arrange
-        $data = [
+        public function test_requires_user_id_field()
+        {
+            // Arrange
+            $data = [
             
         ];
-        unset($data['user_id']);
+            unset($data['user_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1user-roles', $data);
+            // Act
+            $response = $this->postJson('/api/v1user-roles', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('user_id');
-    }
-    /** @test */
-    public function test_requires_role_id_field()
-    {
-        // Arrange
-        $data = [
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('user_id');
+        }
+        public function test_requires_role_id_field()
+        {
+            // Arrange
+            $data = [
             
         ];
-        unset($data['role_id']);
+            unset($data['role_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1user-roles', $data);
+            // Act
+            $response = $this->postJson('/api/v1user-roles', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('role_id');
-    }
-    /** @test */
-    public function test_requires_modulo_formativo_id_field()
-    {
-        // Arrange
-        $data = [
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('role_id');
+        }
+        public function test_requires_modulo_formativo_id_field()
+        {
+            // Arrange
+            $data = [
             
         ];
-        unset($data['modulo_formativo_id']);
+            unset($data['modulo_formativo_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1user-roles', $data);
+            // Act
+            $response = $this->postJson('/api/v1user-roles', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('modulo_formativo_id');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('modulo_formativo_id');
+        }
 
-    /** @test */
-    public function requires_authentication()
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);
@@ -238,35 +227,33 @@ class UserRolApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function cannot_access_userRol_from_wrong_parent()
-    {
-        // Arrange
-        $otherRol = Rol::factory()->create();
-        $userRol = UserRol::factory()->create([
-            'role_id' => $this->rol->id
-        ]);
+        public function test_cannot_access_userRol_from_wrong_parent()
+        {
+            // Arrange
+            $otherRol = Rol::factory()->create();
+            $userRol = UserRol::factory()->create([
+                'role_id' => $this->rol->id
+            ]);
 
-        // Act
-        $response = $this->getJson("/api/v1/roles/{$otherRol->id}/userrol/{$userRol->id}");
+            // Act
+            $response = $this->getJson("/api/v1/roles/{$otherRol->id}/userrol/{$userRol->id}");
 
-        // Assert
-        $response->assertNotFound();
-    }
+            // Assert
+            $response->assertNotFound();
+        }
 
-    /** @test */
-    public function userRol_belongs_to_correct_parent()
-    {
-        // Arrange
-        $userRol = UserRol::factory()->create([
-            'role_id' => $this->rol->id
-        ]);
+        public function test_userRol_belongs_to_correct_parent()
+        {
+            // Arrange
+            $userRol = UserRol::factory()->create([
+                'role_id' => $this->rol->id
+            ]);
 
-        // Act
-        $response = $this->getJson("/api/v1/roles/{$this->rol->id}/userrol/{$userRol->id}");
+            // Act
+            $response = $this->getJson("/api/v1/roles/{$this->rol->id}/userrol/{$userRol->id}");
 
-        // Assert
-        $response->assertOk();
-        $this->assertEquals($this->rol->id, $response->json('data.role_id'));
-    }
+            // Assert
+            $response->assertOk();
+            $this->assertEquals($this->rol->id, $response->json('data.role_id'));
+        }
 }

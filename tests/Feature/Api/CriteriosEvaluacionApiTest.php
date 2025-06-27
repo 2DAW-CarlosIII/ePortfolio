@@ -6,12 +6,12 @@ use App\Models\CriteriosEvaluacion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class CriteriosEvaluacionApiTest extends TestCase
+class CriteriosEvaluacionApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class CriteriosEvaluacionApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_criteriosEvaluacions()
+    public function test_can_list_criteriosEvaluacions()
     {
         // Arrange
         CriteriosEvaluacion::factory()->count(3)->create();
@@ -47,15 +46,14 @@ class CriteriosEvaluacionApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_criteriosEvaluacion()
+    public function test_can_create_criteriosEvaluacion()
     {
         // Arrange
         $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
 
         // Act
@@ -75,8 +73,7 @@ class CriteriosEvaluacionApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_criteriosEvaluacion()
+    public function test_can_show_criteriosEvaluacion()
     {
         // Arrange
         $criteriosEvaluacion = CriteriosEvaluacion::factory()->create();
@@ -91,16 +88,15 @@ class CriteriosEvaluacionApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_criteriosEvaluacion()
+    public function test_can_update_criteriosEvaluacion()
     {
         // Arrange
         $criteriosEvaluacion = CriteriosEvaluacion::factory()->create();
         $updateData = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
 
         // Act
@@ -113,14 +109,13 @@ class CriteriosEvaluacionApiTest extends TestCase
                  ]);
 
         $criteriosEvaluacion->refresh();
-        $this->assertEquals($updateData['codigo'], $criteriosEvaluacion->$field['name']));
-        $this->assertEquals($updateData['descripcion'], $criteriosEvaluacion->$field['name']));
-        $this->assertEquals($updateData['peso_porcentaje'], $criteriosEvaluacion->$field['name']));
-        $this->assertEquals($updateData['orden'], $criteriosEvaluacion->$field['name']));
+        $this->assertEquals($updateData['codigo'], $criteriosEvaluacion->$field['name']);
+        $this->assertEquals($updateData['descripcion'], $criteriosEvaluacion->$field['name']);
+        $this->assertEquals($updateData['peso_porcentaje'], $criteriosEvaluacion->$field['name']);
+        $this->assertEquals($updateData['orden'], $criteriosEvaluacion->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_criteriosEvaluacion()
+    public function test_can_delete_criteriosEvaluacion()
     {
         // Arrange
         $criteriosEvaluacion = CriteriosEvaluacion::factory()->create();
@@ -139,8 +134,7 @@ class CriteriosEvaluacionApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_criteriosEvaluacions()
+    public function test_can_search_criteriosEvaluacions()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -164,8 +158,7 @@ class CriteriosEvaluacionApiTest extends TestCase
         $this->assertEquals($criteriosEvaluacion1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_criteriosEvaluacions()
+    public function test_can_paginate_criteriosEvaluacions()
     {
         // Arrange
         CriteriosEvaluacion::factory()->count(25)->create();
@@ -186,104 +179,98 @@ class CriteriosEvaluacionApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_resultado_aprendizaje_id_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+        public function test_requires_resultado_aprendizaje_id_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['resultado_aprendizaje_id']);
+            unset($data['resultado_aprendizaje_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1criterios-evaluacion', $data);
+            // Act
+            $response = $this->postJson('/api/v1criterios-evaluacion', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('resultado_aprendizaje_id');
-    }
-    /** @test */
-    public function test_requires_codigo_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('resultado_aprendizaje_id');
+        }
+        public function test_requires_codigo_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['codigo']);
+            unset($data['codigo']);
 
-        // Act
-        $response = $this->postJson('/api/v1criterios-evaluacion', $data);
+            // Act
+            $response = $this->postJson('/api/v1criterios-evaluacion', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('codigo');
-    }
-    /** @test */
-    public function test_requires_descripcion_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('codigo');
+        }
+        public function test_requires_descripcion_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['descripcion']);
+            unset($data['descripcion']);
 
-        // Act
-        $response = $this->postJson('/api/v1criterios-evaluacion', $data);
+            // Act
+            $response = $this->postJson('/api/v1criterios-evaluacion', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('descripcion');
-    }
-    /** @test */
-    public function test_requires_peso_porcentaje_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('descripcion');
+        }
+        public function test_requires_peso_porcentaje_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['peso_porcentaje']);
+            unset($data['peso_porcentaje']);
 
-        // Act
-        $response = $this->postJson('/api/v1criterios-evaluacion', $data);
+            // Act
+            $response = $this->postJson('/api/v1criterios-evaluacion', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('peso_porcentaje');
-    }
-    /** @test */
-    public function test_requires_orden_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('peso_porcentaje');
+        }
+        public function test_requires_orden_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['orden']);
+            unset($data['orden']);
 
-        // Act
-        $response = $this->postJson('/api/v1criterios-evaluacion', $data);
+            // Act
+            $response = $this->postJson('/api/v1criterios-evaluacion', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('orden');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('orden');
+        }
 
-    /** @test */
-    public function requires_authentication()
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

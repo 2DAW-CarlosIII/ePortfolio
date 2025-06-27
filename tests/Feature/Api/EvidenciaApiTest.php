@@ -6,12 +6,12 @@ use App\Models\Evidencia;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class EvidenciaApiTest extends TestCase
+class EvidenciaApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class EvidenciaApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_evidencias()
+    public function test_can_list_evidencias()
     {
         // Arrange
         Evidencia::factory()->count(3)->create();
@@ -47,14 +46,13 @@ class EvidenciaApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_evidencia()
+    public function test_can_create_evidencia()
     {
         // Arrange
         $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
         ];
 
         // Act
@@ -74,8 +72,7 @@ class EvidenciaApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_evidencia()
+    public function test_can_show_evidencia()
     {
         // Arrange
         $evidencia = Evidencia::factory()->create();
@@ -90,15 +87,14 @@ class EvidenciaApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_evidencia()
+    public function test_can_update_evidencia()
     {
         // Arrange
         $evidencia = Evidencia::factory()->create();
         $updateData = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
         ];
 
         // Act
@@ -111,14 +107,13 @@ class EvidenciaApiTest extends TestCase
                  ]);
 
         $evidencia->refresh();
-        $this->assertEquals($updateData['url'], $evidencia->$field['name']));
-        $this->assertEquals($updateData['descripcion'], $evidencia->$field['name']));
-        $this->assertEquals($updateData['estado_validacion'], $evidencia->$field['name']));
-        $this->assertEquals($updateData['fecha_creacion'], $evidencia->$field['name']));
+        $this->assertEquals($updateData['url'], $evidencia->$field['name']);
+        $this->assertEquals($updateData['descripcion'], $evidencia->$field['name']);
+        $this->assertEquals($updateData['estado_validacion'], $evidencia->$field['name']);
+        $this->assertEquals($updateData['fecha_creacion'], $evidencia->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_evidencia()
+    public function test_can_delete_evidencia()
     {
         // Arrange
         $evidencia = Evidencia::factory()->create();
@@ -137,8 +132,7 @@ class EvidenciaApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_evidencias()
+    public function test_can_search_evidencias()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -162,8 +156,7 @@ class EvidenciaApiTest extends TestCase
         $this->assertEquals($evidencia1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_evidencias()
+    public function test_can_paginate_evidencias()
     {
         // Arrange
         Evidencia::factory()->count(25)->create();
@@ -184,151 +177,142 @@ class EvidenciaApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_estudiante_id_field()
-    {
-        // Arrange
-        $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
-        ];
-        unset($data['estudiante_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1evidencias', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('estudiante_id');
-    }
-    /** @test */
-    public function test_requires_criterio_evaluacion_id_field()
-    {
-        // Arrange
-        $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
-        ];
-        unset($data['criterio_evaluacion_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1evidencias', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('criterio_evaluacion_id');
-    }
-    /** @test */
-    public function test_requires_url_field()
-    {
-        // Arrange
-        $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
-        ];
-        unset($data['url']);
-
-        // Act
-        $response = $this->postJson('/api/v1evidencias', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('url');
-    }
-    /** @test */
-    public function test_requires_descripcion_field()
-    {
-        // Arrange
-        $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
-        ];
-        unset($data['descripcion']);
-
-        // Act
-        $response = $this->postJson('/api/v1evidencias', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('descripcion');
-    }
-    /** @test */
-    public function test_requires_estado_validacion_field()
-    {
-        // Arrange
-        $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
-        ];
-        unset($data['estado_validacion']);
-
-        // Act
-        $response = $this->postJson('/api/v1evidencias', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('estado_validacion');
-    }
-    /** @test */
-    public function test_requires_fecha_creacion_field()
-    {
-        // Arrange
-        $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
-        ];
-        unset($data['fecha_creacion']);
-
-        // Act
-        $response = $this->postJson('/api/v1evidencias', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('fecha_creacion');
-    }
-    /** @test */
-    public function test_estado_validacion_accepts_valid_values()
-    {
-        foreach (['pendiente', 'validada', 'rechazada'] as $value) {
+        public function test_requires_estudiante_id_field()
+        {
+            // Arrange
             $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
         ];
-            $data['estado_validacion'] = $value;
+            unset($data['estudiante_id']);
 
+            // Act
             $response = $this->postJson('/api/v1evidencias', $data);
-            $response->assertCreated();
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('estudiante_id');
         }
-    }
-
-    /** @test */
-    public function test_estado_validacion_rejects_invalid_values()
-    {
-        // Arrange
-        $data = [
-            'url' => \$this->faker->words(3, true),
-            'descripcion' => \$this->faker->paragraph(),
-            'estado_validacion' => \$this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+        public function test_requires_criterio_evaluacion_id_field()
+        {
+            // Arrange
+            $data = [
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
         ];
-        $data['estado_validacion'] = 'invalid_value';
+            unset($data['criterio_evaluacion_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1evidencias', $data);
+            // Act
+            $response = $this->postJson('/api/v1evidencias', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('estado_validacion');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('criterio_evaluacion_id');
+        }
+        public function test_requires_url_field()
+        {
+            // Arrange
+            $data = [
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+        ];
+            unset($data['url']);
 
-    /** @test */
-    public function requires_authentication()
+            // Act
+            $response = $this->postJson('/api/v1evidencias', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('url');
+        }
+        public function test_requires_descripcion_field()
+        {
+            // Arrange
+            $data = [
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+        ];
+            unset($data['descripcion']);
+
+            // Act
+            $response = $this->postJson('/api/v1evidencias', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('descripcion');
+        }
+        public function test_requires_estado_validacion_field()
+        {
+            // Arrange
+            $data = [
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+        ];
+            unset($data['estado_validacion']);
+
+            // Act
+            $response = $this->postJson('/api/v1evidencias', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('estado_validacion');
+        }
+        public function test_requires_fecha_creacion_field()
+        {
+            // Arrange
+            $data = [
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+        ];
+            unset($data['fecha_creacion']);
+
+            // Act
+            $response = $this->postJson('/api/v1evidencias', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('fecha_creacion');
+        }
+        public function test_estado_validacion_accepts_valid_values()
+        {
+            foreach (['pendiente', 'validada', 'rechazada'] as $value) {
+                $data = [
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+        ];
+                $data['estado_validacion'] = $value;
+
+                $response = $this->postJson('/api/v1evidencias', $data);
+                $response->assertCreated();
+            }
+        }
+
+        public function test_estado_validacion_rejects_invalid_values()
+        {
+            // Arrange
+            $data = [
+            'url' => $this->faker->words(3, true),
+            'descripcion' => $this->faker->paragraph(),
+            'estado_validacion' => $this->faker->randomElement(['pendiente', 'validada', 'rechazada'])
+        ];
+            $data['estado_validacion'] = 'invalid_value';
+
+            // Act
+            $response = $this->postJson('/api/v1evidencias', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('estado_validacion');
+        }
+
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

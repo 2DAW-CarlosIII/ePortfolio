@@ -6,12 +6,12 @@ use App\Models\ResultadoAprendizaje;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class ResultadoAprendizajeApiTest extends TestCase
+class ResultadoAprendizajeApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class ResultadoAprendizajeApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_resultadoAprendizajes()
+    public function test_can_list_resultadoAprendizajes()
     {
         // Arrange
         ResultadoAprendizaje::factory()->count(3)->create();
@@ -47,15 +46,14 @@ class ResultadoAprendizajeApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_resultadoAprendizaje()
+    public function test_can_create_resultadoAprendizaje()
     {
         // Arrange
         $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
 
         // Act
@@ -75,8 +73,7 @@ class ResultadoAprendizajeApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_resultadoAprendizaje()
+    public function test_can_show_resultadoAprendizaje()
     {
         // Arrange
         $resultadoAprendizaje = ResultadoAprendizaje::factory()->create();
@@ -91,16 +88,15 @@ class ResultadoAprendizajeApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_resultadoAprendizaje()
+    public function test_can_update_resultadoAprendizaje()
     {
         // Arrange
         $resultadoAprendizaje = ResultadoAprendizaje::factory()->create();
         $updateData = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
 
         // Act
@@ -113,14 +109,13 @@ class ResultadoAprendizajeApiTest extends TestCase
                  ]);
 
         $resultadoAprendizaje->refresh();
-        $this->assertEquals($updateData['codigo'], $resultadoAprendizaje->$field['name']));
-        $this->assertEquals($updateData['descripcion'], $resultadoAprendizaje->$field['name']));
-        $this->assertEquals($updateData['peso_porcentaje'], $resultadoAprendizaje->$field['name']));
-        $this->assertEquals($updateData['orden'], $resultadoAprendizaje->$field['name']));
+        $this->assertEquals($updateData['codigo'], $resultadoAprendizaje->$field['name']);
+        $this->assertEquals($updateData['descripcion'], $resultadoAprendizaje->$field['name']);
+        $this->assertEquals($updateData['peso_porcentaje'], $resultadoAprendizaje->$field['name']);
+        $this->assertEquals($updateData['orden'], $resultadoAprendizaje->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_resultadoAprendizaje()
+    public function test_can_delete_resultadoAprendizaje()
     {
         // Arrange
         $resultadoAprendizaje = ResultadoAprendizaje::factory()->create();
@@ -139,8 +134,7 @@ class ResultadoAprendizajeApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_resultadoAprendizajes()
+    public function test_can_search_resultadoAprendizajes()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -164,8 +158,7 @@ class ResultadoAprendizajeApiTest extends TestCase
         $this->assertEquals($resultadoAprendizaje1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_resultadoAprendizajes()
+    public function test_can_paginate_resultadoAprendizajes()
     {
         // Arrange
         ResultadoAprendizaje::factory()->count(25)->create();
@@ -186,104 +179,98 @@ class ResultadoAprendizajeApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_modulo_formativo_id_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+        public function test_requires_modulo_formativo_id_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['modulo_formativo_id']);
+            unset($data['modulo_formativo_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            // Act
+            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('modulo_formativo_id');
-    }
-    /** @test */
-    public function test_requires_codigo_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('modulo_formativo_id');
+        }
+        public function test_requires_codigo_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['codigo']);
+            unset($data['codigo']);
 
-        // Act
-        $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            // Act
+            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('codigo');
-    }
-    /** @test */
-    public function test_requires_descripcion_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('codigo');
+        }
+        public function test_requires_descripcion_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['descripcion']);
+            unset($data['descripcion']);
 
-        // Act
-        $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            // Act
+            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('descripcion');
-    }
-    /** @test */
-    public function test_requires_peso_porcentaje_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('descripcion');
+        }
+        public function test_requires_peso_porcentaje_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['peso_porcentaje']);
+            unset($data['peso_porcentaje']);
 
-        // Act
-        $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            // Act
+            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('peso_porcentaje');
-    }
-    /** @test */
-    public function test_requires_orden_field()
-    {
-        // Arrange
-        $data = [
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph(),
-            'peso_porcentaje' => \$this->faker->randomFloat(2, 0, 100),
-            'orden' => \$this->faker->numberBetween(1, 100)
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('peso_porcentaje');
+        }
+        public function test_requires_orden_field()
+        {
+            // Arrange
+            $data = [
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph(),
+            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
+            'orden' => $this->faker->numberBetween(1, 100)
         ];
-        unset($data['orden']);
+            unset($data['orden']);
 
-        // Act
-        $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            // Act
+            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('orden');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('orden');
+        }
 
-    /** @test */
-    public function requires_authentication()
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

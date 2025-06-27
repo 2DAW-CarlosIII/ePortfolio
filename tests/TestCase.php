@@ -14,7 +14,8 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         
         // Configuración común para todos los tests
-        $this->withoutExceptionHandling();
+        // Remover withoutExceptionHandling para production
+        // $this->withoutExceptionHandling();
     }
 
     /**
@@ -32,7 +33,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function createTestData(string $model, array $attributes = [], int $count = 1)
     {
-        $factory = app("App\Models\{$model}")::factory();
+        $factory = app("App\\Models\\{$model}")::factory();
         
         if ($count === 1) {
             return $factory->create($attributes);
@@ -65,4 +66,33 @@ abstract class TestCase extends BaseTestCase
             $response->assertJsonValidationErrors($field);
         }
     }
+
+    /**
+     * Ejecuta migraciones frescas para el test
+     */
+    protected function refreshTestDatabase(): void
+    {
+        if (! RefreshDatabaseState::$migrated) {
+            $this->artisan('migrate:fresh', [
+                '--drop-views' => true,
+                '--drop-types' => true,
+                '--seed' => false,
+            ]);
+
+            RefreshDatabaseState::$migrated = true;
+        }
+
+        $this->beginDatabaseTransaction();
+    }
+}
+
+/**
+ * Helper class para manejar el estado de la base de datos en tests
+ */
+class RefreshDatabaseState
+{
+    /**
+     * Indica si las migraciones ya se ejecutaron
+     */
+    public static bool $migrated = false;
 }

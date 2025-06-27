@@ -6,12 +6,12 @@ use App\Models\AsignacionRevision;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class AsignacionRevisionApiTest extends TestCase
+class AsignacionRevisionApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     protected Evidencia $parent;
@@ -26,8 +26,7 @@ class AsignacionRevisionApiTest extends TestCase
         $this->evidencia = Evidencia::factory()->create();
     }
 
-    /** @test */
-    public function can_list_asignacionRevisions()
+    public function test_can_list_asignacionRevisions()
     {
         // Arrange
         AsignacionRevision::factory()->count(3)->create(['evidencia_id' => $this->evidencia->id]);
@@ -48,14 +47,13 @@ class AsignacionRevisionApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_asignacionRevision()
+    public function test_can_create_asignacionRevision()
     {
         // Arrange
         $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
 
         // Act
@@ -74,8 +72,7 @@ class AsignacionRevisionApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_asignacionRevision()
+    public function test_can_show_asignacionRevision()
     {
         // Arrange
         $asignacionRevision = AsignacionRevision::factory()->create(['evidencia_id' => $this->evidencia->id]);
@@ -90,15 +87,14 @@ class AsignacionRevisionApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_asignacionRevision()
+    public function test_can_update_asignacionRevision()
     {
         // Arrange
         $asignacionRevision = AsignacionRevision::factory()->create(['evidencia_id' => $this->evidencia->id]);
         $updateData = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
 
         // Act
@@ -111,13 +107,12 @@ class AsignacionRevisionApiTest extends TestCase
                  ]);
 
         $asignacionRevision->refresh();
-        $this->assertEquals($updateData['fecha_asignacion'], $asignacionRevision->$field['name']));
-        $this->assertEquals($updateData['fecha_limite'], $asignacionRevision->$field['name']));
-        $this->assertEquals($updateData['estado'], $asignacionRevision->$field['name']));
+        $this->assertEquals($updateData['fecha_asignacion'], $asignacionRevision->$field['name']);
+        $this->assertEquals($updateData['fecha_limite'], $asignacionRevision->$field['name']);
+        $this->assertEquals($updateData['estado'], $asignacionRevision->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_asignacionRevision()
+    public function test_can_delete_asignacionRevision()
     {
         // Arrange
         $asignacionRevision = AsignacionRevision::factory()->create(['evidencia_id' => $this->evidencia->id]);
@@ -136,8 +131,7 @@ class AsignacionRevisionApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_asignacionRevisions()
+    public function test_can_search_asignacionRevisions()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -161,8 +155,7 @@ class AsignacionRevisionApiTest extends TestCase
         $this->assertEquals($asignacionRevision1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_asignacionRevisions()
+    public function test_can_paginate_asignacionRevisions()
     {
         // Arrange
         AsignacionRevision::factory()->count(25)->create(['evidencia_id' => $this->evidencia->id]);
@@ -183,151 +176,142 @@ class AsignacionRevisionApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_evidencia_id_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-        unset($data['evidencia_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('evidencia_id');
-    }
-    /** @test */
-    public function test_requires_revisor_id_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-        unset($data['revisor_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('revisor_id');
-    }
-    /** @test */
-    public function test_requires_asignado_por_id_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-        unset($data['asignado_por_id']);
-
-        // Act
-        $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('asignado_por_id');
-    }
-    /** @test */
-    public function test_requires_fecha_asignacion_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-        unset($data['fecha_asignacion']);
-
-        // Act
-        $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('fecha_asignacion');
-    }
-    /** @test */
-    public function test_requires_fecha_limite_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-        unset($data['fecha_limite']);
-
-        // Act
-        $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('fecha_limite');
-    }
-    /** @test */
-    public function test_requires_estado_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-        unset($data['estado']);
-
-        // Act
-        $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('estado');
-    }
-    /** @test */
-    public function test_estado_accepts_valid_values()
-    {
-        foreach (['pendiente', 'completada', 'expirada'] as $value) {
+        public function test_requires_evidencia_id_field()
+        {
+            // Arrange
             $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
-            $data['estado'] = $value;
+            unset($data['evidencia_id']);
 
+            // Act
             $response = $this->postJson('/api/v1asignaciones-revision', $data);
-            $response->assertCreated();
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('evidencia_id');
         }
-    }
-
-    /** @test */
-    public function test_estado_rejects_invalid_values()
-    {
-        // Arrange
-        $data = [
-            'fecha_asignacion' => \$this->faker->date(),
-            'fecha_limite' => \$this->faker->date(),
-            'estado' => \$this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+        public function test_requires_revisor_id_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
-        $data['estado'] = 'invalid_value';
+            unset($data['revisor_id']);
 
-        // Act
-        $response = $this->postJson('/api/v1asignaciones-revision', $data);
+            // Act
+            $response = $this->postJson('/api/v1asignaciones-revision', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('estado');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('revisor_id');
+        }
+        public function test_requires_asignado_por_id_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+        ];
+            unset($data['asignado_por_id']);
 
-    /** @test */
-    public function requires_authentication()
+            // Act
+            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('asignado_por_id');
+        }
+        public function test_requires_fecha_asignacion_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+        ];
+            unset($data['fecha_asignacion']);
+
+            // Act
+            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('fecha_asignacion');
+        }
+        public function test_requires_fecha_limite_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+        ];
+            unset($data['fecha_limite']);
+
+            // Act
+            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('fecha_limite');
+        }
+        public function test_requires_estado_field()
+        {
+            // Arrange
+            $data = [
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+        ];
+            unset($data['estado']);
+
+            // Act
+            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('estado');
+        }
+        public function test_estado_accepts_valid_values()
+        {
+            foreach (['pendiente', 'completada', 'expirada'] as $value) {
+                $data = [
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+        ];
+                $data['estado'] = $value;
+
+                $response = $this->postJson('/api/v1asignaciones-revision', $data);
+                $response->assertCreated();
+            }
+        }
+
+        public function test_estado_rejects_invalid_values()
+        {
+            // Arrange
+            $data = [
+            'fecha_asignacion' => $this->faker->date(),
+            'fecha_limite' => $this->faker->date(),
+            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+        ];
+            $data['estado'] = 'invalid_value';
+
+            // Act
+            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('estado');
+        }
+
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);
@@ -340,35 +324,33 @@ class AsignacionRevisionApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function cannot_access_asignacionRevision_from_wrong_parent()
-    {
-        // Arrange
-        $otherEvidencia = Evidencia::factory()->create();
-        $asignacionRevision = AsignacionRevision::factory()->create([
-            'evidencia_id' => $this->evidencia->id
-        ]);
+        public function test_cannot_access_asignacionRevision_from_wrong_parent()
+        {
+            // Arrange
+            $otherEvidencia = Evidencia::factory()->create();
+            $asignacionRevision = AsignacionRevision::factory()->create([
+                'evidencia_id' => $this->evidencia->id
+            ]);
 
-        // Act
-        $response = $this->getJson("/api/v1/evidencias/{$otherEvidencia->id}/asignacionrevision/{$asignacionRevision->id}");
+            // Act
+            $response = $this->getJson("/api/v1/evidencias/{$otherEvidencia->id}/asignacionrevision/{$asignacionRevision->id}");
 
-        // Assert
-        $response->assertNotFound();
-    }
+            // Assert
+            $response->assertNotFound();
+        }
 
-    /** @test */
-    public function asignacionRevision_belongs_to_correct_parent()
-    {
-        // Arrange
-        $asignacionRevision = AsignacionRevision::factory()->create([
-            'evidencia_id' => $this->evidencia->id
-        ]);
+        public function test_asignacionRevision_belongs_to_correct_parent()
+        {
+            // Arrange
+            $asignacionRevision = AsignacionRevision::factory()->create([
+                'evidencia_id' => $this->evidencia->id
+            ]);
 
-        // Act
-        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignacionrevision/{$asignacionRevision->id}");
+            // Act
+            $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignacionrevision/{$asignacionRevision->id}");
 
-        // Assert
-        $response->assertOk();
-        $this->assertEquals($this->evidencia->id, $response->json('data.evidencia_id'));
-    }
+            // Assert
+            $response->assertOk();
+            $this->assertEquals($this->evidencia->id, $response->json('data.evidencia_id'));
+        }
 }

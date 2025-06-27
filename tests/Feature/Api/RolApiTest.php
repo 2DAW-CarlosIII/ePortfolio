@@ -6,12 +6,12 @@ use App\Models\Rol;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class RolApiTest extends TestCase
+class RolApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class RolApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_rols()
+    public function test_can_list_rols()
     {
         // Arrange
         Rol::factory()->count(3)->create();
@@ -47,13 +46,12 @@ class RolApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_rol()
+    public function test_can_create_rol()
     {
         // Arrange
         $data = [
-            'name' => \$this->faker->words(3, true),
-            'description' => \$this->faker->paragraph()
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->paragraph()
         ];
 
         // Act
@@ -71,8 +69,7 @@ class RolApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_rol()
+    public function test_can_show_rol()
     {
         // Arrange
         $rol = Rol::factory()->create();
@@ -87,14 +84,13 @@ class RolApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_rol()
+    public function test_can_update_rol()
     {
         // Arrange
         $rol = Rol::factory()->create();
         $updateData = [
-            'name' => \$this->faker->words(3, true),
-            'description' => \$this->faker->paragraph()
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->paragraph()
         ];
 
         // Act
@@ -107,12 +103,11 @@ class RolApiTest extends TestCase
                  ]);
 
         $rol->refresh();
-        $this->assertEquals($updateData['name'], $rol->$field['name']));
-        $this->assertEquals($updateData['description'], $rol->$field['name']));
+        $this->assertEquals($updateData['name'], $rol->$field['name']);
+        $this->assertEquals($updateData['description'], $rol->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_rol()
+    public function test_can_delete_rol()
     {
         // Arrange
         $rol = Rol::factory()->create();
@@ -131,8 +126,7 @@ class RolApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_rols()
+    public function test_can_search_rols()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -156,8 +150,7 @@ class RolApiTest extends TestCase
         $this->assertEquals($rol1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_rols()
+    public function test_can_paginate_rols()
     {
         // Arrange
         Rol::factory()->count(25)->create();
@@ -178,61 +171,57 @@ class RolApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_name_field()
-    {
-        // Arrange
-        $data = [
-            'name' => \$this->faker->words(3, true),
-            'description' => \$this->faker->paragraph()
+        public function test_requires_name_field()
+        {
+            // Arrange
+            $data = [
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->paragraph()
         ];
-        unset($data['name']);
+            unset($data['name']);
 
-        // Act
-        $response = $this->postJson('/api/v1roles', $data);
+            // Act
+            $response = $this->postJson('/api/v1roles', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('name');
-    }
-    /** @test */
-    public function test_requires_description_field()
-    {
-        // Arrange
-        $data = [
-            'name' => \$this->faker->words(3, true),
-            'description' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('name');
+        }
+        public function test_requires_description_field()
+        {
+            // Arrange
+            $data = [
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->paragraph()
         ];
-        unset($data['description']);
+            unset($data['description']);
 
-        // Act
-        $response = $this->postJson('/api/v1roles', $data);
+            // Act
+            $response = $this->postJson('/api/v1roles', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('description');
-    }
-    /** @test */
-    public function test_name_must_be_unique()
-    {
-        // Arrange
-        $existing = Rol::factory()->create();
-        $data = [
-            'name' => \$this->faker->words(3, true),
-            'description' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('description');
+        }
+        public function test_name_must_be_unique()
+        {
+            // Arrange
+            $existing = Rol::factory()->create();
+            $data = [
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->paragraph()
         ];
-        $data['name'] = $existing->name;
+            $data['name'] = $existing->name;
 
-        // Act
-        $response = $this->postJson('/api/v1roles', $data);
+            // Act
+            $response = $this->postJson('/api/v1roles', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('name');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('name');
+        }
 
-    /** @test */
-    public function requires_authentication()
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);

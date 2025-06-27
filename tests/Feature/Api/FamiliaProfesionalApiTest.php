@@ -6,12 +6,12 @@ use App\Models\FamiliaProfesional;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class FamiliaProfesionalApiTest extends TestCase
+class FamiliaProfesionalApiTest extends FeatureTestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     protected User $user;
     
@@ -25,8 +25,7 @@ class FamiliaProfesionalApiTest extends TestCase
         
     }
 
-    /** @test */
-    public function can_list_familiaProfesionals()
+    public function test_can_list_familiaProfesionals()
     {
         // Arrange
         FamiliaProfesional::factory()->count(3)->create();
@@ -47,14 +46,13 @@ class FamiliaProfesionalApiTest extends TestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    /** @test */
-    public function can_create_familiaProfesional()
+    public function test_can_create_familiaProfesional()
     {
         // Arrange
         $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph()
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph()
         ];
 
         // Act
@@ -73,8 +71,7 @@ class FamiliaProfesionalApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_show_familiaProfesional()
+    public function test_can_show_familiaProfesional()
     {
         // Arrange
         $familiaProfesional = FamiliaProfesional::factory()->create();
@@ -89,15 +86,14 @@ class FamiliaProfesionalApiTest extends TestCase
                  ]);
     }
 
-    /** @test */
-    public function can_update_familiaProfesional()
+    public function test_can_update_familiaProfesional()
     {
         // Arrange
         $familiaProfesional = FamiliaProfesional::factory()->create();
         $updateData = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph()
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph()
         ];
 
         // Act
@@ -110,13 +106,12 @@ class FamiliaProfesionalApiTest extends TestCase
                  ]);
 
         $familiaProfesional->refresh();
-        $this->assertEquals($updateData['nombre'], $familiaProfesional->$field['name']));
-        $this->assertEquals($updateData['codigo'], $familiaProfesional->$field['name']));
-        $this->assertEquals($updateData['descripcion'], $familiaProfesional->$field['name']));
+        $this->assertEquals($updateData['nombre'], $familiaProfesional->$field['name']);
+        $this->assertEquals($updateData['codigo'], $familiaProfesional->$field['name']);
+        $this->assertEquals($updateData['descripcion'], $familiaProfesional->$field['name']);
     }
 
-    /** @test */
-    public function can_delete_familiaProfesional()
+    public function test_can_delete_familiaProfesional()
     {
         // Arrange
         $familiaProfesional = FamiliaProfesional::factory()->create();
@@ -135,8 +130,7 @@ class FamiliaProfesionalApiTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function can_search_familiaProfesionals()
+    public function test_can_search_familiaProfesionals()
     {
         // Arrange
         $searchTerm = 'test search';
@@ -160,8 +154,7 @@ class FamiliaProfesionalApiTest extends TestCase
         $this->assertEquals($familiaProfesional1->id, $data[0]['id']);
     }
 
-    /** @test */
-    public function can_paginate_familiaProfesionals()
+    public function test_can_paginate_familiaProfesionals()
     {
         // Arrange
         FamiliaProfesional::factory()->count(25)->create();
@@ -182,82 +175,77 @@ class FamiliaProfesionalApiTest extends TestCase
     }
 
 
-    /** @test */
-    public function test_requires_nombre_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph()
+        public function test_requires_nombre_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['nombre']);
+            unset($data['nombre']);
 
-        // Act
-        $response = $this->postJson('/api/v1familias-profesionales', $data);
+            // Act
+            $response = $this->postJson('/api/v1familias-profesionales', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('nombre');
-    }
-    /** @test */
-    public function test_requires_codigo_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('nombre');
+        }
+        public function test_requires_codigo_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['codigo']);
+            unset($data['codigo']);
 
-        // Act
-        $response = $this->postJson('/api/v1familias-profesionales', $data);
+            // Act
+            $response = $this->postJson('/api/v1familias-profesionales', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('codigo');
-    }
-    /** @test */
-    public function test_requires_descripcion_field()
-    {
-        // Arrange
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('codigo');
+        }
+        public function test_requires_descripcion_field()
+        {
+            // Arrange
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph()
         ];
-        unset($data['descripcion']);
+            unset($data['descripcion']);
 
-        // Act
-        $response = $this->postJson('/api/v1familias-profesionales', $data);
+            // Act
+            $response = $this->postJson('/api/v1familias-profesionales', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('descripcion');
-    }
-    /** @test */
-    public function test_codigo_must_be_unique()
-    {
-        // Arrange
-        $existing = FamiliaProfesional::factory()->create();
-        $data = [
-            'nombre' => \$this->faker->words(3, true),
-            'codigo' => \$this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => \$this->faker->paragraph()
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('descripcion');
+        }
+        public function test_codigo_must_be_unique()
+        {
+            // Arrange
+            $existing = FamiliaProfesional::factory()->create();
+            $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => $this->faker->paragraph()
         ];
-        $data['codigo'] = $existing->codigo;
+            $data['codigo'] = $existing->codigo;
 
-        // Act
-        $response = $this->postJson('/api/v1familias-profesionales', $data);
+            // Act
+            $response = $this->postJson('/api/v1familias-profesionales', $data);
 
-        // Assert
-        $response->assertUnprocessable()
-                 ->assertJsonValidationErrors('codigo');
-    }
+            // Assert
+            $response->assertUnprocessable()
+                     ->assertJsonValidationErrors('codigo');
+        }
 
-    /** @test */
-    public function requires_authentication()
+    public function test_requires_authentication()
     {
         // Arrange
         Sanctum::actingAs(null);
