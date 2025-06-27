@@ -12,7 +12,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Configuración común para todos los tests
         // Remover withoutExceptionHandling para production
         // $this->withoutExceptionHandling();
@@ -34,11 +34,11 @@ abstract class TestCase extends BaseTestCase
     protected function createTestData(string $model, array $attributes = [], int $count = 1)
     {
         $factory = app("App\\Models\\{$model}")::factory();
-        
+
         if ($count === 1) {
             return $factory->create($attributes);
         }
-        
+
         return $factory->count($count)->create($attributes);
     }
 
@@ -61,7 +61,7 @@ abstract class TestCase extends BaseTestCase
     protected function assertValidationFailed($response, array $fields)
     {
         $response->assertUnprocessable();
-        
+
         foreach ($fields as $field) {
             $response->assertJsonValidationErrors($field);
         }
@@ -70,7 +70,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Ejecuta migraciones frescas para el test
      */
-    protected function refreshTestDatabase(): void
+    protected function refreshTestDatabase()
     {
         if (! RefreshDatabaseState::$migrated) {
             $this->artisan('migrate:fresh', [

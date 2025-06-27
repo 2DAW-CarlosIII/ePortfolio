@@ -27,11 +27,11 @@ class AsignacionRevision extends Model
     {
         return $this->belongsTo(Evidencia::class, 'evidencia_id');
     }
-    public function user()
+    public function revisor()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function user()
+    public function asignador()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
