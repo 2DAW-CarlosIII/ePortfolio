@@ -15,8 +15,8 @@ class EvaluacionParFactory extends Factory
     public function definition(): array
     {
         return [
-            'asignacion_revision_id' => 1,
-            'revisor_id' => 1,
+            'asignacion_revision_id' => \App\Models\AsignacionRevision::factory(),
+            'revisor_id' => \App\Models\User::factory(),
             'puntuacion_sugerida' => fake()->randomFloat(2, 0, 10),
             'recomendacion' => fake()->randomElement(['aprobar', 'mejorar', 'rechazar']),
             'justificacion' => fake()->paragraph(),

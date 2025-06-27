@@ -15,13 +15,13 @@ class ModuloFormativoFactory extends Factory
     public function definition(): array
     {
         return [
-            'ciclo_formativo_id' => 1,
+            'ciclo_formativo_id' => \App\Models\CicloFormativo::factory(),
             'nombre' => fake()->words(3, true),
             'codigo' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'horas_totales' => fake()->numberBetween(20, 200),
             'curso_escolar' => fake()->sentence(3),
             'centro' => fake()->sentence(3),
-            'docente_id' => 1,
+            'docente_id' => \App\Models\User::factory(),
             'descripcion' => fake()->paragraph()
         ];
     }

@@ -15,7 +15,7 @@ class ResultadoAprendizajeFactory extends Factory
     public function definition(): array
     {
         return [
-            'modulo_formativo_id' => 1,
+            'modulo_formativo_id' => \App\Models\ModuloFormativo::factory(),
             'codigo' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'descripcion' => fake()->paragraph(),
             'peso_porcentaje' => fake()->randomFloat(2, 0, 100),

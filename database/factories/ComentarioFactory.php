@@ -15,8 +15,8 @@ class ComentarioFactory extends Factory
     public function definition(): array
     {
         return [
-            'evidencia_id' => 1,
-            'docente_id' => 1,
+            'evidencia_id' => \App\Models\Evidencia::factory(),
+            'docente_id' => \App\Models\User::factory(),
             'contenido' => fake()->paragraph(),
             'tipo' => fake()->randomElement(['feedback', 'mejora', 'felicitacion'])
         ];

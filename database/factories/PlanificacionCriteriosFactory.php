@@ -15,8 +15,8 @@ class PlanificacionCriteriosFactory extends Factory
     public function definition(): array
     {
         return [
-            'criterio_evaluacion_id' => 1,
-            'modulo_formativo_id' => 1,
+            'criterio_evaluacion_id' => \App\Models\CriteriosEvaluacion::factory(),
+            'modulo_formativo_id' => \App\Models\ModuloFormativo::factory(),
             'fecha_apertura' => fake()->date(),
             'fecha_cierre' => fake()->date(),
             'activo' => fake()->boolean(),

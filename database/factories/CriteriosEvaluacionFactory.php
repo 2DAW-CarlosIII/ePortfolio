@@ -15,7 +15,7 @@ class CriteriosEvaluacionFactory extends Factory
     public function definition(): array
     {
         return [
-            'resultado_aprendizaje_id' => 1,
+            'resultado_aprendizaje_id' => \App\Models\ResultadoAprendizaje::factory(),
             'codigo' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'descripcion' => fake()->paragraph(),
             'peso_porcentaje' => fake()->randomFloat(2, 0, 100),

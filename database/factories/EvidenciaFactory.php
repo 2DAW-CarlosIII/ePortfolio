@@ -15,8 +15,8 @@ class EvidenciaFactory extends Factory
     public function definition(): array
     {
         return [
-            'estudiante_id' => 1,
-            'criterio_evaluacion_id' => 1,
+            'estudiante_id' => \App\Models\User::factory(),
+            'criterio_evaluacion_id' => \App\Models\CriteriosEvaluacion::factory(),
             'url' => fake()->sentence(3),
             'descripcion' => fake()->paragraph(),
             'estado_validacion' => fake()->randomElement(['pendiente', 'validada', 'rechazada']),

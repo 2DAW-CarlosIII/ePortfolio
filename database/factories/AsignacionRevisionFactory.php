@@ -15,9 +15,9 @@ class AsignacionRevisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'evidencia_id' => 1,
-            'revisor_id' => 1,
-            'asignado_por_id' => 1,
+            'evidencia_id' => \App\Models\Evidencia::factory(),
+            'revisor_id' => \App\Models\User::factory(),
+            'asignado_por_id' => \App\Models\User::factory(),
             'fecha_asignacion' => fake()->date(),
             'fecha_limite' => fake()->date(),
             'estado' => fake()->randomElement(['pendiente', 'completada', 'expirada'])
