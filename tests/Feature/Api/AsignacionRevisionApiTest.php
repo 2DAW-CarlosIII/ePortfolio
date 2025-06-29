@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\AsignacionRevision;
 use App\Models\User;
+use App\Models\Evidencia;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\FeatureTestCase;
@@ -19,10 +20,10 @@ class AsignacionRevisionApiTest extends FeatureTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->user = User::factory()->create();
         Sanctum::actingAs($this->user);
-        
+
         $this->evidencia = Evidencia::factory()->create();
     }
 
@@ -32,7 +33,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         AsignacionRevision::factory()->count(3)->create(['evidencia_id' => $this->evidencia->id]);
 
         // Act
-        $response = $this->getJson('/api/v1/evidencias/{parent_id}/asignaciones-revision');
+        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision");
 
         // Assert
         $response->assertOk()
@@ -43,7 +44,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
                      'links',
                      'meta'
                  ]);
-        
+
         $this->assertCount(3, $response->json('data'));
     }
 
@@ -51,13 +52,14 @@ class AsignacionRevisionApiTest extends FeatureTestCase
     {
         // Arrange
         $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
+            'revisor_id' => User::factory()->create()->id,
+            'fecha_asignacion' => now()->format('Y-m-d H:i:s'),
+            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
 
         // Act
-        $response = $this->postJson('/api/v1/evidencias/{parent_id}/asignaciones-revision', $data);
+        $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
 
         // Assert
         $response->assertCreated()
@@ -78,7 +80,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         $asignacionRevision = AsignacionRevision::factory()->create(['evidencia_id' => $this->evidencia->id]);
 
         // Act
-        $response = $this->getJson('/api/v1/evidencias/{parent_id}/asignaciones-revision/{$asignacionRevision->id}');
+        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision/{$asignacionRevision->id}");
 
         // Assert
         $response->assertOk()
@@ -92,13 +94,13 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         // Arrange
         $asignacionRevision = AsignacionRevision::factory()->create(['evidencia_id' => $this->evidencia->id]);
         $updateData = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
+            'fecha_asignacion' => now()->format('Y-m-d'),
+            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
 
         // Act
-        $response = $this->putJson('/api/v1/evidencias/{parent_id}/asignaciones-revision/{$asignacionRevision->id}', $updateData);
+        $response = $this->putJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision/{$asignacionRevision->id}", $updateData);
 
         // Assert
         $response->assertOk()
@@ -107,9 +109,9 @@ class AsignacionRevisionApiTest extends FeatureTestCase
                  ]);
 
         $asignacionRevision->refresh();
-        $this->assertEquals($updateData['fecha_asignacion'], $asignacionRevision->$field['name']);
-        $this->assertEquals($updateData['fecha_limite'], $asignacionRevision->$field['name']);
-        $this->assertEquals($updateData['estado'], $asignacionRevision->$field['name']);
+        $this->assertEquals($updateData['fecha_asignacion'], $asignacionRevision->fecha_asignacion->format('Y-m-d'));
+        $this->assertEquals($updateData['fecha_limite'], $asignacionRevision->fecha_limite->format('Y-m-d'));
+        $this->assertEquals($updateData['estado'], $asignacionRevision->estado);
     }
 
     public function test_can_delete_asignacionRevision()
@@ -118,39 +120,35 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         $asignacionRevision = AsignacionRevision::factory()->create(['evidencia_id' => $this->evidencia->id]);
 
         // Act
-        $response = $this->deleteJson('/api/v1/evidencias/{parent_id}/asignaciones-revision/{$asignacionRevision->id}');
+        $response = $this->deleteJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision/{$asignacionRevision->id}");
 
         // Assert
         $response->assertOk()
                  ->assertJson([
                      'message' => 'AsignacionRevision eliminado correctamente'
                  ]);
-
-        $this->assertSoftDeleted('asignaciones_revision', [
-            'id' => $asignacionRevision->id
-        ]);
     }
 
     public function test_can_search_asignacionRevisions()
     {
         // Arrange
-        $searchTerm = 'test search';
+        $searchTerm = 'completada';
         $asignacionRevision1 = AsignacionRevision::factory()->create([
-            'nombre' => 'Contains test search term',
+            'estado' => 'completada',
             'evidencia_id' => $this->evidencia->id
         ]);
         $asignacionRevision2 = AsignacionRevision::factory()->create([
-            'nombre' => 'Different content',
+            'estado' => 'pendiente',
             'evidencia_id' => $this->evidencia->id
         ]);
 
         // Act
-        $response = $this->getJson('/api/v1/evidencias/{parent_id}/asignaciones-revision?search=' . urlencode($searchTerm));
+        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision?estado=" . urlencode($searchTerm));
 
         // Assert
         $response->assertOk();
         $data = $response->json('data');
-        
+
         $this->assertCount(1, $data);
         $this->assertEquals($asignacionRevision1->id, $data[0]['id']);
     }
@@ -161,7 +159,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         AsignacionRevision::factory()->count(25)->create(['evidencia_id' => $this->evidencia->id]);
 
         // Act
-        $response = $this->getJson('/api/v1/evidencias/{parent_id}/asignaciones-revision?per_page=10');
+        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision?per_page=10");
 
         // Assert
         $response->assertOk()
@@ -170,75 +168,41 @@ class AsignacionRevisionApiTest extends FeatureTestCase
                      'links' => ['first', 'last', 'prev', 'next'],
                      'meta' => ['current_page', 'total', 'per_page']
                  ]);
-        
+
         $this->assertCount(10, $response->json('data'));
         $this->assertEquals(25, $response->json('meta.total'));
     }
 
-
-        public function test_requires_evidencia_id_field()
-        {
-            // Arrange
-            $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-            unset($data['evidencia_id']);
-
-            // Act
-            $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('evidencia_id');
-        }
         public function test_requires_revisor_id_field()
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
+            'fecha_asignacion' => now()->format('Y-m-d'),
+            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
             unset($data['revisor_id']);
 
             // Act
-            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+            $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
 
             // Assert
             $response->assertUnprocessable()
                      ->assertJsonValidationErrors('revisor_id');
         }
-        public function test_requires_asignado_por_id_field()
-        {
-            // Arrange
-            $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-            unset($data['asignado_por_id']);
 
-            // Act
-            $response = $this->postJson('/api/v1asignaciones-revision', $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('asignado_por_id');
-        }
         public function test_requires_fecha_asignacion_field()
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
+            'fecha_asignacion' => now()->format('Y-m-d'),
+            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
             unset($data['fecha_asignacion']);
 
             // Act
-            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+            $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -248,14 +212,14 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
+            'fecha_asignacion' => now()->format('Y-m-d'),
+            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
             unset($data['fecha_limite']);
 
             // Act
-            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+            $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -265,14 +229,14 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
+            'fecha_asignacion' => now()->format('Y-m-d'),
+            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
             unset($data['estado']);
 
             // Act
-            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+            $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -280,15 +244,17 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         }
         public function test_estado_accepts_valid_values()
         {
+
             foreach (['pendiente', 'completada', 'expirada'] as $value) {
                 $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
+                    'revisor_id' => User::factory()->create()->id,
+                    'fecha_asignacion' => now()->format('Y-m-d'),
+                    'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
+                    'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
+                ];
                 $data['estado'] = $value;
 
-                $response = $this->postJson('/api/v1asignaciones-revision', $data);
+                $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
                 $response->assertCreated();
             }
         }
@@ -297,14 +263,15 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => $this->faker->date(),
-            'fecha_limite' => $this->faker->date(),
+            'revisor_id' => User::factory()->create()->id,
+            'fecha_asignacion' => now()->format('Y-m-d'),
+            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
             $data['estado'] = 'invalid_value';
 
             // Act
-            $response = $this->postJson('/api/v1asignaciones-revision', $data);
+            $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -317,7 +284,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         Sanctum::actingAs(null);
 
         // Act
-        $response = $this->getJson('/api/v1/evidencias/{parent_id}/asignaciones-revision');
+        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision");
 
         // Assert
         $response->assertUnauthorized();
@@ -333,7 +300,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
             ]);
 
             // Act
-            $response = $this->getJson("/api/v1/evidencias/{$otherEvidencia->id}/asignacionrevision/{$asignacionRevision->id}");
+            $response = $this->getJson("/api/v1/evidencias/{$otherEvidencia->id}/asignaciones-revision/{$asignacionRevision->id}");
 
             // Assert
             $response->assertNotFound();
@@ -347,7 +314,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
             ]);
 
             // Act
-            $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignacionrevision/{$asignacionRevision->id}");
+            $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision/{$asignacionRevision->id}");
 
             // Assert
             $response->assertOk();

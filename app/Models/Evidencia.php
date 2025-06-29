@@ -38,7 +38,7 @@ class Evidencia extends Model
     {
         return $this->hasMany(Comentario::class, 'evidencia_id');
     }
-    public function asignaciones_revision()
+    public function asignacionRevision()
     {
         return $this->hasMany(AsignacionRevision::class, 'evidencia_id');
     }

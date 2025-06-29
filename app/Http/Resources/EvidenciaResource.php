@@ -34,15 +34,15 @@ class EvidenciaResource extends JsonResource
             'comentarios_count' => $this->whenCounted('comentarios'),
             'asignaciones_revisions' => AsignacionRevisionResource::collection($this->whenLoaded('asignaciones_revisions')),
             'asignaciones_revisions_count' => $this->whenCounted('asignaciones_revisions'),
-            'estado_badge' => [,
-                'text' => match($this->estado_validacion) {,
-                    'validada' => 'Validada',,
-                    'rechazada' => 'Rechazada',,
+            'estado_badge' => [
+                'text' => match($this->estado_validacion) {
+                    'validada' => 'Validada',
+                    'rechazada' => 'Rechazada',
                     default => 'Pendiente',
-                },,
-                'color' => match($this->estado_validacion) {,
-                    'validada' => 'green',,
-                    'rechazada' => 'red',,
+                },
+                'color' => match($this->estado_validacion) {
+                    'validada' => 'green',
+                    'rechazada' => 'red',
                     default => 'yellow',
                 },
             ],

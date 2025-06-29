@@ -149,6 +149,23 @@ use Illuminate\Http\Request;
  *     summary="Delete a specific familiaprofesional",
  *     description="Delete a specific familiaprofesional by ID",
  *     security={"sanctum":{}},
+ *    @OA\Parameter(
+ *        name="id",
+ *       in="path",
+ *      description="ID of the familiaprofesional",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully"
+ * *   ),
+ *   @OA\Response(response=404, description="Resource not found"),
+ *  @OA\Response(response=401, description="Unauthenticated"),
+ * @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
 class FamiliaProfesionalController extends Controller
 {
     public function index(Request $request)
@@ -167,66 +184,66 @@ class FamiliaProfesionalController extends Controller
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $familiaProfesionals = $query->paginate($perPage);
-        
+
         return FamiliaProfesionalResource::collection($familiaProfesionals);
     }
 
     public function store(StoreFamiliaProfesionalRequest $request)
     {
         $familiaProfesional = FamiliaProfesional::create($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $familiaProfesional->load($this->getEagerLoadRelations());
-        
+
         return new FamiliaProfesionalResource($familiaProfesional);
     }
 
     public function show(FamiliaProfesional $familiaProfesional)
     {
-        
+
         // Cargar relaciones
         $familiaProfesional->load($this->getEagerLoadRelations());
-        
+
         return new FamiliaProfesionalResource($familiaProfesional);
     }
 
     public function update(UpdateFamiliaProfesionalRequest $request, FamiliaProfesional $familiaProfesional)
     {
-        
+
         $familiaProfesional->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $familiaProfesional->load($this->getEagerLoadRelations());
-        
+
         return new FamiliaProfesionalResource($familiaProfesional);
     }
 
     public function destroy(FamiliaProfesional $familiaProfesional)
     {
-        
+
         $familiaProfesional->delete();
-        
+
         return response()->json([
             'message' => 'FamiliaProfesional eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

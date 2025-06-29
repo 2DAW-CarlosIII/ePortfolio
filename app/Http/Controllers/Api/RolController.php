@@ -149,6 +149,26 @@ use Illuminate\Http\Request;
  *     summary="Delete a specific rol",
  *     description="Delete a specific rol by ID",
  *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *        name="id",
+ *        in="path",
+ *        description="ID of the rol",
+ *        required=true,
+ *        @OA\Schema(type="integer")
+ *    ),
+ *    @OA\Response(
+ *        response=200,
+ *        description="Resource deleted successfully",
+ *        @OA\JsonContent(
+ *            @OA\Property(property="message", type="string", example="Rol eliminado correctamente")
+ *       )
+ *    ),
+ *    @OA\Response(response=404, description="Resource not found"),
+ *    @OA\Response(response=401, description="Unauthenticated"),
+ *    @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
 class RolController extends Controller
 {
     public function index(Request $request)
@@ -160,66 +180,66 @@ class RolController extends Controller
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $rols = $query->paginate($perPage);
-        
+
         return RolResource::collection($rols);
     }
 
     public function store(StoreRolRequest $request)
     {
         $rol = Rol::create($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $rol->load($this->getEagerLoadRelations());
-        
+
         return new RolResource($rol);
     }
 
     public function show(Rol $rol)
     {
-        
+
         // Cargar relaciones
         $rol->load($this->getEagerLoadRelations());
-        
+
         return new RolResource($rol);
     }
 
     public function update(UpdateRolRequest $request, Rol $rol)
     {
-        
+
         $rol->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $rol->load($this->getEagerLoadRelations());
-        
+
         return new RolResource($rol);
     }
 
     public function destroy(Rol $rol)
     {
-        
+
         $rol->delete();
-        
+
         return response()->json([
             'message' => 'Rol eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

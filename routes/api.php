@@ -29,6 +29,8 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('roles', App\Http\Controllers\Api\RolController::class);
 
     // Nested API Resource routes
+    Route::apiResource('evidencias.asignaciones-revision', App\Http\Controllers\Api\AsignacionRevisionController::class)
+        ->parameters(['asignaciones-revision' => 'asignacionRevision']);
     Route::apiResource('familias-profesionales.ciclos-formativos', App\Http\Controllers\Api\CicloFormativoController::class)->parameters(['familias-profesionales' => 'familias_profesionale']);
     Route::apiResource('users.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters(['users' => 'user']);
     Route::apiResource('modulos-formativos.resultados-aprendizaje', App\Http\Controllers\Api\ResultadoAprendizajeController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);

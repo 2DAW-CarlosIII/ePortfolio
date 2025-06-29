@@ -182,9 +182,9 @@ use App\Models\Evidencia;
  *         name="parent_id",
  *         in="path",
  *         description="ID
- 
- 
- 
+
+
+
   *         description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="AsignacionRevision eliminado correctamente")
@@ -200,43 +200,45 @@ class AsignacionRevisionController extends Controller
 {
     public function index(Request $request, Evidencia $evidencia)
     {
-        $query = $evidencia->asignacionRevisions();
+        $query = $evidencia->asignacionRevision();
 
 
         // Filtros adicionales
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $asignacionRevisions = $query->paginate($perPage);
-        
+
         return AsignacionRevisionResource::collection($asignacionRevisions);
     }
 
     public function store(StoreAsignacionRevisionRequest $request, Evidencia $evidencia)
     {
         $data = $request->validated();
-        $data['evidencia_id'] = $evidencia->id;
-        
+
+        $data['evidencia_id'] = $evidencia->id; // de la ruta anidada
+        $data['asignado_por_id'] = auth()->id(); // usuario autenticado
+
         $asignacionRevision = AsignacionRevision::create($data);
-        
+
         // Cargar relaciones para la respuesta
         $asignacionRevision->load($this->getEagerLoadRelations());
-        
+
         return new AsignacionRevisionResource($asignacionRevision);
     }
 
@@ -246,10 +248,10 @@ class AsignacionRevisionController extends Controller
         if ($asignacionRevision->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         // Cargar relaciones
         $asignacionRevision->load($this->getEagerLoadRelations());
-        
+
         return new AsignacionRevisionResource($asignacionRevision);
     }
 
@@ -259,12 +261,12 @@ class AsignacionRevisionController extends Controller
         if ($asignacionRevision->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         $asignacionRevision->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $asignacionRevision->load($this->getEagerLoadRelations());
-        
+
         return new AsignacionRevisionResource($asignacionRevision);
     }
 
@@ -274,14 +276,14 @@ class AsignacionRevisionController extends Controller
         if ($asignacionRevision->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         $asignacionRevision->delete();
-        
+
         return response()->json([
             'message' => 'AsignacionRevision eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

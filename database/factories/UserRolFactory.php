@@ -16,7 +16,7 @@ class UserRolFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::factory(),
-            'role_id' => \App\Models\Role::factory(),
+            'role_id' => \App\Models\Rol::factory(),
             'modulo_formativo_id' => \App\Models\ModuloFormativo::factory()
         ];
     }

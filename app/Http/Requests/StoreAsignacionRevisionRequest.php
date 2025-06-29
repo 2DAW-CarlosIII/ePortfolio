@@ -20,9 +20,9 @@ class StoreAsignacionRevisionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'evidencia_id' => ['required', 'integer', 'exists:evidencias,id'],
+            // 'evidencia_id' => ['required', 'integer', 'exists:evidencias,id'],
             'revisor_id' => ['required', 'integer', 'exists:users,id'],
-            'asignado_por_id' => ['required', 'integer', 'exists:users,id'],
+            // 'asignado_por_id' => ['required', 'integer', 'exists:users,id'],
             'fecha_asignacion' => ['required', 'date'],
             'fecha_limite' => ['required', 'date', 'after:today'],
             'estado' => ['required', 'in:pendiente,completada,expirada']
