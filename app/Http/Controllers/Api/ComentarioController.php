@@ -20,7 +20,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/comentarios",
+ *     path="/evidencias/{parent_id}/comentarios",
  *     tags={"Comentario"},
  *     summary="List all comentarios",
  *     description="Retrieve a paginated list of comentarios",
@@ -69,7 +69,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Post(
- *     path="/users/{parent_id}/comentarios",
+ *     path="/evidencias/{parent_id}/comentarios",
  *     tags={"Comentario"},
  *     summary="Create a new comentario",
  *     description="Create a new comentario resource",
@@ -100,7 +100,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/comentarios/{id}",
+ *     path="/evidencias/{parent_id}/comentarios/{id}",
  *     tags={"Comentario"},
  *     summary="Show a specific comentario",
  *     description="Retrieve a specific comentario by ID",
@@ -134,7 +134,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Put(
- *     path="/users/{parent_id}/comentarios/{id}",
+ *     path="/evidencias/{parent_id}/comentarios/{id}",
  *     tags={"Comentario"},
  *     summary="Update a specific comentario",
  *     description="Update a specific comentario by ID",
@@ -173,7 +173,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Delete(
- *     path="/users/{parent_id}/comentarios/{id}",
+ *     path="/evidencias/{parent_id}/comentarios/{id}",
  *     tags={"Comentario"},
  *     summary="Delete a specific comentario",
  *     description="Delete a specific comentario by ID",
@@ -181,11 +181,20 @@ use App\Models\Evidencia;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
- 
- 
- 
-  *         description="Resource deleted successfully",
+ *         description="ID of the parent evidencias",
+ *         required=true,
+ *         @OA\\Schema(type="integer")
+ *     ),
+ *     @OA\\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the {model_name}",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *         description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="Comentario eliminado correctamente")
  *         )
@@ -200,43 +209,52 @@ class ComentarioController extends Controller
 {
     public function index(Request $request, Evidencia $evidencia)
     {
-        $query = $evidencia->comentarios();
+        $query = $evidencia->comentarios()->newQuery();
 
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('contenido', 'like', "%$search%");
+            });
+        }
 
         // Filtros adicionales
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $comentarios = $query->paginate($perPage);
-        
+
         return ComentarioResource::collection($comentarios);
     }
 
     public function store(StoreComentarioRequest $request, Evidencia $evidencia)
     {
         $data = $request->validated();
-        $data['evidencia_id'] = $evidencia->id;
-        
+
+        $data['evidencia_id'] = $evidencia->id; // de la ruta anidada
+        $data['docente_id'] = auth()->id(); // usuario autenticado
+
         $comentario = Comentario::create($data);
-        
+
         // Cargar relaciones para la respuesta
         $comentario->load($this->getEagerLoadRelations());
-        
+
         return new ComentarioResource($comentario);
     }
 
@@ -246,10 +264,10 @@ class ComentarioController extends Controller
         if ($comentario->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         // Cargar relaciones
         $comentario->load($this->getEagerLoadRelations());
-        
+
         return new ComentarioResource($comentario);
     }
 
@@ -259,12 +277,12 @@ class ComentarioController extends Controller
         if ($comentario->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         $comentario->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $comentario->load($this->getEagerLoadRelations());
-        
+
         return new ComentarioResource($comentario);
     }
 
@@ -274,14 +292,14 @@ class ComentarioController extends Controller
         if ($comentario->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         $comentario->delete();
-        
+
         return response()->json([
             'message' => 'Comentario eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

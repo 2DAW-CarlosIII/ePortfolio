@@ -20,8 +20,6 @@ class UpdateComentarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'evidencia_id' => ['sometimes', 'required', 'integer', 'exists:evidencias,id'],
-            'docente_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
             'contenido' => ['sometimes', 'required', 'string', 'max:65535'],
             'tipo' => ['sometimes', 'required', 'in:feedback,mejora,felicitacion']
         ];

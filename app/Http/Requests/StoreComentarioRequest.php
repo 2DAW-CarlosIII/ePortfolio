@@ -20,8 +20,6 @@ class StoreComentarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'evidencia_id' => ['required', 'integer', 'exists:evidencias,id'],
-            'docente_id' => ['required', 'integer', 'exists:users,id'],
             'contenido' => ['required', 'string', 'max:65535'],
             'tipo' => ['required', 'in:feedback,mejora,felicitacion']
         ];

@@ -20,7 +20,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/asignaciones-revision",
+ *     path="/evidencias/{parent_id}/asignaciones-revision",
  *     tags={"AsignacionRevision"},
  *     summary="List all asignacionrevisions",
  *     description="Retrieve a paginated list of asignacionrevisions",
@@ -69,7 +69,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Post(
- *     path="/users/{parent_id}/asignaciones-revision",
+ *     path="/evidencias/{parent_id}/asignaciones-revision",
  *     tags={"AsignacionRevision"},
  *     summary="Create a new asignacionrevision",
  *     description="Create a new asignacionrevision resource",
@@ -100,7 +100,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/asignaciones-revision/{id}",
+ *     path="/evidencias/{parent_id}/asignaciones-revision/{id}",
  *     tags={"AsignacionRevision"},
  *     summary="Show a specific asignacionrevision",
  *     description="Retrieve a specific asignacionrevision by ID",
@@ -134,7 +134,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Put(
- *     path="/users/{parent_id}/asignaciones-revision/{id}",
+ *     path="/evidencias/{parent_id}/asignaciones-revision/{id}",
  *     tags={"AsignacionRevision"},
  *     summary="Update a specific asignacionrevision",
  *     description="Update a specific asignacionrevision by ID",
@@ -173,7 +173,7 @@ use App\Models\Evidencia;
 
 /**
  * @OA\Delete(
- *     path="/users/{parent_id}/asignaciones-revision/{id}",
+ *     path="/evidencias/{parent_id}/asignaciones-revision/{id}",
  *     tags={"AsignacionRevision"},
  *     summary="Delete a specific asignacionrevision",
  *     description="Delete a specific asignacionrevision by ID",
@@ -181,11 +181,20 @@ use App\Models\Evidencia;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
-
-
-
-  *         description="Resource deleted successfully",
+ *         description="ID of the parent evidencias",
+ *         required=true,
+ *         @OA\\Schema(type="integer")
+ *     ),
+ *     @OA\\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the {model_name}",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *         description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="AsignacionRevision eliminado correctamente")
  *         )

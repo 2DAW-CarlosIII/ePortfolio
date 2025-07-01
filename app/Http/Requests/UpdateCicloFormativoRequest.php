@@ -20,7 +20,6 @@ class UpdateCicloFormativoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'familia_profesional_id' => ['sometimes', 'required', 'integer', 'exists:familias_profesionales,id'],
             'nombre' => ['sometimes', 'required', 'string', 'max:255'],
             'codigo' => ['sometimes', 'required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i'],
             'grado' => ['sometimes', 'required', 'in:basico,medio,superior'],

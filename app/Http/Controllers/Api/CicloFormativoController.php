@@ -7,6 +7,7 @@ use App\Models\CicloFormativo;
 use App\Http\Requests\StoreCicloFormativoRequest;
 use App\Http\Requests\UpdateCicloFormativoRequest;
 use App\Http\Resources\CicloFormativoResource;
+use App\Models\FamiliaProfesional;
 use Illuminate\Http\Request;
 
 
@@ -180,11 +181,20 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
- 
- 
- 
-  *         description="Resource deleted successfully",
+ *         description="ID of the parent familias-profesionales",
+ *         required=true,
+ *         @OA\\Schema(type="integer")
+ *     ),
+ *     @OA\\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the {model_name}",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *         description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="CicloFormativo eliminado correctamente")
  *         )
@@ -197,9 +207,9 @@ use Illuminate\Http\Request;
 
 class CicloFormativoController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, FamiliaProfesional $familiaProfesional)
     {
-        $query = CicloFormativo::query();
+        $query = $familiaProfesional->ciclos_formativos()->newQuery();
 
         // Filtro de búsqueda
         if ($request->has('search') && $request->filled('search')) {
@@ -213,66 +223,78 @@ class CicloFormativoController extends Controller
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $cicloFormativos = $query->paginate($perPage);
-        
+
         return CicloFormativoResource::collection($cicloFormativos);
     }
 
-    public function store(StoreCicloFormativoRequest $request)
+    public function store(StoreCicloFormativoRequest $request, FamiliaProfesional $familiaProfesional)
     {
-        $cicloFormativo = CicloFormativo::create($request->validated());
-        
+        $cicloFormativo = $familiaProfesional->ciclos_formativos()->create($request->validated());
+
         // Cargar relaciones para la respuesta
         $cicloFormativo->load($this->getEagerLoadRelations());
-        
+
         return new CicloFormativoResource($cicloFormativo);
     }
 
-    public function show(CicloFormativo $cicloFormativo)
+    public function show(FamiliaProfesional $familiaProfesional, CicloFormativo $cicloFormativo)
     {
-        
+        // Verificar que el ciclo formativo pertenece a la familia profesional
+        if ($cicloFormativo->familia_profesional_id !== $familiaProfesional->id) {
+            abort(404);
+        }
+
         // Cargar relaciones
         $cicloFormativo->load($this->getEagerLoadRelations());
-        
+
         return new CicloFormativoResource($cicloFormativo);
     }
 
-    public function update(UpdateCicloFormativoRequest $request, CicloFormativo $cicloFormativo)
+    public function update(UpdateCicloFormativoRequest $request, FamiliaProfesional $familiaProfesional, CicloFormativo $cicloFormativo)
     {
-        
+        // Verificar que el ciclo formativo pertenece a la familia profesional
+        if ($cicloFormativo->familia_profesional_id !== $familiaProfesional->id) {
+            abort(404);
+        }
+
         $cicloFormativo->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $cicloFormativo->load($this->getEagerLoadRelations());
-        
+
         return new CicloFormativoResource($cicloFormativo);
     }
 
-    public function destroy(CicloFormativo $cicloFormativo)
+    public function destroy(FamiliaProfesional $familiaProfesional, CicloFormativo $cicloFormativo)
     {
-        
+        // Verificar que el ciclo formativo pertenece a la familia profesional
+        if ($cicloFormativo->familia_profesional_id !== $familiaProfesional->id) {
+            abort(404);
+        }
+
         $cicloFormativo->delete();
-        
+
         return response()->json([
             'message' => 'CicloFormativo eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

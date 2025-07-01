@@ -20,7 +20,6 @@ class StoreCicloFormativoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'familia_profesional_id' => ['required', 'integer', 'exists:familias_profesionales,id'],
             'nombre' => ['required', 'string', 'max:255'],
             'codigo' => ['required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i', 'unique:ciclos_formativos,codigo'],
             'grado' => ['required', 'in:basico,medio,superior'],

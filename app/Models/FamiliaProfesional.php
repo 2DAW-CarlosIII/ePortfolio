@@ -18,6 +18,6 @@ class FamiliaProfesional extends Model
     ];
     public function ciclos_formativos()
     {
-        return $this->hasMany(CicloFormativo::class, 'familias_profesionale_id');
+        return $this->hasMany(CicloFormativo::class, 'familia_profesional_id');
     }
 }
