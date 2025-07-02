@@ -20,11 +20,10 @@ class UpdateCriteriosEvaluacionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'resultado_aprendizaje_id' => ['sometimes', 'required', 'integer', 'exists:resultados_aprendizaje,id'],
             'codigo' => ['sometimes', 'required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i'],
             'descripcion' => ['sometimes', 'required', 'string', 'max:65535'],
-            'peso_porcentaje' => ['sometimes', 'required', 'numeric', 'between:0,100'],
-            'orden' => ['sometimes', 'required', 'integer', 'min:1', 'max:999']
+            'peso_porcentaje' => ['sometimes', 'numeric', 'between:0,100'],
+            'orden' => ['sometimes', 'integer', 'min:1', 'max:999']
         ];
     }
 

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\CriteriosEvaluacion;
+use App\Models\CriterioEvaluacion;
+use App\Models\ResultadoAprendizaje;
 use App\Http\Requests\StoreCriteriosEvaluacionRequest;
 use App\Http\Requests\UpdateCriteriosEvaluacionRequest;
 use App\Http\Resources\CriteriosEvaluacionResource;
 use Illuminate\Http\Request;
-
+use LDAP\Result;
 
 /**
  * @OA\Tag(
@@ -180,11 +181,13 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
- 
- 
- 
-  *         description="Resource deleted successfully",
+ *         description="ID of the resultados-aprendizaje",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="CriteriosEvaluacion eliminado correctamente")
  *         )
@@ -197,9 +200,9 @@ use Illuminate\Http\Request;
 
 class CriteriosEvaluacionController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, ResultadoAprendizaje $resultadoAprendizaje)
     {
-        $query = CriteriosEvaluacion::query();
+        $query = $resultadoAprendizaje->criterios_evaluacion()->newQuery();
 
         // Filtro de búsqueda
         if ($request->has('search') && $request->filled('search')) {
@@ -213,66 +216,90 @@ class CriteriosEvaluacionController extends Controller
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $criteriosEvaluacions = $query->paginate($perPage);
-        
+
         return CriteriosEvaluacionResource::collection($criteriosEvaluacions);
     }
 
-    public function store(StoreCriteriosEvaluacionRequest $request)
+    public function store(StoreCriteriosEvaluacionRequest $request, ResultadoAprendizaje $resultadoAprendizaje)
     {
-        $criteriosEvaluacion = CriteriosEvaluacion::create($request->validated());
-        
+        $data = $request->validated();
+
+        $data['resultado_aprendizaje_id'] = $resultadoAprendizaje->id; // de la ruta anidada
+        if (! isset($data['peso_porcentaje'])) {
+            $data['peso_porcentaje'] = (float) 1;
+        }
+        if (! isset($data['orden'])) {
+            $data['orden'] = CriterioEvaluacion::where('resultado_aprendizaje_id', $resultadoAprendizaje->id)->max('orden') + 1;
+        }
+        $criterioEvaluacion = CriterioEvaluacion::create($data);
+
         // Cargar relaciones para la respuesta
-        $criteriosEvaluacion->load($this->getEagerLoadRelations());
-        
-        return new CriteriosEvaluacionResource($criteriosEvaluacion);
+        $criterioEvaluacion->load($this->getEagerLoadRelations());
+
+        return new CriteriosEvaluacionResource($criterioEvaluacion);
     }
 
-    public function show(CriteriosEvaluacion $criteriosEvaluacion)
+    public function show(ResultadoAprendizaje $resultadoAprendizaje, CriterioEvaluacion $criterioEvaluacion)
     {
-        
+        // Verificar que el criterio de evaluación pertenece al resultado de aprendizaje
+        if ($criterioEvaluacion->resultado_aprendizaje_id !== $resultadoAprendizaje->id) {
+            abort(404);
+        }
+
         // Cargar relaciones
-        $criteriosEvaluacion->load($this->getEagerLoadRelations());
-        
-        return new CriteriosEvaluacionResource($criteriosEvaluacion);
+        $criterioEvaluacion->load($this->getEagerLoadRelations());
+
+        return new CriteriosEvaluacionResource($criterioEvaluacion);
     }
 
-    public function update(UpdateCriteriosEvaluacionRequest $request, CriteriosEvaluacion $criteriosEvaluacion)
+    public function update(UpdateCriteriosEvaluacionRequest $request, ResultadoAprendizaje $resultadoAprendizaje, CriterioEvaluacion $criterioEvaluacion)
     {
-        
-        $criteriosEvaluacion->update($request->validated());
-        
+        // Verificar que el criterio de evaluación pertenece al resultado de aprendizaje
+        if ($criterioEvaluacion->resultado_aprendizaje_id !== $resultadoAprendizaje->id) {
+            abort(404);
+        }
+
+        $data = $request->validated();
+
+        $data['resultado_aprendizaje_id'] = $resultadoAprendizaje->id; // de la ruta anidada
+        $criterioEvaluacion->update($data);
+
         // Cargar relaciones para la respuesta
-        $criteriosEvaluacion->load($this->getEagerLoadRelations());
-        
-        return new CriteriosEvaluacionResource($criteriosEvaluacion);
+        $criterioEvaluacion->load($this->getEagerLoadRelations());
+
+        return new CriteriosEvaluacionResource($criterioEvaluacion);
     }
 
-    public function destroy(CriteriosEvaluacion $criteriosEvaluacion)
+    public function destroy(ResultadoAprendizaje $resultadoAprendizaje, CriterioEvaluacion $criterioEvaluacion)
     {
-        
-        $criteriosEvaluacion->delete();
-        
+        // Verificar que el criterio de evaluación pertenece al resultado de aprendizaje
+        if ($criterioEvaluacion->resultado_aprendizaje_id !== $resultadoAprendizaje->id) {
+            abort(404);
+        }
+
+        $criterioEvaluacion->delete();
+
         return response()->json([
-            'message' => 'CriteriosEvaluacion eliminado correctamente'
+            'message' => 'Criterio de Evaluación eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

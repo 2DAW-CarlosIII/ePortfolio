@@ -15,7 +15,6 @@ class ComentarioApiTest extends FeatureTestCase
     use WithFaker;
 
     protected User $user;
-    protected Evidencia $parent;
 
     protected function setUp(): void
     {

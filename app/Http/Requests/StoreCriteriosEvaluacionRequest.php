@@ -20,7 +20,6 @@ class StoreCriteriosEvaluacionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'resultado_aprendizaje_id' => ['required', 'integer', 'exists:resultados_aprendizaje,id'],
             'codigo' => ['required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i'],
             'descripcion' => ['required', 'string', 'max:65535'],
             'peso_porcentaje' => ['required', 'numeric', 'between:0,100'],

@@ -27,6 +27,6 @@ class ResultadoAprendizaje extends Model
     }
     public function criterios_evaluacion()
     {
-        return $this->hasMany(CriteriosEvaluacion::class, 'resultados_aprendizaje_id');
+        return $this->hasMany(CriterioEvaluacion::class, 'resultado_aprendizaje_id');
     }
 }

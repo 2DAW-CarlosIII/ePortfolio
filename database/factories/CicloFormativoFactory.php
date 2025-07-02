@@ -15,7 +15,7 @@ class CicloFormativoFactory extends Factory
     public function definition(): array
     {
         return [
-            'familia_profesional_id' => \App\Models\FamiliaProfesional::factory(),
+            'familia_profesional_id' => $this->familia_profesional_id ?? \App\Models\FamiliaProfesional::factory(),
             'nombre' => fake()->words(3, true),
             'codigo' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'grado' => fake()->randomElement(['basico', 'medio', 'superior']),

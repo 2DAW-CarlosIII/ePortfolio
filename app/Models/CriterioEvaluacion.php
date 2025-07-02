@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CriteriosEvaluacion extends Model
+class CriterioEvaluacion extends Model
 {
     use HasFactory;
 
@@ -23,14 +23,14 @@ class CriteriosEvaluacion extends Model
     ];
     public function resultados_aprendizaje()
     {
-        return $this->belongsTo(ResultadoAprendizaje::class, 'resultados_aprendizaje_id');
+        return $this->belongsTo(ResultadoAprendizaje::class, 'resultado_aprendizaje_id');
     }
     public function planificacion_criterios()
     {
-        return $this->hasMany(PlanificacionCriterios::class, 'criterios_evaluacion_id');
+        return $this->hasMany(PlanificacionCriterios::class, 'criterio_evaluacion_id');
     }
     public function evidencias()
     {
-        return $this->hasMany(Evidencia::class, 'criterios_evaluacion_id');
+        return $this->hasMany(Evidencia::class, 'criterio_evaluacion_id');
     }
 }
