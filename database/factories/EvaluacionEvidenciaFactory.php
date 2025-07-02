@@ -16,7 +16,7 @@ class EvaluacionEvidenciaFactory extends Factory
     {
         return [
             'evidencia_id' => \App\Models\Evidencia::factory(),
-            'docente_id' => \App\Models\User::factory(),
+            'user_id' => \App\Models\User::factory(),
             'puntuacion' => fake()->randomFloat(2, 0, 10),
             'estado' => fake()->randomElement(['pendiente', 'aprobada', 'rechazada']),
             'observaciones' => fake()->paragraph(),

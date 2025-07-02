@@ -16,7 +16,7 @@ class ComentarioFactory extends Factory
     {
         return [
             'evidencia_id' => $this->evidencia_id ?? \App\Models\Evidencia::factory(),
-            'docente_id' => \App\Models\User::factory(),
+            'user_id' => \App\Models\User::factory(),
             'contenido' => fake()->paragraph(),
             'tipo' => fake()->randomElement(['feedback', 'mejora', 'felicitacion'])
         ];

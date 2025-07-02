@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Evidencia;
 use App\Models\ModuloFormativo;
 use App\Models\Matricula;
+use App\Models\CriteriosEvaluacion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
@@ -18,7 +19,7 @@ class StatsApiTest extends FeatureTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->user = User::factory()->create();
         Sanctum::actingAs($this->user);
     }
@@ -86,7 +87,7 @@ class StatsApiTest extends FeatureTestCase
     public function test_can_filter_evidences_stats_by_criteria()
     {
         // Arrange
-        $criterio = CriterioEvaluacion::factory()->create();
+        $criterio = CriteriosEvaluacion::factory()->create();
 
         // Act
         $response = $this->getJson("/api/v1/stats/evidencias?criterio_id={$criterio->id}");

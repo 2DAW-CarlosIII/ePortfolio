@@ -15,7 +15,7 @@ class EvaluacionEvidenciaResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'evidencia_id' => $this->evidencia_id,
-            'docente_id' => $this->docente_id,
+            'user_id' => $this->user_id,
             'puntuacion' => number_format((float) $this->puntuacion, 2, '.', ''),
             'estado' => $this->estado,
             'observaciones' => $this->observaciones,

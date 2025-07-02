@@ -47,8 +47,6 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('modulos-formativos.planificacion-criterios', App\Http\Controllers\Api\PlanificacionCriteriosController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);
     Route::apiResource('criterios-evaluacion.evidencias', App\Http\Controllers\Api\EvidenciaController::class)->parameters(['criterios-evaluacion' => 'criterios_evaluacion']);
     Route::apiResource('users.evaluaciones-evidencias', App\Http\Controllers\Api\EvaluacionEvidenciaController::class)->parameters(['users' => 'user']);
-    Route::apiResource('users.evaluaciones-pares', App\Http\Controllers\Api\EvaluacionParController::class)->parameters(['users' => 'user']);
-    Route::apiResource('users.comentarios-pares', App\Http\Controllers\Api\ComentarioParController::class)->parameters(['users' => 'user']);
 
     // User management routes (if needed)
     Route::apiResource('users', App\Http\Controllers\Api\UserController::class)

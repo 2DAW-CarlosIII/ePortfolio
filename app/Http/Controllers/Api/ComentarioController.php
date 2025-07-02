@@ -248,7 +248,7 @@ class ComentarioController extends Controller
         $data = $request->validated();
 
         $data['evidencia_id'] = $evidencia->id; // de la ruta anidada
-        $data['docente_id'] = auth()->id(); // usuario autenticado
+        $data['user_id'] = auth()->id(); // usuario autenticado
 
         $comentario = Comentario::create($data);
 

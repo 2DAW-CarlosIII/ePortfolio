@@ -11,14 +11,14 @@ return new class extends Migration
         Schema::create('evaluaciones_evidencias', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('evidencia_id');
-            $table->unsignedBigInteger('docente_id');
+            $table->unsignedBigInteger('user_id');
             $table->decimal('puntuacion', 8, 2);
             $table->enum('estado', ['pendiente', 'aprobada', 'rechazada']);
             $table->text('observaciones');
             $table->timestamp('fecha_evaluacion');
             $table->timestamps();
             $table->foreign('evidencia_id')->references('id')->on('evidencias')->onDelete('cascade');
-            $table->foreign('docente_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

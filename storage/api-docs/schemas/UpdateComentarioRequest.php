@@ -12,7 +12,7 @@
  *             description="Evidencia Id"
  *         ),
  *         @OA\Property(
- *             property="docente_id",
+ *             property="user_id",
  *             type="integer",
  *             description="Docente Id"
  *         ),

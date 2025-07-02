@@ -21,7 +21,7 @@ class StoreEvaluacionEvidenciaRequest extends FormRequest
     {
         return [
             'evidencia_id' => ['required', 'integer', 'exists:evidencias,id'],
-            'docente_id' => ['required', 'integer', 'exists:users,id'],
+            'user_id' => ['required', 'integer', 'exists:users,id'],
             'puntuacion' => ['required', 'numeric', 'between:0,10'],
             'estado' => ['required', 'in:pendiente,aprobada,rechazada'],
             'observaciones' => ['required', 'string', 'max:65535'],

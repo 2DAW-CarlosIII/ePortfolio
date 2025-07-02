@@ -13,14 +13,14 @@ class ComentarioTest extends TestCase
     public function test_it_has_fillable_attributes()
     {
         $fillable = (new Comentario())->getFillable();
-        
+
         $expected = [
             'evidencia_id',
-            'docente_id',
+            'user_id',
             'contenido',
             'tipo'
         ];
-        
+
         $this->assertEquals($expected, $fillable);
     }
 
@@ -33,7 +33,7 @@ class ComentarioTest extends TestCase
     public function test_it_can_be_created_with_factory()
     {
         $comentario = Comentario::factory()->create();
-        
+
         $this->assertInstanceOf(Comentario::class, $comentario);
         $this->assertDatabaseHas('comentarios', [
             'id' => $comentario->id

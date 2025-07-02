@@ -21,7 +21,7 @@ class UpdateEvaluacionEvidenciaRequest extends FormRequest
     {
         return [
             'evidencia_id' => ['sometimes', 'required', 'integer', 'exists:evidencias,id'],
-            'docente_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
+            'user_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
             'puntuacion' => ['sometimes', 'required', 'numeric', 'between:0,10'],
             'estado' => ['sometimes', 'required', 'in:pendiente,aprobada,rechazada'],
             'observaciones' => ['sometimes', 'required', 'string', 'max:65535'],

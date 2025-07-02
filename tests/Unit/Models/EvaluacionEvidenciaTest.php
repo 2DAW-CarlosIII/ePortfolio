@@ -13,16 +13,16 @@ class EvaluacionEvidenciaTest extends TestCase
     public function test_it_has_fillable_attributes()
     {
         $fillable = (new EvaluacionEvidencia())->getFillable();
-        
+
         $expected = [
             'evidencia_id',
-            'docente_id',
+            'user_id',
             'puntuacion',
             'estado',
             'observaciones',
             'fecha_evaluacion'
         ];
-        
+
         $this->assertEquals($expected, $fillable);
     }
 
@@ -35,7 +35,7 @@ class EvaluacionEvidenciaTest extends TestCase
     public function test_it_can_be_created_with_factory()
     {
         $evaluacionEvidencia = EvaluacionEvidencia::factory()->create();
-        
+
         $this->assertInstanceOf(EvaluacionEvidencia::class, $evaluacionEvidencia);
         $this->assertDatabaseHas('evaluaciones_evidencias', [
             'id' => $evaluacionEvidencia->id

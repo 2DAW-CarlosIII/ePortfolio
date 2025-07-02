@@ -13,7 +13,7 @@ class EvaluacionEvidencia extends Model
 
     protected $fillable = [
         'evidencia_id',
-        'docente_id',
+        'user_id',
         'puntuacion',
         'estado',
         'observaciones',
