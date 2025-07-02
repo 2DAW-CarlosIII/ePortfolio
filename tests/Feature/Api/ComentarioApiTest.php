@@ -38,7 +38,7 @@ class ComentarioApiTest extends FeatureTestCase
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'evidencia_id', 'docente_id', 'contenido', 'tipo', 'created_at', 'updated_at']
+                         '*' => ['id', 'evidencia_id', 'user_id', 'contenido', 'tipo', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -61,7 +61,7 @@ class ComentarioApiTest extends FeatureTestCase
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'docente_id', 'contenido', 'tipo', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'user_id', 'contenido', 'tipo', 'created_at', 'updated_at']
                  ]);
 
         $this->assertDatabaseHas('comentarios', [
@@ -81,7 +81,7 @@ class ComentarioApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'docente_id', 'contenido', 'tipo', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'user_id', 'contenido', 'tipo', 'created_at', 'updated_at']
                  ]);
     }
 
@@ -100,7 +100,7 @@ class ComentarioApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'docente_id', 'contenido', 'tipo', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'user_id', 'contenido', 'tipo', 'created_at', 'updated_at']
                  ]);
 
         $comentario->refresh();

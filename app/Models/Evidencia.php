@@ -30,7 +30,7 @@ class Evidencia extends Model
     {
         return $this->belongsTo(CriteriosEvaluacion::class, 'criterios_evaluacion_id');
     }
-    public function evaluaciones_evidencias()
+    public function evaluaciones()
     {
         return $this->hasMany(EvaluacionEvidencia::class, 'evidencia_id');
     }

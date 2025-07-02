@@ -181,11 +181,13 @@ use App\Models\Evidencia;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
- 
- 
- 
-  *         description="Resource deleted successfully",
+ *         description="ID of the evidencia",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="EvaluacionEvidencia eliminado correctamente")
  *         )
@@ -200,30 +202,40 @@ class EvaluacionEvidenciaController extends Controller
 {
     public function index(Request $request, Evidencia $evidencia)
     {
-        $query = $evidencia->evaluacionEvidencias();
+        $query = $evidencia->evaluaciones()->newQuery();
+
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('puntuacion', 'like', "%$search%")
+                ->orWhere('observaciones', 'like', "%$search%")
+                ->orWhere('estado', 'like', "%$search%");
+            });
+        }
 
 
         // Filtros adicionales
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $evaluacionEvidencias = $query->paginate($perPage);
-        
+
         return EvaluacionEvidenciaResource::collection($evaluacionEvidencias);
     }
 
@@ -231,12 +243,14 @@ class EvaluacionEvidenciaController extends Controller
     {
         $data = $request->validated();
         $data['evidencia_id'] = $evidencia->id;
-        
+        $data['user_id'] = auth()->id(); // Asignar el usuario autenticado
+        $data['fecha_evaluacion'] = now(); // Asignar la fecha actual
+
         $evaluacionEvidencia = EvaluacionEvidencia::create($data);
-        
+
         // Cargar relaciones para la respuesta
         $evaluacionEvidencia->load($this->getEagerLoadRelations());
-        
+
         return new EvaluacionEvidenciaResource($evaluacionEvidencia);
     }
 
@@ -246,10 +260,10 @@ class EvaluacionEvidenciaController extends Controller
         if ($evaluacionEvidencia->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         // Cargar relaciones
         $evaluacionEvidencia->load($this->getEagerLoadRelations());
-        
+
         return new EvaluacionEvidenciaResource($evaluacionEvidencia);
     }
 
@@ -259,12 +273,12 @@ class EvaluacionEvidenciaController extends Controller
         if ($evaluacionEvidencia->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         $evaluacionEvidencia->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $evaluacionEvidencia->load($this->getEagerLoadRelations());
-        
+
         return new EvaluacionEvidenciaResource($evaluacionEvidencia);
     }
 
@@ -274,14 +288,14 @@ class EvaluacionEvidenciaController extends Controller
         if ($evaluacionEvidencia->evidencia_id !== $evidencia->id) {
             abort(404);
         }
-        
+
         $evaluacionEvidencia->delete();
-        
+
         return response()->json([
             'message' => 'EvaluacionEvidencia eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 // ePortfolio API Routes - Generated automatically
 // Do not modify this section manually
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
 
     // Health check endpoint
     Route::get('/health', function () {
@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
     // Nested API Resource routes
     Route::apiResource('evidencias.asignaciones-revision', App\Http\Controllers\Api\AsignacionRevisionController::class)
         ->parameters(['asignaciones-revision' => 'asignacionRevision']);
+    Route::apiResource('evidencias.evaluaciones-evidencias', App\Http\Controllers\Api\EvaluacionEvidenciaController::class)->parameters(['evaluaciones-evidencias' => 'evaluacionEvidencia']);
     Route::apiResource('evidencias.comentarios', App\Http\Controllers\Api\ComentarioController::class);
     Route::apiResource('familias-profesionales.ciclos-formativos', App\Http\Controllers\Api\CicloFormativoController::class)->parameters([
         'familias-profesionales' => 'familiaProfesional',
@@ -46,7 +47,6 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('modulos-formativos.matriculas', App\Http\Controllers\Api\MatriculaController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);
     Route::apiResource('modulos-formativos.planificacion-criterios', App\Http\Controllers\Api\PlanificacionCriteriosController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);
     Route::apiResource('criterios-evaluacion.evidencias', App\Http\Controllers\Api\EvidenciaController::class)->parameters(['criterios-evaluacion' => 'criterios_evaluacion']);
-    Route::apiResource('users.evaluaciones-evidencias', App\Http\Controllers\Api\EvaluacionEvidenciaController::class)->parameters(['users' => 'user']);
 
     // User management routes (if needed)
     Route::apiResource('users', App\Http\Controllers\Api\UserController::class)

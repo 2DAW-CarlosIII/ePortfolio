@@ -20,12 +20,9 @@ class UpdateEvaluacionEvidenciaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'evidencia_id' => ['sometimes', 'required', 'integer', 'exists:evidencias,id'],
-            'user_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
             'puntuacion' => ['sometimes', 'required', 'numeric', 'between:0,10'],
             'estado' => ['sometimes', 'required', 'in:pendiente,aprobada,rechazada'],
             'observaciones' => ['sometimes', 'required', 'string', 'max:65535'],
-            'fecha_evaluacion' => ['sometimes', 'required', 'date']
         ];
     }
 

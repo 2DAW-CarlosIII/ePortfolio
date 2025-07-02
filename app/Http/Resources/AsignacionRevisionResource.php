@@ -25,8 +25,6 @@ class AsignacionRevisionResource extends JsonResource
             'evidencia' => new EvidenciaResource($this->whenLoaded('evidencia')),
             'user' => new UserResource($this->whenLoaded('user')),
             'user' => new UserResource($this->whenLoaded('user')),
-            'comentarios_pares' => ComentarioParResource::collection($this->whenLoaded('comentarios_pares')),
-            'comentarios_pares_count' => $this->whenCounted('comentarios_pares')
         ];
     }
 

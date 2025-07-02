@@ -20,12 +20,9 @@ class StoreEvaluacionEvidenciaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'evidencia_id' => ['required', 'integer', 'exists:evidencias,id'],
-            'user_id' => ['required', 'integer', 'exists:users,id'],
             'puntuacion' => ['required', 'numeric', 'between:0,10'],
             'estado' => ['required', 'in:pendiente,aprobada,rechazada'],
             'observaciones' => ['required', 'string', 'max:65535'],
-            'fecha_evaluacion' => ['required', 'date']
         ];
     }
 
