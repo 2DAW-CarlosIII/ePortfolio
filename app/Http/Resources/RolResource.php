@@ -18,8 +18,6 @@ class RolResource extends JsonResource
             'description' => $this->description,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-            'user_roles' => UserRolResource::collection($this->whenLoaded('user_roles')),
-            'user_roles_count' => $this->whenCounted('user_roles')
         ];
     }
 

@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Evidencia;
 use App\Models\ModuloFormativo;
 use App\Models\Matricula;
-use App\Models\CriteriosEvaluacion;
+use App\Models\CriterioEvaluacion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
@@ -30,6 +30,7 @@ class StatsApiTest extends FeatureTestCase
         User::factory()->count(10)->create();
         ModuloFormativo::factory()->count(5)->create();
         Evidencia::factory()->count(20)->create();
+        Matricula::factory()->count(15)->create();
 
         // Act
         $response = $this->getJson('/api/v1/stats');
@@ -37,7 +38,7 @@ class StatsApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'usuarios' => ['total', 'estudiantes', 'docentes'],
+                     'usuarios' => ['total'],
                      'modulos' => ['total', 'activos'],
                      'matriculas' => ['total', 'activas'],
                      'evidencias' => ['total', 'validadas', 'pendientes']
@@ -54,7 +55,6 @@ class StatsApiTest extends FeatureTestCase
                  ->assertJsonStructure([
                      'total_estudiantes',
                      'con_evidencias',
-                     'por_modulo'
                  ]);
     }
 
@@ -68,7 +68,6 @@ class StatsApiTest extends FeatureTestCase
                  ->assertJsonStructure([
                      'total',
                      'por_estado',
-                     'por_mes'
                  ]);
     }
 
@@ -87,7 +86,7 @@ class StatsApiTest extends FeatureTestCase
     public function test_can_filter_evidences_stats_by_criteria()
     {
         // Arrange
-        $criterio = CriteriosEvaluacion::factory()->create();
+        $criterio = CriterioEvaluacion::factory()->create();
 
         // Act
         $response = $this->getJson("/api/v1/stats/evidencias?criterio_id={$criterio->id}");

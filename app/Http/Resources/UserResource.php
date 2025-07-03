@@ -19,30 +19,21 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at?->toISOString(),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-            
+
             // Relaciones
-            'roles' => RoleResource::collection($this->whenLoaded('userRoles.role')),
             'modulos_impartidos' => ModuloFormativoResource::collection($this->whenLoaded('modulosImpartidos')),
             'matriculas' => MatriculaResource::collection($this->whenLoaded('matriculas')),
             'evidencias' => EvidenciaResource::collection($this->whenLoaded('evidencias')),
-            
+
             // Contadores
             'matriculas_count' => $this->whenCounted('matriculas'),
             'evidencias_count' => $this->whenCounted('evidencias'),
             'modulos_impartidos_count' => $this->whenCounted('modulosImpartidos'),
-            
-            // Campos calculados
-            'rol_principal' => $this->when(
-                $this->relationLoaded('userRoles'),
-                function() {
-                    return $this->userRoles->first()?->role?->name ?? 'sin_rol';
-                }
-            ),
             'ultimo_acceso' => $this->last_login_at?->diffForHumans(),
             'avatar_url' => 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=random',
         ];
     }
-    
+
     /**
      * Get additional data that should be returned with the resource array.
      */

@@ -50,7 +50,6 @@ curl -H "Authorization: Bearer {token}" http://localhost:8000/api/v1/endpoint
 | ModuloFormativo | User | `GET,POST /users/{id}/modulos-formativos` <br> `GET,PUT,DELETE /users/{parent_id}/modulos-formativos/{id}` |
 | ResultadoAprendizaje | ModuloFormativo | `GET,POST /modulos-formativos/{id}/resultados-aprendizaje` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/resultados-aprendizaje/{id}` |
 | CriteriosEvaluacion | ResultadoAprendizaje | `GET,POST /resultados-aprendizaje/{id}/criterios-evaluacion` <br> `GET,PUT,DELETE /resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}` |
-| UserRol | ModuloFormativo | `GET,POST /modulos-formativos/{id}/user-roles` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/user-roles/{id}` |
 | Matricula | ModuloFormativo | `GET,POST /modulos-formativos/{id}/matriculas` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/matriculas/{id}` |
 | PlanificacionCriterios | ModuloFormativo | `GET,POST /modulos-formativos/{id}/planificacion-criterios` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/planificacion-criterios/{id}` |
 | Evidencia | CriteriosEvaluacion | `GET,POST /criterios-evaluacion/{id}/evidencias` <br> `GET,PUT,DELETE /criterios-evaluacion/{parent_id}/evidencias/{id}` |

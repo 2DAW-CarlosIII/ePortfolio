@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FamiliaProfesionalSeeder::class);
         $this->call(CicloFormativoSeeder::class);
         $this->call(ModuloFormativoSeeder::class);
-        $this->call(UserRolSeeder::class);
         $this->call(MatriculaSeeder::class);
         $this->call(ResultadoAprendizajeSeeder::class);
         $this->call(CriteriosEvaluacionSeeder::class);

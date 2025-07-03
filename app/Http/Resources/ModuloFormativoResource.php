@@ -32,8 +32,6 @@ class ModuloFormativoResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'resultados_aprendizajes' => ResultadoAprendizajeResource::collection($this->whenLoaded('resultados_aprendizajes')),
             'resultados_aprendizajes_count' => $this->whenCounted('resultados_aprendizajes'),
-            'user_roles' => UserRolResource::collection($this->whenLoaded('user_roles')),
-            'user_roles_count' => $this->whenCounted('user_roles'),
             'matriculas' => MatriculaResource::collection($this->whenLoaded('matriculas')),
             'matriculas_count' => $this->whenCounted('matriculas'),
             'planificacion_criterios' => PlanificacionCriteriosResource::collection($this->whenLoaded('planificacion_criterios')),

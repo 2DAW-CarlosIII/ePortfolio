@@ -54,7 +54,6 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         'resultados-aprendizaje' => 'resultadoAprendizaje',
         'criterios-evaluacion' => 'criterioEvaluacion'
     ]);
-    Route::apiResource('modulos-formativos.user-roles', App\Http\Controllers\Api\UserRolController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);
     Route::apiResource('modulos-formativos.matriculas', App\Http\Controllers\Api\MatriculaController::class)->parameters(['modulos-formativos' => 'moduloFormativo']);
     Route::apiResource('criterios-evaluacion.planificacion-criterios', App\Http\Controllers\Api\PlanificacionCriteriosController::class)->parameters([
         'criterios-evaluacion' => 'criterioEvaluacion',

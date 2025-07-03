@@ -33,10 +33,6 @@ class ModuloFormativo extends Model
     {
         return $this->hasMany(ResultadoAprendizaje::class, 'modulo_formativo_id');
     }
-    public function user_roles()
-    {
-        return $this->hasMany(UserRol::class, 'modulo_formativo_id');
-    }
     public function matriculas()
     {
         return $this->hasMany(Matricula::class, 'modulo_formativo_id');
