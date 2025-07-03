@@ -25,7 +25,9 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     });
 
     // Standard API Resource routes
-    Route::apiResource('familias-profesionales', App\Http\Controllers\Api\FamiliaProfesionalController::class);
+    Route::apiResource('familias-profesionales', App\Http\Controllers\Api\FamiliaProfesionalController::class)->parameters([
+        'familias-profesionales' => 'familiaProfesional'
+    ]);
     Route::apiResource('roles', App\Http\Controllers\Api\RolController::class);
 
     // Nested API Resource routes
