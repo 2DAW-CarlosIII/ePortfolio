@@ -7,6 +7,7 @@ use App\Models\ModuloFormativo;
 use App\Http\Requests\StoreModuloFormativoRequest;
 use App\Http\Requests\UpdateModuloFormativoRequest;
 use App\Http\Resources\ModuloFormativoResource;
+use App\Models\CicloFormativo;
 use Illuminate\Http\Request;
 
 
@@ -180,11 +181,13 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
- 
- 
- 
-  *         description="Resource deleted successfully",
+ *         description="ID of the ciclo formativo",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="ModuloFormativo eliminado correctamente")
  *         )
@@ -197,7 +200,7 @@ use Illuminate\Http\Request;
 
 class ModuloFormativoController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, CicloFormativo $cicloFormativo)
     {
         $query = ModuloFormativo::query();
 
@@ -213,66 +216,78 @@ class ModuloFormativoController extends Controller
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $moduloFormativos = $query->paginate($perPage);
-        
+
         return ModuloFormativoResource::collection($moduloFormativos);
     }
 
-    public function store(StoreModuloFormativoRequest $request)
+    public function store(StoreModuloFormativoRequest $request, CicloFormativo $cicloFormativo)
     {
-        $moduloFormativo = ModuloFormativo::create($request->validated());
-        
+        $data = $request->validated();
+        $data['ciclo_formativo_id'] = $cicloFormativo->id;
+        $data['docente_id'] = auth()->id(); // Asignar el docente actual
+        $moduloFormativo = ModuloFormativo::create($data);
+
         // Cargar relaciones para la respuesta
         $moduloFormativo->load($this->getEagerLoadRelations());
-        
+
         return new ModuloFormativoResource($moduloFormativo);
     }
 
-    public function show(ModuloFormativo $moduloFormativo)
+    public function show(CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
     {
-        
+        if($cicloFormativo->id !== $moduloFormativo->ciclo_formativo_id) {
+            return response()->json(['message' => 'ModuloFormativo not found in the specified CicloFormativo'], 404);
+        }
+
         // Cargar relaciones
         $moduloFormativo->load($this->getEagerLoadRelations());
-        
+
         return new ModuloFormativoResource($moduloFormativo);
     }
 
-    public function update(UpdateModuloFormativoRequest $request, ModuloFormativo $moduloFormativo)
+    public function update(UpdateModuloFormativoRequest $request, CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
     {
-        
+        if($cicloFormativo->id !== $moduloFormativo->ciclo_formativo_id) {
+            return response()->json(['message' => 'ModuloFormativo not found in the specified CicloFormativo'], 404);
+        }
+
         $moduloFormativo->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $moduloFormativo->load($this->getEagerLoadRelations());
-        
+
         return new ModuloFormativoResource($moduloFormativo);
     }
 
-    public function destroy(ModuloFormativo $moduloFormativo)
+    public function destroy(CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
     {
-        
+        if($cicloFormativo->id !== $moduloFormativo->ciclo_formativo_id) {
+            return response()->json(['message' => 'ModuloFormativo not found in the specified CicloFormativo'], 404);
+        }
+
         $moduloFormativo->delete();
-        
+
         return response()->json([
             'message' => 'ModuloFormativo eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

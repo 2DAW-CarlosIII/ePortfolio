@@ -20,13 +20,11 @@ class StoreModuloFormativoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ciclo_formativo_id' => ['required', 'integer', 'exists:ciclos_formativos,id'],
             'nombre' => ['required', 'string', 'max:255'],
             'codigo' => ['required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i'],
             'horas_totales' => ['required', 'integer', 'min:1', 'max:2000'],
             'curso_escolar' => ['required', 'string', 'max:255'],
             'centro' => ['required', 'string', 'max:255'],
-            'docente_id' => ['required', 'integer', 'exists:users,id'],
             'descripcion' => ['required', 'string', 'max:65535']
         ];
     }
