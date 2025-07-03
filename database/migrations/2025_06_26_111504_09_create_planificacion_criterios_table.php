@@ -11,14 +11,12 @@ return new class extends Migration
         Schema::create('planificacion_criterios', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('criterio_evaluacion_id');
-            $table->unsignedBigInteger('modulo_formativo_id');
             $table->date('fecha_apertura');
             $table->date('fecha_cierre');
             $table->boolean('activo')->default(false);
             $table->text('observaciones');
             $table->timestamps();
             $table->foreign('criterio_evaluacion_id')->references('id')->on('criterios_evaluacion')->onDelete('cascade');
-            $table->foreign('modulo_formativo_id')->references('id')->on('modulos_formativos')->onDelete('cascade');
         });
     }
 

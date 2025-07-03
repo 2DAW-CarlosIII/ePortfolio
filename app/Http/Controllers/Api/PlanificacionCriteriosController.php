@@ -7,6 +7,7 @@ use App\Models\PlanificacionCriterios;
 use App\Http\Requests\StorePlanificacionCriteriosRequest;
 use App\Http\Requests\UpdatePlanificacionCriteriosRequest;
 use App\Http\Resources\PlanificacionCriteriosResource;
+use App\Models\CriterioEvaluacion;
 use Illuminate\Http\Request;
 
 
@@ -180,11 +181,13 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
- 
- 
- 
-  *         description="Resource deleted successfully",
+ *         description="ID of the criterio de evaluación",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="PlanificacionCriterios eliminado correctamente")
  *         )
@@ -197,75 +200,86 @@ use Illuminate\Http\Request;
 
 class PlanificacionCriteriosController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, CriterioEvaluacion $criterioEvaluacion)
     {
-        $query = PlanificacionCriterios::query();
-
+        $query = $criterioEvaluacion->planificacion_criterios()->newQuery();
 
         // Filtros adicionales
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
-        $planificacionCriterioss = $query->paginate($perPage);
-        
-        return PlanificacionCriteriosResource::collection($planificacionCriterioss);
+        $planificacionCriterios = $query->paginate($perPage);
+
+        return PlanificacionCriteriosResource::collection($planificacionCriterios);
     }
 
-    public function store(StorePlanificacionCriteriosRequest $request)
+    public function store(StorePlanificacionCriteriosRequest $request, CriterioEvaluacion $criterioEvaluacion)
     {
-        $planificacionCriterios = PlanificacionCriterios::create($request->validated());
-        
+        $data = $request->validated();
+        $data['criterio_evaluacion_id'] = $criterioEvaluacion->id;
+
+        $planificacionCriterio = PlanificacionCriterios::create($data);
+
         // Cargar relaciones para la respuesta
-        $planificacionCriterios->load($this->getEagerLoadRelations());
-        
-        return new PlanificacionCriteriosResource($planificacionCriterios);
+        $planificacionCriterio->load($this->getEagerLoadRelations());
+
+        return new PlanificacionCriteriosResource($planificacionCriterio);
     }
 
-    public function show(PlanificacionCriterios $planificacionCriterios)
+    public function show(CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
     {
-        
+        if($criterioEvaluacion->id !== $planificacionCriterio->criterio_evaluacion_id) {
+            return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
+        }
+
         // Cargar relaciones
-        $planificacionCriterios->load($this->getEagerLoadRelations());
-        
-        return new PlanificacionCriteriosResource($planificacionCriterios);
+        $planificacionCriterio->load($this->getEagerLoadRelations());
+
+        return new PlanificacionCriteriosResource($planificacionCriterio);
     }
 
-    public function update(UpdatePlanificacionCriteriosRequest $request, PlanificacionCriterios $planificacionCriterios)
+    public function update(UpdatePlanificacionCriteriosRequest $request, CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
     {
-        
-        $planificacionCriterios->update($request->validated());
-        
+        if($criterioEvaluacion->id !== $planificacionCriterio->criterio_evaluacion_id) {
+            return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
+        }
+
+        $planificacionCriterio->update($request->validated());
+
         // Cargar relaciones para la respuesta
-        $planificacionCriterios->load($this->getEagerLoadRelations());
-        
-        return new PlanificacionCriteriosResource($planificacionCriterios);
+        $planificacionCriterio->load($this->getEagerLoadRelations());
+
+        return new PlanificacionCriteriosResource($planificacionCriterio);
     }
 
-    public function destroy(PlanificacionCriterios $planificacionCriterios)
+    public function destroy(CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
     {
-        
-        $planificacionCriterios->delete();
-        
+        if($criterioEvaluacion->id !== $planificacionCriterio->criterio_evaluacion_id) {
+            return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
+        }
+
+        $planificacionCriterio->delete();
+
         return response()->json([
             'message' => 'PlanificacionCriterios eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

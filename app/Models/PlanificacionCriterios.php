@@ -13,7 +13,6 @@ class PlanificacionCriterios extends Model
 
     protected $fillable = [
         'criterio_evaluacion_id',
-        'modulo_formativo_id',
         'fecha_apertura',
         'fecha_cierre',
         'activo',
@@ -27,9 +26,5 @@ class PlanificacionCriterios extends Model
     public function criterios_evaluacion()
     {
         return $this->belongsTo(CriteriosEvaluacion::class, 'criterios_evaluacion_id');
-    }
-    public function modulos_formativo()
-    {
-        return $this->belongsTo(ModuloFormativo::class, 'modulos_formativo_id');
     }
 }

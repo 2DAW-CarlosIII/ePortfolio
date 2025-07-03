@@ -13,16 +13,15 @@ class PlanificacionCriteriosTest extends TestCase
     public function test_it_has_fillable_attributes()
     {
         $fillable = (new PlanificacionCriterios())->getFillable();
-        
+
         $expected = [
             'criterio_evaluacion_id',
-            'modulo_formativo_id',
             'fecha_apertura',
             'fecha_cierre',
             'activo',
             'observaciones'
         ];
-        
+
         $this->assertEquals($expected, $fillable);
     }
 
@@ -35,7 +34,7 @@ class PlanificacionCriteriosTest extends TestCase
     public function test_it_can_be_created_with_factory()
     {
         $planificacionCriterios = PlanificacionCriterios::factory()->create();
-        
+
         $this->assertInstanceOf(PlanificacionCriterios::class, $planificacionCriterios);
         $this->assertDatabaseHas('planificacion_criterios', [
             'id' => $planificacionCriterios->id

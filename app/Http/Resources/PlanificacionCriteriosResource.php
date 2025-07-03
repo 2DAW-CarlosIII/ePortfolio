@@ -15,7 +15,6 @@ class PlanificacionCriteriosResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'criterio_evaluacion_id' => $this->criterio_evaluacion_id,
-            'modulo_formativo_id' => $this->modulo_formativo_id,
             'fecha_apertura' => $this->fecha_apertura?->format('Y-m-d'),
             'fecha_cierre' => $this->fecha_cierre?->format('Y-m-d'),
             'activo' => (bool) $this->activo,

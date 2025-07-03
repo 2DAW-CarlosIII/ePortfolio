@@ -51,7 +51,10 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     ]);
     Route::apiResource('modulos-formativos.user-roles', App\Http\Controllers\Api\UserRolController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);
     Route::apiResource('modulos-formativos.matriculas', App\Http\Controllers\Api\MatriculaController::class)->parameters(['modulos-formativos' => 'moduloFormativo']);
-    Route::apiResource('modulos-formativos.planificacion-criterios', App\Http\Controllers\Api\PlanificacionCriteriosController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);
+    Route::apiResource('criterios-evaluacion.planificacion-criterios', App\Http\Controllers\Api\PlanificacionCriteriosController::class)->parameters([
+        'criterios-evaluacion' => 'criterioEvaluacion',
+        'planificacion-criterios' => 'planificacionCriterio'
+    ]);
     Route::apiResource('criterios-evaluacion.evidencias', App\Http\Controllers\Api\EvidenciaController::class)->parameters(['criterios-evaluacion' => 'criterioEvaluacion']);
 
     // User management routes (if needed)

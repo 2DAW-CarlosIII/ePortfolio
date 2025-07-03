@@ -20,8 +20,6 @@ class StorePlanificacionCriteriosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'criterio_evaluacion_id' => ['required', 'integer', 'exists:criterios_evaluacion,id'],
-            'modulo_formativo_id' => ['required', 'integer', 'exists:modulos_formativos,id'],
             'fecha_apertura' => ['required', 'date'],
             'fecha_cierre' => ['required', 'date', 'after:today'],
             'activo' => ['required', 'boolean'],

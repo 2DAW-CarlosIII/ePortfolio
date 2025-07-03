@@ -20,8 +20,6 @@ class UpdatePlanificacionCriteriosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'criterio_evaluacion_id' => ['sometimes', 'required', 'integer', 'exists:criterios_evaluacion,id'],
-            'modulo_formativo_id' => ['sometimes', 'required', 'integer', 'exists:modulos_formativos,id'],
             'fecha_apertura' => ['sometimes', 'required', 'date'],
             'fecha_cierre' => ['sometimes', 'required', 'date', 'after:today'],
             'activo' => ['sometimes', 'required', 'boolean'],
