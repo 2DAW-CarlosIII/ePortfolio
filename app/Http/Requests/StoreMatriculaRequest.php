@@ -20,8 +20,6 @@ class StoreMatriculaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'estudiante_id' => ['required', 'integer', 'exists:users,id'],
-            'modulo_formativo_id' => ['required', 'integer', 'exists:modulos_formativos,id'],
             'fecha_matricula' => ['required', 'date', 'before_or_equal:today'],
             'estado' => ['required', 'in:activa,suspendida,finalizada']
         ];

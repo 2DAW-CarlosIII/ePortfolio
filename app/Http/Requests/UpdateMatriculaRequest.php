@@ -20,8 +20,6 @@ class UpdateMatriculaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'estudiante_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
-            'modulo_formativo_id' => ['sometimes', 'required', 'integer', 'exists:modulos_formativos,id'],
             'fecha_matricula' => ['sometimes', 'required', 'date', 'before_or_equal:today'],
             'estado' => ['sometimes', 'required', 'in:activa,suspendida,finalizada']
         ];

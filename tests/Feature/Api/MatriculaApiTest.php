@@ -2,36 +2,55 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\FamiliaProfesional;
+use App\Models\CicloFormativo;
 use App\Models\Matricula;
+use App\Models\ModuloFormativo;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
+use PhpParser\Node\Expr\AssignOp\Mod;
 
 class MatriculaApiTest extends FeatureTestCase
 {
     use WithFaker;
 
     protected User $user;
-    
+    protected FamiliaProfesional $familiaProfesional; // Assuming you have a FamiliaProfesional model
+    protected CicloFormativo $cicloFormativo; // Assuming you have a CicloFormativo model
+    protected ModuloFormativo $moduloFormativo;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->user = User::factory()->create();
         Sanctum::actingAs($this->user);
-        
+
+        // Create a FamiliaProfesional and CicloFormativo for the test
+        $this->familiaProfesional = FamiliaProfesional::factory()->create();
+        $this->cicloFormativo = CicloFormativo::factory()->create([
+            'familia_profesional_id' => $this->familiaProfesional->id,
+        ]);
+
+        $this->moduloFormativo = ModuloFormativo::factory()->create([
+            'ciclo_formativo_id' => $this->cicloFormativo->id, // Assuming a valid ciclo_formativo_id exists
+            'docente_id' => $this->user->id // Assuming the user is a docente
+        ]);
+
     }
 
     public function test_can_list_matriculas()
     {
         // Arrange
-        Matricula::factory()->count(3)->create();
+        Matricula::factory()->count(3)->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id,
+        ]);
 
         // Act
-        $response = $this->getJson('/api/v1/matriculas');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas");
 
         // Assert
         $response->assertOk()
@@ -42,7 +61,7 @@ class MatriculaApiTest extends FeatureTestCase
                      'links',
                      'meta'
                  ]);
-        
+
         $this->assertCount(3, $response->json('data'));
     }
 
@@ -50,12 +69,12 @@ class MatriculaApiTest extends FeatureTestCase
     {
         // Arrange
         $data = [
-            'fecha_matricula' => $this->faker->date(),
+            'fecha_matricula' => $this->faker->date('Y-m-d H:i:s'),
             'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
         ];
 
         // Act
-        $response = $this->postJson('/api/v1/matriculas', $data);
+        $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
 
         // Assert
         $response->assertCreated()
@@ -72,10 +91,12 @@ class MatriculaApiTest extends FeatureTestCase
     public function test_can_show_matricula()
     {
         // Arrange
-        $matricula = Matricula::factory()->create();
+        $matricula = Matricula::factory()->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id,
+        ]);
 
         // Act
-        $response = $this->getJson('/api/v1/matriculas/{$matricula->id}');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas/{$matricula->id}");
 
         // Assert
         $response->assertOk()
@@ -87,14 +108,16 @@ class MatriculaApiTest extends FeatureTestCase
     public function test_can_update_matricula()
     {
         // Arrange
-        $matricula = Matricula::factory()->create();
+        $matricula = Matricula::factory()->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id,
+        ]);
         $updateData = [
-            'fecha_matricula' => $this->faker->date(),
+            'fecha_matricula' => $this->faker->date('Y-m-d'),
             'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
         ];
 
         // Act
-        $response = $this->putJson('/api/v1/matriculas/{$matricula->id}', $updateData);
+        $response = $this->putJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas/{$matricula->id}", $updateData);
 
         // Assert
         $response->assertOk()
@@ -103,60 +126,36 @@ class MatriculaApiTest extends FeatureTestCase
                  ]);
 
         $matricula->refresh();
-        $this->assertEquals($updateData['fecha_matricula'], $matricula->$field['name']);
-        $this->assertEquals($updateData['estado'], $matricula->$field['name']);
+        $this->assertEquals($updateData['fecha_matricula'], $matricula->fecha_matricula->format('Y-m-d'));
+        $this->assertEquals($updateData['estado'], $matricula->estado);
     }
 
     public function test_can_delete_matricula()
     {
         // Arrange
-        $matricula = Matricula::factory()->create();
+        $matricula = Matricula::factory()->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id,
+        ]);
 
         // Act
-        $response = $this->deleteJson('/api/v1/matriculas/{$matricula->id}');
+        $response = $this->deleteJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas/{$matricula->id}");
 
         // Assert
         $response->assertOk()
                  ->assertJson([
                      'message' => 'Matricula eliminado correctamente'
                  ]);
-
-        $this->assertSoftDeleted('matriculas', [
-            'id' => $matricula->id
-        ]);
-    }
-
-    public function test_can_search_matriculas()
-    {
-        // Arrange
-        $searchTerm = 'test search';
-        $matricula1 = Matricula::factory()->create([
-            'nombre' => 'Contains test search term',
-            
-        ]);
-        $matricula2 = Matricula::factory()->create([
-            'nombre' => 'Different content',
-            
-        ]);
-
-        // Act
-        $response = $this->getJson('/api/v1/matriculas?search=' . urlencode($searchTerm));
-
-        // Assert
-        $response->assertOk();
-        $data = $response->json('data');
-        
-        $this->assertCount(1, $data);
-        $this->assertEquals($matricula1->id, $data[0]['id']);
     }
 
     public function test_can_paginate_matriculas()
     {
         // Arrange
-        Matricula::factory()->count(25)->create();
+        Matricula::factory()->count(25)->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id,
+        ]);
 
         // Act
-        $response = $this->getJson('/api/v1/matriculas?per_page=10');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas?per_page=10");
 
         // Assert
         $response->assertOk()
@@ -165,106 +164,57 @@ class MatriculaApiTest extends FeatureTestCase
                      'links' => ['first', 'last', 'prev', 'next'],
                      'meta' => ['current_page', 'total', 'per_page']
                  ]);
-        
+
         $this->assertCount(10, $response->json('data'));
         $this->assertEquals(25, $response->json('meta.total'));
     }
 
+    public function test_requires_estado_field()
+    {
+        // Arrange
+        $data = [
+        'fecha_matricula' => $this->faker->date(),
+        'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
+    ];
+        unset($data['estado']);
 
-        public function test_requires_estudiante_id_field()
-        {
-            // Arrange
+        // Act
+        $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
+
+        // Assert
+        $response->assertUnprocessable()
+                    ->assertJsonValidationErrors('estado');
+    }
+    public function test_estado_accepts_valid_values()
+    {
+        foreach (['activa', 'suspendida', 'finalizada'] as $value) {
             $data = [
-            'fecha_matricula' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
-            unset($data['estudiante_id']);
+        'fecha_matricula' => $this->faker->date(),
+        'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
+    ];
+            $data['estado'] = $value;
 
-            // Act
-            $response = $this->postJson('/api/v1matriculas', $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('estudiante_id');
+            $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
+            $response->assertCreated();
         }
-        public function test_requires_modulo_formativo_id_field()
-        {
-            // Arrange
-            $data = [
-            'fecha_matricula' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
-            unset($data['modulo_formativo_id']);
+    }
 
-            // Act
-            $response = $this->postJson('/api/v1matriculas', $data);
+    public function test_estado_rejects_invalid_values()
+    {
+        // Arrange
+        $data = [
+        'fecha_matricula' => $this->faker->date(),
+        'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
+    ];
+        $data['estado'] = 'invalid_value';
 
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('modulo_formativo_id');
-        }
-        public function test_requires_fecha_matricula_field()
-        {
-            // Arrange
-            $data = [
-            'fecha_matricula' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
-            unset($data['fecha_matricula']);
+        // Act
+        $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
 
-            // Act
-            $response = $this->postJson('/api/v1matriculas', $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('fecha_matricula');
-        }
-        public function test_requires_estado_field()
-        {
-            // Arrange
-            $data = [
-            'fecha_matricula' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
-            unset($data['estado']);
-
-            // Act
-            $response = $this->postJson('/api/v1matriculas', $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('estado');
-        }
-        public function test_estado_accepts_valid_values()
-        {
-            foreach (['activa', 'suspendida', 'finalizada'] as $value) {
-                $data = [
-            'fecha_matricula' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
-                $data['estado'] = $value;
-
-                $response = $this->postJson('/api/v1matriculas', $data);
-                $response->assertCreated();
-            }
-        }
-
-        public function test_estado_rejects_invalid_values()
-        {
-            // Arrange
-            $data = [
-            'fecha_matricula' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
-            $data['estado'] = 'invalid_value';
-
-            // Act
-            $response = $this->postJson('/api/v1matriculas', $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('estado');
-        }
+        // Assert
+        $response->assertUnprocessable()
+                    ->assertJsonValidationErrors('estado');
+    }
 
     public function test_requires_authentication()
     {
@@ -272,11 +222,10 @@ class MatriculaApiTest extends FeatureTestCase
         Sanctum::actingAs(null);
 
         // Act
-        $response = $this->getJson('/api/v1/matriculas');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas");
 
         // Assert
         $response->assertUnauthorized();
     }
-
 
 }

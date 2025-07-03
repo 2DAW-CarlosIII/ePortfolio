@@ -7,8 +7,9 @@ use App\Models\Matricula;
 use App\Http\Requests\StoreMatriculaRequest;
 use App\Http\Requests\UpdateMatriculaRequest;
 use App\Http\Resources\MatriculaResource;
+use App\Models\ModuloFormativo;
 use Illuminate\Http\Request;
-
+use PhpParser\Node\Expr\AssignOp\Mod;
 
 /**
  * @OA\Tag(
@@ -180,11 +181,13 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID
- 
- 
- 
-  *         description="Resource deleted successfully",
+ *         description="ID of the módulo formativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully",
  *         @OA\JsonContent(
  *             @OA\Property(property="message", type="string", example="Matricula eliminado correctamente")
  *         )
@@ -197,7 +200,7 @@ use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, ModuloFormativo $moduloFormativo)
     {
         $query = Matricula::query();
 
@@ -206,66 +209,82 @@ class MatriculaController extends Controller
         if ($request->has('estado') && $request->filled('estado')) {
             $query->where('estado', $request->get('estado'));
         }
-        
+
         if ($request->has('activo') && $request->filled('activo')) {
             $query->where('activo', $request->boolean('activo'));
         }
-        
+
         // Eager loading de relaciones comunes
         $query->with($this->getEagerLoadRelations());
-        
+
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
         $query->orderBy($sortBy, $sortDirection);
-        
+
         // Paginación
         $perPage = $request->get('per_page', 15);
         $matriculas = $query->paginate($perPage);
-        
+
         return MatriculaResource::collection($matriculas);
     }
 
-    public function store(StoreMatriculaRequest $request)
+    public function store(StoreMatriculaRequest $request, ModuloFormativo $moduloFormativo)
     {
-        $matricula = Matricula::create($request->validated());
-        
+        $data= $request->validated();
+        $data['modulo_formativo_id'] = $moduloFormativo->id;
+        $data['estudiante_id'] = $request->user()->id; // Asignar el ID del usuario autenticado como estudiante
+
+        $matricula = Matricula::create($data);
+
         // Cargar relaciones para la respuesta
         $matricula->load($this->getEagerLoadRelations());
-        
+
         return new MatriculaResource($matricula);
     }
 
-    public function show(Matricula $matricula)
+    public function show(ModuloFormativo $moduloFormativo, Matricula $matricula)
     {
-        
+
+        if ($matricula->modulo_formativo_id !== $moduloFormativo->id) {
+            return response()->json(['message' => 'Matricula not found'], 404);
+        }
+
         // Cargar relaciones
         $matricula->load($this->getEagerLoadRelations());
-        
+
         return new MatriculaResource($matricula);
     }
 
-    public function update(UpdateMatriculaRequest $request, Matricula $matricula)
+    public function update(UpdateMatriculaRequest $request, ModuloFormativo $moduloFormativo, Matricula $matricula)
     {
-        
+
+        if ($matricula->modulo_formativo_id !== $moduloFormativo->id) {
+            return response()->json(['message' => 'Matricula not found'], 404);
+        }
+
         $matricula->update($request->validated());
-        
+
         // Cargar relaciones para la respuesta
         $matricula->load($this->getEagerLoadRelations());
-        
+
         return new MatriculaResource($matricula);
     }
 
-    public function destroy(Matricula $matricula)
+    public function destroy(ModuloFormativo $moduloFormativo, Matricula $matricula)
     {
-        
+
+        if ($matricula->modulo_formativo_id !== $moduloFormativo->id) {
+            return response()->json(['message' => 'Matricula not found'], 404);
+        }
+
         $matricula->delete();
-        
+
         return response()->json([
             'message' => 'Matricula eliminado correctamente'
         ]);
     }
-    
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */
