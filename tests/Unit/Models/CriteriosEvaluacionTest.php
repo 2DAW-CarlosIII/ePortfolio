@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\CriteriosEvaluacion;
+use App\Models\CriterioEvaluacion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,8 +12,8 @@ class CriteriosEvaluacionTest extends TestCase
 
     public function test_it_has_fillable_attributes()
     {
-        $fillable = (new CriteriosEvaluacion())->getFillable();
-        
+        $fillable = (new CriterioEvaluacion())->getFillable();
+
         $expected = [
             'resultado_aprendizaje_id',
             'codigo',
@@ -21,21 +21,21 @@ class CriteriosEvaluacionTest extends TestCase
             'peso_porcentaje',
             'orden'
         ];
-        
+
         $this->assertEquals($expected, $fillable);
     }
 
     public function test_it_has_correct_table_name()
     {
-        $model = new CriteriosEvaluacion();
+        $model = new CriterioEvaluacion();
         $this->assertEquals('criterios_evaluacion', $model->getTable());
     }
 
     public function test_it_can_be_created_with_factory()
     {
-        $criteriosEvaluacion = CriteriosEvaluacion::factory()->create();
-        
-        $this->assertInstanceOf(CriteriosEvaluacion::class, $criteriosEvaluacion);
+        $criteriosEvaluacion = CriterioEvaluacion::factory()->create();
+
+        $this->assertInstanceOf(CriterioEvaluacion::class, $criteriosEvaluacion);
         $this->assertDatabaseHas('criterios_evaluacion', [
             'id' => $criteriosEvaluacion->id
         ]);
@@ -44,8 +44,8 @@ class CriteriosEvaluacionTest extends TestCase
 
     public function test_it_uses_expected_factory()
     {
-        $criteriosEvaluacion = CriteriosEvaluacion::factory()->make();
-        $this->assertInstanceOf(CriteriosEvaluacion::class, $criteriosEvaluacion);
+        $criteriosEvaluacion = CriterioEvaluacion::factory()->make();
+        $this->assertInstanceOf(CriterioEvaluacion::class, $criteriosEvaluacion);
     }
 
 

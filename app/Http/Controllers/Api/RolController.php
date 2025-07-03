@@ -175,6 +175,13 @@ class RolController extends Controller
     {
         $query = Rol::query();
 
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")->orWhere('description', 'like', "%$search%");
+            });
+        }
 
         // Filtros adicionales
         if ($request->has('estado') && $request->filled('estado')) {
@@ -221,7 +228,6 @@ class RolController extends Controller
 
     public function update(UpdateRolRequest $request, Rol $rol)
     {
-
         $rol->update($request->validated());
 
         // Cargar relaciones para la respuesta
