@@ -20,7 +20,6 @@ class UpdateResultadoAprendizajeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'modulo_formativo_id' => ['sometimes', 'required', 'integer', 'exists:modulos_formativos,id'],
             'codigo' => ['sometimes', 'required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i'],
             'descripcion' => ['sometimes', 'required', 'string', 'max:65535'],
             'peso_porcentaje' => ['sometimes', 'required', 'numeric', 'between:0,100'],

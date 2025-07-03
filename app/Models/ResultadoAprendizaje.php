@@ -23,7 +23,7 @@ class ResultadoAprendizaje extends Model
     ];
     public function modulos_formativo()
     {
-        return $this->belongsTo(ModuloFormativo::class, 'modulos_formativo_id');
+        return $this->belongsTo(ModuloFormativo::class, 'modulo_formativo_id');
     }
     public function criterios_evaluacion()
     {

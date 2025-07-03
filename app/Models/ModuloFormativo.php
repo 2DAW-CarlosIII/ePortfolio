@@ -31,18 +31,14 @@ class ModuloFormativo extends Model
     }
     public function resultados_aprendizaje()
     {
-        return $this->hasMany(ResultadoAprendizaje::class, 'modulos_formativo_id');
+        return $this->hasMany(ResultadoAprendizaje::class, 'modulo_formativo_id');
     }
     public function user_roles()
     {
-        return $this->hasMany(UserRol::class, 'modulos_formativo_id');
+        return $this->hasMany(UserRol::class, 'modulo_formativo_id');
     }
     public function matriculas()
     {
-        return $this->hasMany(Matricula::class, 'modulos_formativo_id');
-    }
-    public function planificacion_criterios()
-    {
-        return $this->hasMany(PlanificacionCriterios::class, 'modulos_formativo_id');
+        return $this->hasMany(Matricula::class, 'modulo_formativo_id');
     }
 }

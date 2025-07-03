@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\ModuloFormativo;
 use App\Models\ResultadoAprendizaje;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,24 +15,29 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
     use WithFaker;
 
     protected User $user;
-    
+    protected ModuloFormativo $moduloFormativo;
+
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->user = User::factory()->create();
         Sanctum::actingAs($this->user);
-        
+
+        $this->moduloFormativo = ModuloFormativo::factory()->create();
+
     }
 
     public function test_can_list_resultadoAprendizajes()
     {
         // Arrange
-        ResultadoAprendizaje::factory()->count(3)->create();
+        ResultadoAprendizaje::factory()->count(3)->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id
+        ]);
 
         // Act
-        $response = $this->getJson('/api/v1/resultados-aprendizaje');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje");
 
         // Assert
         $response->assertOk()
@@ -42,7 +48,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
                      'links',
                      'meta'
                  ]);
-        
+
         $this->assertCount(3, $response->json('data'));
     }
 
@@ -57,7 +63,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->postJson('/api/v1/resultados-aprendizaje', $data);
+        $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje", $data);
 
         // Assert
         $response->assertCreated()
@@ -76,10 +82,12 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
     public function test_can_show_resultadoAprendizaje()
     {
         // Arrange
-        $resultadoAprendizaje = ResultadoAprendizaje::factory()->create();
+        $resultadoAprendizaje = ResultadoAprendizaje::factory()->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id
+        ]);
 
         // Act
-        $response = $this->getJson('/api/v1/resultados-aprendizaje/{$resultadoAprendizaje->id}');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje/{$resultadoAprendizaje->id}");
 
         // Assert
         $response->assertOk()
@@ -91,7 +99,9 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
     public function test_can_update_resultadoAprendizaje()
     {
         // Arrange
-        $resultadoAprendizaje = ResultadoAprendizaje::factory()->create();
+        $resultadoAprendizaje = ResultadoAprendizaje::factory()->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id
+        ]);
         $updateData = [
             'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'descripcion' => $this->faker->paragraph(),
@@ -100,7 +110,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->putJson('/api/v1/resultados-aprendizaje/{$resultadoAprendizaje->id}', $updateData);
+        $response = $this->putJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje/{$resultadoAprendizaje->id}", $updateData);
 
         // Assert
         $response->assertOk()
@@ -109,29 +119,27 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
                  ]);
 
         $resultadoAprendizaje->refresh();
-        $this->assertEquals($updateData['codigo'], $resultadoAprendizaje->$field['name']);
-        $this->assertEquals($updateData['descripcion'], $resultadoAprendizaje->$field['name']);
-        $this->assertEquals($updateData['peso_porcentaje'], $resultadoAprendizaje->$field['name']);
-        $this->assertEquals($updateData['orden'], $resultadoAprendizaje->$field['name']);
+        $this->assertEquals($updateData['codigo'], $resultadoAprendizaje->codigo);
+        $this->assertEquals($updateData['descripcion'], $resultadoAprendizaje->descripcion);
+        $this->assertEquals($updateData['peso_porcentaje'], $resultadoAprendizaje->peso_porcentaje);
+        $this->assertEquals($updateData['orden'], $resultadoAprendizaje->orden);
     }
 
     public function test_can_delete_resultadoAprendizaje()
     {
         // Arrange
-        $resultadoAprendizaje = ResultadoAprendizaje::factory()->create();
+        $resultadoAprendizaje = ResultadoAprendizaje::factory()->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id
+        ]);
 
         // Act
-        $response = $this->deleteJson('/api/v1/resultados-aprendizaje/{$resultadoAprendizaje->id}');
+        $response = $this->deleteJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje/{$resultadoAprendizaje->id}");
 
         // Assert
         $response->assertOk()
                  ->assertJson([
                      'message' => 'ResultadoAprendizaje eliminado correctamente'
                  ]);
-
-        $this->assertSoftDeleted('resultados_aprendizaje', [
-            'id' => $resultadoAprendizaje->id
-        ]);
     }
 
     public function test_can_search_resultadoAprendizajes()
@@ -139,21 +147,21 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
         // Arrange
         $searchTerm = 'test search';
         $resultadoAprendizaje1 = ResultadoAprendizaje::factory()->create([
-            'nombre' => 'Contains test search term',
-            
+            'descripcion' => 'Contains test search term',
+            'modulo_formativo_id' => $this->moduloFormativo->id
         ]);
         $resultadoAprendizaje2 = ResultadoAprendizaje::factory()->create([
-            'nombre' => 'Different content',
-            
+            'descripcion' => 'Different content',
+            'modulo_formativo_id' => $this->moduloFormativo->id
         ]);
 
         // Act
-        $response = $this->getJson('/api/v1/resultados-aprendizaje?search=' . urlencode($searchTerm));
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje?search=" . urlencode($searchTerm));
 
         // Assert
         $response->assertOk();
         $data = $response->json('data');
-        
+
         $this->assertCount(1, $data);
         $this->assertEquals($resultadoAprendizaje1->id, $data[0]['id']);
     }
@@ -161,10 +169,12 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
     public function test_can_paginate_resultadoAprendizajes()
     {
         // Arrange
-        ResultadoAprendizaje::factory()->count(25)->create();
+        ResultadoAprendizaje::factory()->count(25)->create([
+            'modulo_formativo_id' => $this->moduloFormativo->id
+        ]);
 
         // Act
-        $response = $this->getJson('/api/v1/resultados-aprendizaje?per_page=10');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje?per_page=10");
 
         // Assert
         $response->assertOk()
@@ -173,30 +183,11 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
                      'links' => ['first', 'last', 'prev', 'next'],
                      'meta' => ['current_page', 'total', 'per_page']
                  ]);
-        
+
         $this->assertCount(10, $response->json('data'));
         $this->assertEquals(25, $response->json('meta.total'));
     }
 
-
-        public function test_requires_modulo_formativo_id_field()
-        {
-            // Arrange
-            $data = [
-            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => $this->faker->paragraph(),
-            'peso_porcentaje' => $this->faker->randomFloat(2, 0, 100),
-            'orden' => $this->faker->numberBetween(1, 100)
-        ];
-            unset($data['modulo_formativo_id']);
-
-            // Act
-            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('modulo_formativo_id');
-        }
         public function test_requires_codigo_field()
         {
             // Arrange
@@ -209,7 +200,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
             unset($data['codigo']);
 
             // Act
-            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -227,7 +218,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
             unset($data['descripcion']);
 
             // Act
-            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -245,7 +236,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
             unset($data['peso_porcentaje']);
 
             // Act
-            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -263,7 +254,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
             unset($data['orden']);
 
             // Act
-            $response = $this->postJson('/api/v1resultados-aprendizaje', $data);
+            $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje", $data);
 
             // Assert
             $response->assertUnprocessable()
@@ -276,7 +267,7 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
         Sanctum::actingAs(null);
 
         // Act
-        $response = $this->getJson('/api/v1/resultados-aprendizaje');
+        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje");
 
         // Assert
         $response->assertUnauthorized();

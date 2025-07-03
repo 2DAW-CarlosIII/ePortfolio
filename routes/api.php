@@ -44,7 +44,11 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         'ciclos-formativos' => 'cicloFormativo'
     ]);
     Route::apiResource('users.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters(['users' => 'user']);
-    Route::apiResource('modulos-formativos.resultados-aprendizaje', App\Http\Controllers\Api\ResultadoAprendizajeController::class)->parameters(['modulos-formativos' => 'modulos_formativo']);
+    Route::apiResource('modulos-formativos.resultados-aprendizaje', App\Http\Controllers\Api\ResultadoAprendizajeController::class)
+        ->parameters([
+            'modulos-formativos' => 'moduloFormativo',
+            'resultados-aprendizaje' => 'resultadoAprendizaje'
+        ]);
     Route::apiResource('resultados-aprendizaje.criterios-evaluacion', App\Http\Controllers\Api\CriteriosEvaluacionController::class)->parameters([
         'resultados-aprendizaje' => 'resultadoAprendizaje',
         'criterios-evaluacion' => 'criterioEvaluacion'

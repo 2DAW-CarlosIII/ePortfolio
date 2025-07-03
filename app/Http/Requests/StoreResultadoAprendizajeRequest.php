@@ -20,7 +20,6 @@ class StoreResultadoAprendizajeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'modulo_formativo_id' => ['required', 'integer', 'exists:modulos_formativos,id'],
             'codigo' => ['required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i'],
             'descripcion' => ['required', 'string', 'max:65535'],
             'peso_porcentaje' => ['required', 'numeric', 'between:0,100'],
