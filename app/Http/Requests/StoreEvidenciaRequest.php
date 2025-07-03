@@ -20,12 +20,9 @@ class StoreEvidenciaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'estudiante_id' => ['required', 'integer', 'exists:users,id'],
-            'criterio_evaluacion_id' => ['required', 'integer', 'exists:criterios_evaluacion,id'],
             'url' => ['required', 'string', 'url', 'max:2048'],
             'descripcion' => ['required', 'string', 'max:65535'],
             'estado_validacion' => ['required', 'in:pendiente,validada,rechazada'],
-            'fecha_creacion' => ['required', 'date']
         ];
     }
 

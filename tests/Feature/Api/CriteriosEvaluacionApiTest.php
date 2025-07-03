@@ -15,6 +15,7 @@ class CriteriosEvaluacionApiTest extends FeatureTestCase
     use WithFaker;
 
     protected User $user;
+    protected ResultadoAprendizaje $resultadoAprendizaje;
 
 
     protected function setUp(): void

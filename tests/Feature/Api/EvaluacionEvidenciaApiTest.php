@@ -15,7 +15,7 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
     use WithFaker;
 
     protected User $user;
-    protected Evidencia $parent;
+    protected Evidencia $evidencia;
 
     protected function setUp(): void
     {
