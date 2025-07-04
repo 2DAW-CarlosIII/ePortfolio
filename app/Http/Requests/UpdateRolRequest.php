@@ -4,6 +4,17 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UpdateRoleRequest",
+ *     type="object",
+ *     title="Update Role Request",
+ *     description="Datos para actualizar un Rol",
+ *     @OA\Property(property="name", type="string", maxLength=255, description="Nombre único del rol"),
+ *     @OA\Property(property="description", type="string", description="Descripción del rol"),
+ * )
+ */
+
 class UpdateRolRequest extends FormRequest
 {
     /**

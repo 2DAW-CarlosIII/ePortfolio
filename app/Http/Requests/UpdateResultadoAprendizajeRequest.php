@@ -4,6 +4,20 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UpdateResultadoAprendizajeRequest",
+ *     type="object",
+ *     title="Update Resultado Aprendizaje Request",
+ *     description="Datos para actualizar un Resultado de Aprendizaje",
+ *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
+ *     @OA\Property(property="codigo", type="string", maxLength=50, description="Código del resultado de aprendizaje"),
+ *     @OA\Property(property="descripcion", type="string", description="Descripción del resultado de aprendizaje"),
+ *     @OA\Property(property="peso_porcentaje", type="number", format="float", minimum=0, maximum=100, description="Peso en porcentaje"),
+ *     @OA\Property(property="orden", type="integer", minimum=1, description="Orden de presentación"),
+ * )
+ */
+
 class UpdateResultadoAprendizajeRequest extends FormRequest
 {
     /**

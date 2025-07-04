@@ -4,6 +4,22 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StorePlanificacionCriterioRequest",
+ *     type="object",
+ *     title="Store Planificación Criterio Request",
+ *     description="Datos requeridos para crear una Planificación de Criterio",
+ *     required={"criterio_evaluacion_id", "modulo_formativo_id", "fecha_apertura", "fecha_cierre", "activo"},
+ *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
+ *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
+ *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
+ *     @OA\Property(property="fecha_cierre", type="string", format="date", description="Fecha de cierre"),
+ *     @OA\Property(property="activo", type="boolean", description="Estado activo"),
+ *     @OA\Property(property="observaciones", type="string", description="Observaciones"),
+ * )
+ */
+
 class StorePlanificacionCriteriosRequest extends FormRequest
 {
     /**

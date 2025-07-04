@@ -4,6 +4,22 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StoreEvidenciaRequest",
+ *     type="object",
+ *     title="Store Evidencia Request",
+ *     description="Datos requeridos para crear una Evidencia",
+ *     required={"estudiante_id", "criterio_evaluacion_id", "url", "descripcion"},
+ *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
+ *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
+ *     @OA\Property(property="url", type="string", format="url", description="URL de la evidencia"),
+ *     @OA\Property(property="descripcion", type="string", description="Descripción de la evidencia"),
+ *     @OA\Property(property="estado_validacion", type="string", enum={"pendiente", "validada", "rechazada"}, description="Estado de validación"),
+ *     @OA\Property(property="fecha_creacion", type="string", format="date-time", description="Fecha de creación de la evidencia"),
+ * )
+ */
+
 class StoreEvidenciaRequest extends FormRequest
 {
     /**

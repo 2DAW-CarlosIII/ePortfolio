@@ -4,6 +4,21 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UpdateEvaluacionEvidenciaRequest",
+ *     type="object",
+ *     title="Update Evaluación Evidencia Request",
+ *     description="Datos para actualizar una Evaluación de Evidencia",
+ *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
+ *     @OA\Property(property="user_id", type="integer", description="ID del evaluador"),
+ *     @OA\Property(property="puntuacion", type="number", format="float", minimum=0, maximum=10, description="Puntuación otorgada (0-10)"),
+ *     @OA\Property(property="estado", type="string", enum={"pendiente", "completada", "revisada"}, description="Estado de la evaluación"),
+ *     @OA\Property(property="observaciones", type="string", description="Observaciones de la evaluación"),
+ *     @OA\Property(property="fecha_evaluacion", type="string", format="date-time", description="Fecha de evaluación"),
+ * )
+ */
+
 class UpdateEvaluacionEvidenciaRequest extends FormRequest
 {
     /**

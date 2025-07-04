@@ -4,6 +4,21 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StoreCicloFormativoRequest",
+ *     type="object",
+ *     title="Store Ciclo Formativo Request",
+ *     description="Datos requeridos para crear un Ciclo Formativo",
+ *     required={"familia_profesional_id", "nombre", "codigo", "grado"},
+ *     @OA\Property(property="familia_profesional_id", type="integer", description="ID de la familia profesional"),
+ *     @OA\Property(property="nombre", type="string", maxLength=255, description="Nombre del ciclo formativo"),
+ *     @OA\Property(property="codigo", type="string", maxLength=50, description="Código único del ciclo formativo"),
+ *     @OA\Property(property="grado", type="string", enum={"medio", "superior"}, description="Grado del ciclo formativo"),
+ *     @OA\Property(property="descripcion", type="string", description="Descripción del ciclo formativo"),
+ * )
+ */
+
 class StoreCicloFormativoRequest extends FormRequest
 {
     /**

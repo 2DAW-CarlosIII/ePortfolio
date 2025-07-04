@@ -5,6 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="ModuloFormativo",
+ *     type="object",
+ *     title="Módulo Formativo",
+ *     description="Modelo de Módulo Formativo",
+ *     @OA\Property(property="id", type="integer", description="ID único"),
+ *     @OA\Property(property="ciclo_formativo_id", type="integer", description="ID del ciclo formativo"),
+ *     @OA\Property(property="nombre", type="string", description="Nombre del módulo formativo"),
+ *     @OA\Property(property="codigo", type="string", description="Código del módulo formativo"),
+ *     @OA\Property(property="horas_totales", type="integer", description="Horas totales del módulo"),
+ *     @OA\Property(property="curso_escolar", type="string", description="Curso escolar"),
+ *     @OA\Property(property="centro", type="string", description="Centro educativo"),
+ *     @OA\Property(property="docente_id", type="integer", description="ID del docente"),
+ *     @OA\Property(property="descripcion", type="string", description="Descripción del módulo"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Fecha de actualización"),
+ * )
+ */
+
 class ModuloFormativo extends Model
 {
     use HasFactory;

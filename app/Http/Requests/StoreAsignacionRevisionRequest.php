@@ -4,6 +4,22 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StoreAsignacionRevisionRequest",
+ *     type="object",
+ *     title="Store Asignación Revisión Request",
+ *     description="Datos requeridos para crear una Asignación de Revisión",
+ *     required={"evidencia_id", "revisor_id", "asignado_por_id", "fecha_asignacion", "fecha_limite", "estado"},
+ *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
+ *     @OA\Property(property="revisor_id", type="integer", description="ID del revisor"),
+ *     @OA\Property(property="asignado_por_id", type="integer", description="ID del usuario que asigna"),
+ *     @OA\Property(property="fecha_asignacion", type="string", format="date", description="Fecha de asignación"),
+ *     @OA\Property(property="fecha_limite", type="string", format="date", description="Fecha límite para la revisión"),
+ *     @OA\Property(property="estado", type="string", enum={"pendiente", "en_revision", "completada"}, description="Estado de la revisión"),
+ * )
+ */
+
 class StoreAsignacionRevisionRequest extends FormRequest
 {
     /**

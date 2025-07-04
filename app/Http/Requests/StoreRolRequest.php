@@ -4,6 +4,18 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="StoreRoleRequest",
+ *     type="object",
+ *     title="Store Role Request",
+ *     description="Datos requeridos para crear un Rol",
+ *     required={"name"},
+ *     @OA\Property(property="name", type="string", maxLength=255, description="Nombre único del rol"),
+ *     @OA\Property(property="description", type="string", description="Descripción del rol"),
+ * )
+ */
+
 class StoreRolRequest extends FormRequest
 {
     /**

@@ -4,6 +4,19 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UpdateComentarioRequest",
+ *     type="object",
+ *     title="Update Comentario Request",
+ *     description="Datos para actualizar un Comentario",
+ *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
+ *     @OA\Property(property="user_id", type="integer", description="ID del usuario que comenta"),
+ *     @OA\Property(property="contenido", type="string", description="Contenido del comentario"),
+ *     @OA\Property(property="tipo", type="string", enum={"feedback", "pregunta", "sugerencia"}, description="Tipo de comentario"),
+ * )
+ */
+
 class UpdateComentarioRequest extends FormRequest
 {
     /**

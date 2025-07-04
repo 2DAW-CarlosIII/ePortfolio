@@ -4,6 +4,19 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UpdateMatriculaRequest",
+ *     type="object",
+ *     title="Update Matrícula Request",
+ *     description="Datos para actualizar una Matrícula",
+ *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
+ *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
+ *     @OA\Property(property="fecha_matricula", type="string", format="date", description="Fecha de matrícula"),
+ *     @OA\Property(property="estado", type="string", enum={"activa", "inactiva", "finalizada"}, description="Estado de la matrícula"),
+ * )
+ */
+
 class UpdateMatriculaRequest extends FormRequest
 {
     /**

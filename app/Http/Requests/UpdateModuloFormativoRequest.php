@@ -4,6 +4,23 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UpdateModuloFormativoRequest",
+ *     type="object",
+ *     title="Update Módulo Formativo Request",
+ *     description="Datos para actualizar un Módulo Formativo",
+ *     @OA\Property(property="ciclo_formativo_id", type="integer", description="ID del ciclo formativo"),
+ *     @OA\Property(property="nombre", type="string", maxLength=255, description="Nombre del módulo formativo"),
+ *     @OA\Property(property="codigo", type="string", maxLength=50, description="Código del módulo formativo"),
+ *     @OA\Property(property="horas_totales", type="integer", minimum=1, description="Horas totales del módulo"),
+ *     @OA\Property(property="curso_escolar", type="string", maxLength=20, description="Curso escolar (ej: 2024-2025)"),
+ *     @OA\Property(property="centro", type="string", maxLength=255, description="Centro educativo"),
+ *     @OA\Property(property="docente_id", type="integer", description="ID del docente"),
+ *     @OA\Property(property="descripcion", type="string", description="Descripción del módulo"),
+ * )
+ */
+
 class UpdateModuloFormativoRequest extends FormRequest
 {
     /**

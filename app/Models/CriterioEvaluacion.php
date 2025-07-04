@@ -5,6 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="CriterioEvaluacion",
+ *     type="object",
+ *     title="Criterio de Evaluación",
+ *     description="Modelo de Criterio de Evaluación",
+ *     @OA\Property(property="id", type="integer", description="ID único"),
+ *     @OA\Property(property="resultado_aprendizaje_id", type="integer", description="ID del resultado de aprendizaje"),
+ *     @OA\Property(property="codigo", type="string", description="Código del criterio de evaluación"),
+ *     @OA\Property(property="descripcion", type="string", description="Descripción del criterio de evaluación"),
+ *     @OA\Property(property="peso_porcentaje", type="number", format="float", description="Peso en porcentaje"),
+ *     @OA\Property(property="orden", type="integer", description="Orden de presentación"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Fecha de actualización"),
+ * )
+ */
+
 class CriterioEvaluacion extends Model
 {
     use HasFactory;

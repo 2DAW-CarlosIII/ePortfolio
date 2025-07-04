@@ -28,14 +28,284 @@
         }
     ],
     "paths": {
+        "/evidencias/{parent_id}/asignaciones-revision": {
+            "get": {
+                "tags": [
+                    "AsignacionRevision"
+                ],
+                "summary": "List all asignacionrevisions",
+                "description": "Retrieve a paginated list of asignacionrevisions",
+                "operationId": "59bedcabf343c2f2514378e3571619ac",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/AsignacionRevision"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "AsignacionRevision"
+                ],
+                "summary": "Create a new asignacionrevision",
+                "description": "Create a new asignacionrevision resource",
+                "operationId": "ed2d208a2f2636a16ec3d16bbdb75be1",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreAsignacionRevisionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AsignacionRevision"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/evidencias/{parent_id}/asignaciones-revision/{id}": {
+            "get": {
+                "tags": [
+                    "AsignacionRevision"
+                ],
+                "summary": "Show a specific asignacionrevision",
+                "description": "Retrieve a specific asignacionrevision by ID",
+                "operationId": "f6a8d6abcb81872aa30ea5f7c3367f05",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the asignacionrevision",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AsignacionRevision"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "AsignacionRevision"
+                ],
+                "summary": "Update a specific asignacionrevision",
+                "description": "Update a specific asignacionrevision by ID",
+                "operationId": "5a0351ab2a9ec51b0582f9700d0d4dc2",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the asignacionrevision",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAsignacionRevisionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AsignacionRevision"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "AsignacionRevision"
                 ],
                 "summary": "Delete a specific asignacionrevision",
                 "description": "Delete a specific asignacionrevision by ID",
-                "operationId": "567681c4cacba7c5d8066c68ff545bcf",
+                "operationId": "c543bd6844897faf8389e50ce7b83dea",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -692,6 +962,1405 @@
         }
     },
     "components": {
+        "schemas": {
+            "StoreAsignacionRevisionRequest": {
+                "title": "Store Asignación Revisión Request",
+                "description": "Datos requeridos para crear una Asignación de Revisión",
+                "required": [
+                    "evidencia_id",
+                    "revisor_id",
+                    "asignado_por_id",
+                    "fecha_asignacion",
+                    "fecha_limite",
+                    "estado"
+                ],
+                "properties": {
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "revisor_id": {
+                        "description": "ID del revisor",
+                        "type": "integer"
+                    },
+                    "asignado_por_id": {
+                        "description": "ID del usuario que asigna",
+                        "type": "integer"
+                    },
+                    "fecha_asignacion": {
+                        "description": "Fecha de asignación",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_limite": {
+                        "description": "Fecha límite para la revisión",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "estado": {
+                        "description": "Estado de la revisión",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "en_revision",
+                            "completada"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "StoreCicloFormativoRequest": {
+                "title": "Store Ciclo Formativo Request",
+                "description": "Datos requeridos para crear un Ciclo Formativo",
+                "required": [
+                    "familia_profesional_id",
+                    "nombre",
+                    "codigo",
+                    "grado"
+                ],
+                "properties": {
+                    "familia_profesional_id": {
+                        "description": "ID de la familia profesional",
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "description": "Nombre del ciclo formativo",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "codigo": {
+                        "description": "Código único del ciclo formativo",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "grado": {
+                        "description": "Grado del ciclo formativo",
+                        "type": "string",
+                        "enum": [
+                            "medio",
+                            "superior"
+                        ]
+                    },
+                    "descripcion": {
+                        "description": "Descripción del ciclo formativo",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreComentarioRequest": {
+                "title": "Store Comentario Request",
+                "description": "Datos requeridos para crear un Comentario",
+                "required": [
+                    "evidencia_id",
+                    "user_id",
+                    "contenido",
+                    "tipo"
+                ],
+                "properties": {
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID del usuario que comenta",
+                        "type": "integer"
+                    },
+                    "contenido": {
+                        "description": "Contenido del comentario",
+                        "type": "string"
+                    },
+                    "tipo": {
+                        "description": "Tipo de comentario",
+                        "type": "string",
+                        "enum": [
+                            "feedback",
+                            "pregunta",
+                            "sugerencia"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "StoreCriterioEvaluacionRequest": {
+                "title": "Store Criterio Evaluación Request",
+                "description": "Datos requeridos para crear un Criterio de Evaluación",
+                "required": [
+                    "resultado_aprendizaje_id",
+                    "codigo",
+                    "descripcion",
+                    "peso_porcentaje",
+                    "orden"
+                ],
+                "properties": {
+                    "resultado_aprendizaje_id": {
+                        "description": "ID del resultado de aprendizaje",
+                        "type": "integer"
+                    },
+                    "codigo": {
+                        "description": "Código del criterio de evaluación",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "descripcion": {
+                        "description": "Descripción del criterio de evaluación",
+                        "type": "string"
+                    },
+                    "peso_porcentaje": {
+                        "description": "Peso en porcentaje",
+                        "type": "number",
+                        "format": "float",
+                        "maximum": 100,
+                        "minimum": 0
+                    },
+                    "orden": {
+                        "description": "Orden de presentación",
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "type": "object"
+            },
+            "StoreEvaluacionEvidenciaRequest": {
+                "title": "Store Evaluación Evidencia Request",
+                "description": "Datos requeridos para crear una Evaluación de Evidencia",
+                "required": [
+                    "evidencia_id",
+                    "user_id",
+                    "puntuacion",
+                    "estado"
+                ],
+                "properties": {
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID del usuario que comenta",
+                        "type": "integer"
+                    },
+                    "contenido": {
+                        "description": "Contenido del comentario",
+                        "type": "string"
+                    },
+                    "tipo": {
+                        "description": "Tipo de comentario",
+                        "type": "string",
+                        "enum": [
+                            "feedback",
+                            "pregunta",
+                            "sugerencia"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "StoreEvidenciaRequest": {
+                "title": "Store Evidencia Request",
+                "description": "Datos requeridos para crear una Evidencia",
+                "required": [
+                    "estudiante_id",
+                    "criterio_evaluacion_id",
+                    "url",
+                    "descripcion"
+                ],
+                "properties": {
+                    "estudiante_id": {
+                        "description": "ID del estudiante",
+                        "type": "integer"
+                    },
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "url": {
+                        "description": "URL de la evidencia",
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "descripcion": {
+                        "description": "Descripción de la evidencia",
+                        "type": "string"
+                    },
+                    "estado_validacion": {
+                        "description": "Estado de validación",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "validada",
+                            "rechazada"
+                        ]
+                    },
+                    "fecha_creacion": {
+                        "description": "Fecha de creación de la evidencia",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreFamiliaProfesionalRequest": {
+                "title": "Store Familia Profesional Request",
+                "description": "Datos requeridos para crear una Familia Profesional",
+                "required": [
+                    "nombre",
+                    "codigo"
+                ],
+                "properties": {
+                    "nombre": {
+                        "description": "Nombre de la familia profesional",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "codigo": {
+                        "description": "Código único de la familia profesional",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "descripcion": {
+                        "description": "Descripción de la familia profesional",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreMatriculaRequest": {
+                "title": "Store Matrícula Request",
+                "description": "Datos requeridos para crear una Matrícula",
+                "required": [
+                    "estudiante_id",
+                    "modulo_formativo_id",
+                    "fecha_matricula",
+                    "estado"
+                ],
+                "properties": {
+                    "estudiante_id": {
+                        "description": "ID del estudiante",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_matricula": {
+                        "description": "Fecha de matrícula",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "estado": {
+                        "description": "Estado de la matrícula",
+                        "type": "string",
+                        "enum": [
+                            "activa",
+                            "inactiva",
+                            "finalizada"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "StoreModuloFormativoRequest": {
+                "title": "Store Módulo Formativo Request",
+                "description": "Datos requeridos para crear un Módulo Formativo",
+                "required": [
+                    "ciclo_formativo_id",
+                    "nombre",
+                    "codigo",
+                    "horas_totales",
+                    "curso_escolar",
+                    "centro",
+                    "docente_id"
+                ],
+                "properties": {
+                    "ciclo_formativo_id": {
+                        "description": "ID del ciclo formativo",
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "description": "Nombre del módulo formativo",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "codigo": {
+                        "description": "Código del módulo formativo",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "horas_totales": {
+                        "description": "Horas totales del módulo",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "curso_escolar": {
+                        "description": "Curso escolar (ej: 2024-2025)",
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "centro": {
+                        "description": "Centro educativo",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "docente_id": {
+                        "description": "ID del docente",
+                        "type": "integer"
+                    },
+                    "descripcion": {
+                        "description": "Descripción del módulo",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StorePlanificacionCriterioRequest": {
+                "title": "Store Planificación Criterio Request",
+                "description": "Datos requeridos para crear una Planificación de Criterio",
+                "required": [
+                    "criterio_evaluacion_id",
+                    "modulo_formativo_id",
+                    "fecha_apertura",
+                    "fecha_cierre",
+                    "activo"
+                ],
+                "properties": {
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_apertura": {
+                        "description": "Fecha de apertura",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_cierre": {
+                        "description": "Fecha de cierre",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "activo": {
+                        "description": "Estado activo",
+                        "type": "boolean"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreResultadoAprendizajeRequest": {
+                "title": "Store Resultado Aprendizaje Request",
+                "description": "Datos requeridos para crear un Resultado de Aprendizaje",
+                "required": [
+                    "modulo_formativo_id",
+                    "codigo",
+                    "descripcion",
+                    "peso_porcentaje",
+                    "orden"
+                ],
+                "properties": {
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "codigo": {
+                        "description": "Código del resultado de aprendizaje",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "descripcion": {
+                        "description": "Descripción del resultado de aprendizaje",
+                        "type": "string"
+                    },
+                    "peso_porcentaje": {
+                        "description": "Peso en porcentaje",
+                        "type": "number",
+                        "format": "float",
+                        "maximum": 100,
+                        "minimum": 0
+                    },
+                    "orden": {
+                        "description": "Orden de presentación",
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "type": "object"
+            },
+            "StoreRoleRequest": {
+                "title": "Store Role Request",
+                "description": "Datos requeridos para crear un Rol",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre único del rol",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "description": "Descripción del rol",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateAsignacionRevisionRequest": {
+                "title": "Update Asignación Revisión Request",
+                "description": "Datos para actualizar una Asignación de Revisión",
+                "properties": {
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "revisor_id": {
+                        "description": "ID del revisor",
+                        "type": "integer"
+                    },
+                    "asignado_por_id": {
+                        "description": "ID del usuario que asigna",
+                        "type": "integer"
+                    },
+                    "fecha_asignacion": {
+                        "description": "Fecha de asignación",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_limite": {
+                        "description": "Fecha límite para la revisión",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "estado": {
+                        "description": "Estado de la revisión",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "en_revision",
+                            "completada"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCicloFormativoRequest": {
+                "title": "Update Ciclo Formativo Request",
+                "description": "Datos para actualizar un Ciclo Formativo",
+                "properties": {
+                    "familia_profesional_id": {
+                        "description": "ID de la familia profesional",
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "description": "Nombre del ciclo formativo",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "codigo": {
+                        "description": "Código único del ciclo formativo",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "grado": {
+                        "description": "Grado del ciclo formativo",
+                        "type": "string",
+                        "enum": [
+                            "medio",
+                            "superior"
+                        ]
+                    },
+                    "descripcion": {
+                        "description": "Descripción del ciclo formativo",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateComentarioRequest": {
+                "title": "Update Comentario Request",
+                "description": "Datos para actualizar un Comentario",
+                "properties": {
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID del usuario que comenta",
+                        "type": "integer"
+                    },
+                    "contenido": {
+                        "description": "Contenido del comentario",
+                        "type": "string"
+                    },
+                    "tipo": {
+                        "description": "Tipo de comentario",
+                        "type": "string",
+                        "enum": [
+                            "feedback",
+                            "pregunta",
+                            "sugerencia"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCriterioEvaluacionRequest": {
+                "title": "Update Criterio Evaluación Request",
+                "description": "Datos para actualizar un Criterio de Evaluación",
+                "properties": {
+                    "resultado_aprendizaje_id": {
+                        "description": "ID del resultado de aprendizaje",
+                        "type": "integer"
+                    },
+                    "codigo": {
+                        "description": "Código del criterio de evaluación",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "descripcion": {
+                        "description": "Descripción del criterio de evaluación",
+                        "type": "string"
+                    },
+                    "peso_porcentaje": {
+                        "description": "Peso en porcentaje",
+                        "type": "number",
+                        "format": "float",
+                        "maximum": 100,
+                        "minimum": 0
+                    },
+                    "orden": {
+                        "description": "Orden de presentación",
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateEvaluacionEvidenciaRequest": {
+                "title": "Update Evaluación Evidencia Request",
+                "description": "Datos para actualizar una Evaluación de Evidencia",
+                "properties": {
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID del evaluador",
+                        "type": "integer"
+                    },
+                    "puntuacion": {
+                        "description": "Puntuación otorgada (0-10)",
+                        "type": "number",
+                        "format": "float",
+                        "maximum": 10,
+                        "minimum": 0
+                    },
+                    "estado": {
+                        "description": "Estado de la evaluación",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "completada",
+                            "revisada"
+                        ]
+                    },
+                    "observaciones": {
+                        "description": "Observaciones de la evaluación",
+                        "type": "string"
+                    },
+                    "fecha_evaluacion": {
+                        "description": "Fecha de evaluación",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateEvidenciaRequest": {
+                "title": "Update Evidencia Request",
+                "description": "Datos para actualizar una Evidencia",
+                "properties": {
+                    "estudiante_id": {
+                        "description": "ID del estudiante",
+                        "type": "integer"
+                    },
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "url": {
+                        "description": "URL de la evidencia",
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "descripcion": {
+                        "description": "Descripción de la evidencia",
+                        "type": "string"
+                    },
+                    "estado_validacion": {
+                        "description": "Estado de validación",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "validada",
+                            "rechazada"
+                        ]
+                    },
+                    "fecha_creacion": {
+                        "description": "Fecha de creación de la evidencia",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateFamiliaProfesionalRequest": {
+                "title": "Update Familia Profesional Request",
+                "description": "Datos para actualizar una Familia Profesional",
+                "properties": {
+                    "nombre": {
+                        "description": "Nombre de la familia profesional",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "codigo": {
+                        "description": "Código único de la familia profesional",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "descripcion": {
+                        "description": "Descripción de la familia profesional",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateMatriculaRequest": {
+                "title": "Update Matrícula Request",
+                "description": "Datos para actualizar una Matrícula",
+                "properties": {
+                    "estudiante_id": {
+                        "description": "ID del estudiante",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_matricula": {
+                        "description": "Fecha de matrícula",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "estado": {
+                        "description": "Estado de la matrícula",
+                        "type": "string",
+                        "enum": [
+                            "activa",
+                            "inactiva",
+                            "finalizada"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateModuloFormativoRequest": {
+                "title": "Update Módulo Formativo Request",
+                "description": "Datos para actualizar un Módulo Formativo",
+                "properties": {
+                    "ciclo_formativo_id": {
+                        "description": "ID del ciclo formativo",
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "description": "Nombre del módulo formativo",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "codigo": {
+                        "description": "Código del módulo formativo",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "horas_totales": {
+                        "description": "Horas totales del módulo",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "curso_escolar": {
+                        "description": "Curso escolar (ej: 2024-2025)",
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "centro": {
+                        "description": "Centro educativo",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "docente_id": {
+                        "description": "ID del docente",
+                        "type": "integer"
+                    },
+                    "descripcion": {
+                        "description": "Descripción del módulo",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePlanificacionCriterioRequest": {
+                "title": "Update Planificación Criterio Request",
+                "description": "Datos para actualizar una Planificación de Criterio",
+                "properties": {
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_apertura": {
+                        "description": "Fecha de apertura",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_cierre": {
+                        "description": "Fecha de cierre",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "activo": {
+                        "description": "Estado activo",
+                        "type": "boolean"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateResultadoAprendizajeRequest": {
+                "title": "Update Resultado Aprendizaje Request",
+                "description": "Datos para actualizar un Resultado de Aprendizaje",
+                "properties": {
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "codigo": {
+                        "description": "Código del resultado de aprendizaje",
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "descripcion": {
+                        "description": "Descripción del resultado de aprendizaje",
+                        "type": "string"
+                    },
+                    "peso_porcentaje": {
+                        "description": "Peso en porcentaje",
+                        "type": "number",
+                        "format": "float",
+                        "maximum": 100,
+                        "minimum": 0
+                    },
+                    "orden": {
+                        "description": "Orden de presentación",
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateRoleRequest": {
+                "title": "Update Role Request",
+                "description": "Datos para actualizar un Rol",
+                "properties": {
+                    "name": {
+                        "description": "Nombre único del rol",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "description": "Descripción del rol",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AsignacionRevision": {
+                "title": "Asignación de Revisión",
+                "description": "Modelo de Asignación de Revisión",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "revisor_id": {
+                        "description": "ID del revisor",
+                        "type": "integer"
+                    },
+                    "asignado_por_id": {
+                        "description": "ID del usuario que asigna",
+                        "type": "integer"
+                    },
+                    "fecha_asignacion": {
+                        "description": "Fecha de asignación",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_limite": {
+                        "description": "Fecha límite",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "estado": {
+                        "description": "Estado de la revisión",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "en_revision",
+                            "completada"
+                        ]
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CicloFormativo": {
+                "title": "Ciclo Formativo",
+                "description": "Modelo de Ciclo Formativo",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "familia_profesional_id": {
+                        "description": "ID de la familia profesional",
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "description": "Nombre del ciclo formativo",
+                        "type": "string"
+                    },
+                    "codigo": {
+                        "description": "Código único del ciclo formativo",
+                        "type": "string"
+                    },
+                    "grado": {
+                        "description": "Grado del ciclo formativo",
+                        "type": "string",
+                        "enum": [
+                            "medio",
+                            "superior"
+                        ]
+                    },
+                    "descripcion": {
+                        "description": "Descripción del ciclo formativo",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Comentario": {
+                "title": "Comentario",
+                "description": "Modelo de Comentario",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID del usuario que comenta",
+                        "type": "integer"
+                    },
+                    "contenido": {
+                        "description": "Contenido del comentario",
+                        "type": "string"
+                    },
+                    "tipo": {
+                        "description": "Tipo de comentario",
+                        "type": "string",
+                        "enum": [
+                            "feedback",
+                            "pregunta",
+                            "sugerencia"
+                        ]
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CriterioEvaluacion": {
+                "title": "Criterio de Evaluación",
+                "description": "Modelo de Criterio de Evaluación",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "resultado_aprendizaje_id": {
+                        "description": "ID del resultado de aprendizaje",
+                        "type": "integer"
+                    },
+                    "codigo": {
+                        "description": "Código del criterio de evaluación",
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "description": "Descripción del criterio de evaluación",
+                        "type": "string"
+                    },
+                    "peso_porcentaje": {
+                        "description": "Peso en porcentaje",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "orden": {
+                        "description": "Orden de presentación",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "EvaluacionEvidencia": {
+                "title": "Evaluación de Evidencia",
+                "description": "Modelo de Evaluación de Evidencia",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "evidencia_id": {
+                        "description": "ID de la evidencia",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "ID del evaluador",
+                        "type": "integer"
+                    },
+                    "puntuacion": {
+                        "description": "Puntuación otorgada",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "estado": {
+                        "description": "Estado de la evaluación",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "completada",
+                            "revisada"
+                        ]
+                    },
+                    "observaciones": {
+                        "description": "Observaciones de la evaluación",
+                        "type": "string"
+                    },
+                    "fecha_evaluacion": {
+                        "description": "Fecha de evaluación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Evidencia": {
+                "title": "Evidencia",
+                "description": "Modelo de Evidencia",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "estudiante_id": {
+                        "description": "ID del estudiante",
+                        "type": "integer"
+                    },
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "url": {
+                        "description": "URL de la evidencia",
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "description": "Descripción de la evidencia",
+                        "type": "string"
+                    },
+                    "estado_validacion": {
+                        "description": "Estado de validación",
+                        "type": "string",
+                        "enum": [
+                            "pendiente",
+                            "validada",
+                            "rechazada"
+                        ]
+                    },
+                    "fecha_creacion": {
+                        "description": "Fecha de creación de la evidencia",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "FamiliaProfesional": {
+                "title": "Familia Profesional",
+                "description": "Modelo de Familia Profesional",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "description": "Nombre de la familia profesional",
+                        "type": "string"
+                    },
+                    "codigo": {
+                        "description": "Código único de la familia profesional",
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "description": "Descripción de la familia profesional",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Matricula": {
+                "title": "Matrícula",
+                "description": "Modelo de Matrícula",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "estudiante_id": {
+                        "description": "ID del estudiante",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_matricula": {
+                        "description": "Fecha de matrícula",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "estado": {
+                        "description": "Estado de la matrícula",
+                        "type": "string",
+                        "enum": [
+                            "activa",
+                            "inactiva",
+                            "finalizada"
+                        ]
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "ModuloFormativo": {
+                "title": "Módulo Formativo",
+                "description": "Modelo de Módulo Formativo",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "ciclo_formativo_id": {
+                        "description": "ID del ciclo formativo",
+                        "type": "integer"
+                    },
+                    "nombre": {
+                        "description": "Nombre del módulo formativo",
+                        "type": "string"
+                    },
+                    "codigo": {
+                        "description": "Código del módulo formativo",
+                        "type": "string"
+                    },
+                    "horas_totales": {
+                        "description": "Horas totales del módulo",
+                        "type": "integer"
+                    },
+                    "curso_escolar": {
+                        "description": "Curso escolar",
+                        "type": "string"
+                    },
+                    "centro": {
+                        "description": "Centro educativo",
+                        "type": "string"
+                    },
+                    "docente_id": {
+                        "description": "ID del docente",
+                        "type": "integer"
+                    },
+                    "descripcion": {
+                        "description": "Descripción del módulo",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "PlanificacionCriterio": {
+                "title": "Planificación de Criterio",
+                "description": "Modelo de Planificación de Criterio",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_apertura": {
+                        "description": "Fecha de apertura",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_cierre": {
+                        "description": "Fecha de cierre",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "activo": {
+                        "description": "Estado activo",
+                        "type": "boolean"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "ResultadoAprendizaje": {
+                "title": "Resultado de Aprendizaje",
+                "description": "Modelo de Resultado de Aprendizaje",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "codigo": {
+                        "description": "Código del resultado de aprendizaje",
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "description": "Descripción del resultado de aprendizaje",
+                        "type": "string"
+                    },
+                    "peso_porcentaje": {
+                        "description": "Peso en porcentaje",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "orden": {
+                        "description": "Orden de presentación",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Role": {
+                "title": "Rol",
+                "description": "Modelo de Rol",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nombre del rol",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Descripción del rol",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "Usuario",
+                "description": "Modelo de Usuario",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nombre del usuario",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Correo electrónico",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "email_verified_at": {
+                        "description": "Fecha de verificación del email",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "sanctum": {
                 "type": "http",
@@ -703,12 +2372,12 @@
     },
     "tags": [
         {
-            "name": "Health",
-            "description": "Health check endpoints"
+            "name": "AsignacionRevision",
+            "description": "Operations related to AsignacionRevision"
         },
         {
-            "name": "AsignacionRevision",
-            "description": "AsignacionRevision"
+            "name": "Health",
+            "description": "Health check endpoints"
         },
         {
             "name": "CicloFormativo",

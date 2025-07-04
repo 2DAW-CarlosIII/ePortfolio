@@ -4,6 +4,18 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UpdateFamiliaProfesionalRequest",
+ *     type="object",
+ *     title="Update Familia Profesional Request",
+ *     description="Datos para actualizar una Familia Profesional",
+ *     @OA\Property(property="nombre", type="string", maxLength=255, description="Nombre de la familia profesional"),
+ *     @OA\Property(property="codigo", type="string", maxLength=50, description="Código único de la familia profesional"),
+ *     @OA\Property(property="descripcion", type="string", description="Descripción de la familia profesional"),
+ * )
+ */
+
 class UpdateFamiliaProfesionalRequest extends FormRequest
 {
     /**
