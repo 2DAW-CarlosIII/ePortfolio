@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\DB;
 class CicloFormativoImportService extends BaseImportService
 {
     protected string $modelClass = CicloFormativo::class;
-    
+
     protected array $requiredHeaders = ['nombre', 'codigo', 'grado', 'descripcion'];
-    
+
     protected array $validationRules = [
         'familia_profesional_id' => ['required', 'integer', 'exists:table,id'],
         'nombre' => ['required', 'string', 'max:255'],
@@ -19,7 +19,7 @@ class CicloFormativoImportService extends BaseImportService
         'grado' => ['required', 'in:value1,value2'],
         'descripcion' => ['required', 'string']
     ];
-    
+
     /**
      * Mapea una fila CSV a datos del modelo
      */
@@ -34,15 +34,15 @@ class CicloFormativoImportService extends BaseImportService
             $data['familia_profesional_id'] = $related ? $related->id : null;
         }
         // nombre
-        $data['nombre'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['nombre'] = !empty($row[0]) ? trim($row[0]) : null;
         // codigo
-        $data['codigo'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['codigo'] = !empty($row[0]) ? trim($row[0]) : null;
         // grado
-        $data['grado'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['grado'] = !empty($row[0]) ? trim($row[0]) : null;
         // descripcion
-        $data['descripcion'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['descripcion'] = !empty($row[0]) ? trim($row[0]) : null;
     }
-    
+
     /**
      * Crea o actualiza el modelo
      */
@@ -50,19 +50,19 @@ class CicloFormativoImportService extends BaseImportService
     {
         // Buscar duplicado por campos únicos si es necesario
         $existingQuery = CicloFormativo::query();
-        
-                    ->where('codigo', $data['codigo'])
-        
+
+        $existingQuery->where('codigo', $data['codigo']);
+
         $existing = $existingQuery->first();
-        
+
         if ($existing) {
             $existing->update($data);
             return $existing;
         }
-        
+
         return CicloFormativo::create($data);
     }
-    
+
     /**
      * Genera fila de ejemplo para template
      */

@@ -183,12 +183,12 @@ use App\Models\Evidencia;
  *         in="path",
  *         description="ID of the parent evidencias",
  *         required=true,
- *         @OA\\Schema(type="integer")
+ *         @OA\Schema(type="integer")
  *     ),
- *     @OA\\Parameter(
+ *     @OA\Parameter(
  *         name="id",
  *         in="path",
- *         description="ID of the {model_name}",
+ *         description="ID of the asignacionrevision",
  *      required=true,
  *      @OA\Schema(type="integer")
  *   ),

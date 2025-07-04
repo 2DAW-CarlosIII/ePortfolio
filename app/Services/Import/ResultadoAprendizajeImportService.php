@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\DB;
 class ResultadoAprendizajeImportService extends BaseImportService
 {
     protected string $modelClass = ResultadoAprendizaje::class;
-    
+
     protected array $requiredHeaders = ['codigo', 'descripcion', 'peso_porcentaje', 'orden'];
-    
+
     protected array $validationRules = [
         'modulo_formativo_id' => ['required', 'integer', 'exists:table,id'],
         'codigo' => ['required', 'string', 'max:255'],
@@ -19,7 +19,7 @@ class ResultadoAprendizajeImportService extends BaseImportService
         'peso_porcentaje' => ['required', 'numeric'],
         'orden' => ['required', 'integer']
     ];
-    
+
     /**
      * Mapea una fila CSV a datos del modelo
      */
@@ -34,15 +34,15 @@ class ResultadoAprendizajeImportService extends BaseImportService
             $data['modulo_formativo_id'] = $related ? $related->id : null;
         }
         // codigo
-        $data['codigo'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['codigo'] = !empty($row[0]) ? trim($row[0]) : null;
         // descripcion
-        $data['descripcion'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['descripcion'] = !empty($row[0]) ? trim($row[0]) : null;
         // peso_porcentaje
-        $data['peso_porcentaje'] = !empty($row[{index}]) ? (float) $row[{index}] : null;
+        $data['peso_porcentaje'] = !empty($row[0]) ? (float) $row[0] : null;
         // orden
-        $data['orden'] = !empty($row[{index}]) ? (int) $row[{index}] : null;
+        $data['orden'] = !empty($row[0]) ? (int) $row[0] : null;
     }
-    
+
     /**
      * Crea o actualiza el modelo
      */
@@ -50,19 +50,19 @@ class ResultadoAprendizajeImportService extends BaseImportService
     {
         // Buscar duplicado por campos únicos si es necesario
         $existingQuery = ResultadoAprendizaje::query();
-        
-                    ->where('codigo', $data['codigo'])
-        
+
+        $existingQuery->where('codigo', $data['codigo']);
+
         $existing = $existingQuery->first();
-        
+
         if ($existing) {
             $existing->update($data);
             return $existing;
         }
-        
+
         return ResultadoAprendizaje::create($data);
     }
-    
+
     /**
      * Genera fila de ejemplo para template
      */

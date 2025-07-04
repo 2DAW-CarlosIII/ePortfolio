@@ -183,12 +183,12 @@ use Illuminate\Http\Request;
  *         in="path",
  *         description="ID of the parent familias-profesionales",
  *         required=true,
- *         @OA\\Schema(type="integer")
+ *         @OA\Schema(type="integer")
  *     ),
- *     @OA\\Parameter(
+ *     @OA\Parameter(
  *         name="id",
  *         in="path",
- *         description="ID of the {model_name}",
+ *         description="ID of the Ciclo Formativo",
  *      required=true,
  *      @OA\Schema(type="integer")
  *   ),

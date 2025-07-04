@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\DB;
 class FamiliaProfesionalImportService extends BaseImportService
 {
     protected string $modelClass = FamiliaProfesional::class;
-    
+
     protected array $requiredHeaders = ['nombre', 'codigo', 'descripcion'];
-    
+
     protected array $validationRules = [
         'nombre' => ['required', 'string', 'max:255'],
         'codigo' => ['required', 'string', 'max:255'],
         'descripcion' => ['required', 'string']
     ];
-    
+
     /**
      * Mapea una fila CSV a datos del modelo
      */
@@ -25,13 +25,13 @@ class FamiliaProfesionalImportService extends BaseImportService
     {
         $data = [];
         // nombre
-        $data['nombre'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['nombre'] = !empty($row[0]) ? trim($row[0]) : null;
         // codigo
-        $data['codigo'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['codigo'] = !empty($row[0]) ? trim($row[0]) : null;
         // descripcion
-        $data['descripcion'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['descripcion'] = !empty($row[0]) ? trim($row[0]) : null;
     }
-    
+
     /**
      * Crea o actualiza el modelo
      */
@@ -39,19 +39,19 @@ class FamiliaProfesionalImportService extends BaseImportService
     {
         // Buscar duplicado por campos únicos si es necesario
         $existingQuery = FamiliaProfesional::query();
-        
-                    ->where('codigo', $data['codigo'])
-        
+
+        $existingQuery->where('codigo', $data['codigo']);
+
         $existing = $existingQuery->first();
-        
+
         if ($existing) {
             $existing->update($data);
             return $existing;
         }
-        
+
         return FamiliaProfesional::create($data);
     }
-    
+
     /**
      * Genera fila de ejemplo para template
      */

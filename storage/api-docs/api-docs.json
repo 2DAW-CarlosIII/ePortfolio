@@ -1,0 +1,758 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ePortfolio API",
+        "description": "API para el sistema de portfolio electrónico de estudiantes",
+        "contact": {
+            "name": "ePortfolio Support",
+            "email": "admin@eportfolio.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1",
+            "description": "Local development server"
+        },
+        {
+            "url": "http://eportfolio.test/api/v1",
+            "description": "Local development server"
+        },
+        {
+            "url": "http://eportfolio.cifpcarlos3.es/api/v1",
+            "description": "Local development server"
+        }
+    ],
+    "paths": {
+        "/evidencias/{parent_id}/asignaciones-revision/{id}": {
+            "delete": {
+                "tags": [
+                    "AsignacionRevision"
+                ],
+                "summary": "Delete a specific asignacionrevision",
+                "description": "Delete a specific asignacionrevision by ID",
+                "operationId": "567681c4cacba7c5d8066c68ff545bcf",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent evidencias",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the asignacionrevision",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "AsignacionRevision eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Health check endpoint",
+                "description": "Returns the health status of the API",
+                "operationId": "d535faf3bf76b2b74995ce95166c3a9d",
+                "responses": {
+                    "200": {
+                        "description": "API is healthy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "healthy"
+                                        },
+                                        "timestamp": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "version": {
+                                            "type": "string",
+                                            "example": "v1.0"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/familias-profesionales/{parent_id}/ciclos-formativos/{id}": {
+            "delete": {
+                "tags": [
+                    "CicloFormativo"
+                ],
+                "summary": "Delete a specific cicloformativo",
+                "description": "Delete a specific cicloformativo by ID",
+                "operationId": "5e2a1889a5305893e02e96979bceffa2",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent familias-profesionales",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Ciclo Formativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CicloFormativo eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/evidencias/{parent_id}/comentarios/{id}": {
+            "delete": {
+                "tags": [
+                    "Comentario"
+                ],
+                "summary": "Delete a specific comentario",
+                "description": "Delete a specific comentario by ID",
+                "operationId": "f4235f418f797dbcda81de9557a5565a",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent evidencias",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the comentario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comentario eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}": {
+            "delete": {
+                "tags": [
+                    "CriteriosEvaluacion"
+                ],
+                "summary": "Delete a specific criteriosevaluacion",
+                "description": "Delete a specific criteriosevaluacion by ID",
+                "operationId": "18c3326bd660ad48c6827fc81c874abf",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the resultados-aprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CriteriosEvaluacion eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/users/{parent_id}/evaluaciones-evidencias/{id}": {
+            "delete": {
+                "tags": [
+                    "EvaluacionEvidencia"
+                ],
+                "summary": "Delete a specific evaluacionevidencia",
+                "description": "Delete a specific evaluacionevidencia by ID",
+                "operationId": "6f693bb0a32b0589af2f530ac69a03ba",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the evidencia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "EvaluacionEvidencia eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/criterios-evaluacion/{parent_id}/evidencias/{id}": {
+            "delete": {
+                "tags": [
+                    "Evidencia"
+                ],
+                "summary": "Delete a specific evidencia",
+                "description": "Delete a specific evidencia by ID",
+                "operationId": "dc515932ab760883b213ad2b98059025",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the criteria evaluación",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Evidencia eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/familias-profesionales/{id}": {
+            "delete": {
+                "tags": [
+                    "FamiliaProfesional"
+                ],
+                "summary": "Delete a specific familiaprofesional",
+                "description": "Delete a specific familiaprofesional by ID",
+                "operationId": "be466b262aa545b1825f945576be7358",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the familiaprofesional",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/modulos-formativos/{parent_id}/matriculas/{id}": {
+            "delete": {
+                "tags": [
+                    "Matricula"
+                ],
+                "summary": "Delete a specific matricula",
+                "description": "Delete a specific matricula by ID",
+                "operationId": "becdf11934b52cf210ad401c3f9321ac",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the módulo formativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Matricula eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/users/{parent_id}/modulos-formativos/{id}": {
+            "delete": {
+                "tags": [
+                    "ModuloFormativo"
+                ],
+                "summary": "Delete a specific moduloformativo",
+                "description": "Delete a specific moduloformativo by ID",
+                "operationId": "21e3aa8cc870462449a1163c2e815f55",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the ciclo formativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ModuloFormativo eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/modulos-formativos/{parent_id}/planificacion-criterios/{id}": {
+            "delete": {
+                "tags": [
+                    "PlanificacionCriterios"
+                ],
+                "summary": "Delete a specific planificacioncriterios",
+                "description": "Delete a specific planificacioncriterios by ID",
+                "operationId": "3cc7a855de9259d4f151c1e117ab2ec5",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the criterio de evaluación",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "PlanificacionCriterios eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/modulos-formativos/{parent_id}/resultados-aprendizaje/{id}": {
+            "delete": {
+                "tags": [
+                    "ResultadoAprendizaje"
+                ],
+                "summary": "Delete a specific resultadoaprendizaje",
+                "description": "Delete a specific resultadoaprendizaje by ID",
+                "operationId": "3870c44225a9969e3e1cbb4427cbe4be",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the módulo formativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ResultadoAprendizaje eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
+        "/roles/{id}": {
+            "delete": {
+                "tags": [
+                    "Rol"
+                ],
+                "summary": "Delete a specific rol",
+                "description": "Delete a specific rol by ID",
+                "operationId": "0440038bd2464683b54226ab1a6f738a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the rol",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Rol eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Laravel Sanctum authentication",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Health",
+            "description": "Health check endpoints"
+        },
+        {
+            "name": "AsignacionRevision",
+            "description": "AsignacionRevision"
+        },
+        {
+            "name": "CicloFormativo",
+            "description": "CicloFormativo"
+        },
+        {
+            "name": "Comentario",
+            "description": "Comentario"
+        },
+        {
+            "name": "CriteriosEvaluacion",
+            "description": "CriteriosEvaluacion"
+        },
+        {
+            "name": "EvaluacionEvidencia",
+            "description": "EvaluacionEvidencia"
+        },
+        {
+            "name": "Evidencia",
+            "description": "Evidencia"
+        },
+        {
+            "name": "FamiliaProfesional",
+            "description": "FamiliaProfesional"
+        },
+        {
+            "name": "Matricula",
+            "description": "Matricula"
+        },
+        {
+            "name": "ModuloFormativo",
+            "description": "ModuloFormativo"
+        },
+        {
+            "name": "PlanificacionCriterios",
+            "description": "PlanificacionCriterios"
+        },
+        {
+            "name": "ResultadoAprendizaje",
+            "description": "ResultadoAprendizaje"
+        },
+        {
+            "name": "Rol",
+            "description": "Rol"
+        }
+    ]
+}

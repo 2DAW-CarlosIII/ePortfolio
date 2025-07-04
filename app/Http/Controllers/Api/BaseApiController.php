@@ -24,6 +24,16 @@ use App\Http\Controllers\Controller;
  *     description="Local development server"
  * )
  *
+ * @OA\Server(
+ *     url="http://eportfolio.test/api/v1",
+ *     description="Local development server"
+ * )
+ *
+ * @OA\Server(
+ *     url="http://eportfolio.cifpcarlos3.es/api/v1",
+ *     description="Local development server"
+ * )
+ *
  * @OA\SecurityScheme(
  *     securityScheme="sanctum",
  *     type="http",
@@ -38,7 +48,7 @@ use App\Http\Controllers\Controller;
  * )
  *
  * @OA\Tag(
- *     name="Statistics", 
+ *     name="Statistics",
  *     description="Statistics and analytics endpoints"
  * )
  *

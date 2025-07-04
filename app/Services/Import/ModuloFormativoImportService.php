@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\DB;
 class ModuloFormativoImportService extends BaseImportService
 {
     protected string $modelClass = ModuloFormativo::class;
-    
+
     protected array $requiredHeaders = ['nombre', 'codigo', 'horas_totales', 'curso_escolar', 'centro', 'descripcion'];
-    
+
     protected array $validationRules = [
         'ciclo_formativo_id' => ['required', 'integer', 'exists:table,id'],
         'nombre' => ['required', 'string', 'max:255'],
@@ -22,7 +22,7 @@ class ModuloFormativoImportService extends BaseImportService
         'docente_id' => ['required', 'integer', 'exists:table,id'],
         'descripcion' => ['required', 'string']
     ];
-    
+
     /**
      * Mapea una fila CSV a datos del modelo
      */
@@ -37,15 +37,15 @@ class ModuloFormativoImportService extends BaseImportService
             $data['ciclo_formativo_id'] = $related ? $related->id : null;
         }
         // nombre
-        $data['nombre'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['nombre'] = !empty($row[0]) ? trim($row[0]) : null;
         // codigo
-        $data['codigo'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['codigo'] = !empty($row[0]) ? trim($row[0]) : null;
         // horas_totales
-        $data['horas_totales'] = !empty($row[{index}]) ? (int) $row[{index}] : null;
+        $data['horas_totales'] = !empty($row[0]) ? (int) $row[0] : null;
         // curso_escolar
-        $data['curso_escolar'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['curso_escolar'] = !empty($row[0]) ? trim($row[0]) : null;
         // centro
-        $data['centro'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['centro'] = !empty($row[0]) ? trim($row[0]) : null;
         // docente_id - Buscar por nombre/código
         if (!empty($row[6])) {
             $related = \App\Models\Unknown::where('nombre', $row[6])
@@ -54,9 +54,9 @@ class ModuloFormativoImportService extends BaseImportService
             $data['docente_id'] = $related ? $related->id : null;
         }
         // descripcion
-        $data['descripcion'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['descripcion'] = !empty($row[0]) ? trim($row[0]) : null;
     }
-    
+
     /**
      * Crea o actualiza el modelo
      */
@@ -64,19 +64,19 @@ class ModuloFormativoImportService extends BaseImportService
     {
         // Buscar duplicado por campos únicos si es necesario
         $existingQuery = ModuloFormativo::query();
-        
-                    ->where('codigo', $data['codigo'])
-        
+
+        $existingQuery->where('codigo', $data['codigo']);
+
         $existing = $existingQuery->first();
-        
+
         if ($existing) {
             $existing->update($data);
             return $existing;
         }
-        
+
         return ModuloFormativo::create($data);
     }
-    
+
     /**
      * Genera fila de ejemplo para template
      */

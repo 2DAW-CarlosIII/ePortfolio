@@ -9,16 +9,16 @@ use Illuminate\Support\Facades\DB;
 class MatriculaImportService extends BaseImportService
 {
     protected string $modelClass = Matricula::class;
-    
+
     protected array $requiredHeaders = ['fecha_matricula', 'estado'];
-    
+
     protected array $validationRules = [
         'estudiante_id' => ['required', 'integer', 'exists:table,id'],
         'modulo_formativo_id' => ['required', 'integer', 'exists:table,id'],
         'fecha_matricula' => ['required', 'date'],
         'estado' => ['required', 'in:value1,value2']
     ];
-    
+
     /**
      * Mapea una fila CSV a datos del modelo
      */
@@ -27,7 +27,7 @@ class MatriculaImportService extends BaseImportService
         $data = [];
         // estudiante_id - Buscar por nombre/código
         if (!empty($row[0])) {
-            $related = \App\Models\Unknown::where('nombre', $row[0])
+            $related = \App\Models\ModuloFormativo::where('nombre', $row[0])
                 ->orWhere('codigo', $row[0])
                 ->first();
             $data['estudiante_id'] = $related ? $related->id : null;
@@ -40,11 +40,11 @@ class MatriculaImportService extends BaseImportService
             $data['modulo_formativo_id'] = $related ? $related->id : null;
         }
         // fecha_matricula
-        $data['fecha_matricula'] = !empty($row[{index}]) ? date('Y-m-d', strtotime($row[{index}])) : null;
+        $data['fecha_matricula'] = !empty($row[0]) ? date('Y-m-d', strtotime($row[0])) : null;
         // estado
-        $data['estado'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['estado'] = !empty($row[0]) ? trim($row[0]) : null;
     }
-    
+
     /**
      * Crea o actualiza el modelo
      */
@@ -52,19 +52,19 @@ class MatriculaImportService extends BaseImportService
     {
         // Buscar duplicado por campos únicos si es necesario
         $existingQuery = Matricula::query();
-        
+
                 // No hay campos únicos definidos
-        
+
         $existing = $existingQuery->first();
-        
+
         if ($existing) {
             $existing->update($data);
             return $existing;
         }
-        
+
         return Matricula::create($data);
     }
-    
+
     /**
      * Genera fila de ejemplo para template
      */

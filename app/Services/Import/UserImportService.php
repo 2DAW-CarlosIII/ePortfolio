@@ -9,16 +9,16 @@ use Illuminate\Support\Facades\DB;
 class UserImportService extends BaseImportService
 {
     protected string $modelClass = User::class;
-    
+
     protected array $requiredHeaders = ['name', 'email', 'password'];
-    
+
     protected array $validationRules = [
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'max:255', 'email'],
         'email_verified_at' => ['nullable'],
         'password' => ['required', 'string', 'max:255']
     ];
-    
+
     /**
      * Mapea una fila CSV a datos del modelo
      */
@@ -26,15 +26,15 @@ class UserImportService extends BaseImportService
     {
         $data = [];
         // name
-        $data['name'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['name'] = !empty($row[0]) ? trim($row[0]) : null;
         // email
-        $data['email'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['email'] = !empty($row[0]) ? trim($row[0]) : null;
         // email_verified_at
-        $data['email_verified_at'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['email_verified_at'] = !empty($row[0]) ? trim($row[0]) : null;
         // password
-        $data['password'] = !empty($row[{index}]) ? trim($row[{index}]) : null;
+        $data['password'] = !empty($row[0]) ? trim($row[0]) : null;
     }
-    
+
     /**
      * Crea o actualiza el modelo
      */
@@ -42,19 +42,19 @@ class UserImportService extends BaseImportService
     {
         // Buscar duplicado por campos únicos si es necesario
         $existingQuery = User::query();
-        
-                    ->where('email', $data['email'])
-        
+
+        $existingQuery->where('email', $data['email']);
+
         $existing = $existingQuery->first();
-        
+
         if ($existing) {
             $existing->update($data);
             return $existing;
         }
-        
+
         return User::create($data);
     }
-    
+
     /**
      * Genera fila de ejemplo para template
      */
