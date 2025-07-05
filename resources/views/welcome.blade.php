@@ -24,12 +24,29 @@
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
                     @auth
-                        <a
-                            href="{{ url('/dashboard') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                        >
-                            Dashboard
-                        </a>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm dark:text-[#EDEDEC] text-[#1b1b18]">
+                                Hola, {{ Auth::user()->name }}
+                            </span>
+
+                            <a
+                                href="{{ url('/dashboard') }}"
+                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                            >
+                                Dashboard
+                            </a>
+
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                                @csrf
+                                <button
+                                    type="submit"
+                                    class="text-sm dark:text-[#EDEDEC] text-[#1b1b18] hover:underline"
+                                    onclick="return confirm('¿Estás seguro de que quieres cerrar sesión?')"
+                                >
+                                    Salir
+                                </button>
+                            </form>
+                        </div>
                     @else
                         <a
                             href="{{ route('login') }}"
