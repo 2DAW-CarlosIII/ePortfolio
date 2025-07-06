@@ -23,11 +23,11 @@
             "description": "Local development server"
         },
         {
-            "url": "http://eportfolio.cifpcarlos3.es/api/v1",
+            "url": "https://eportfolio.cifpcarlos3.es/api/v1",
             "description": "Production server"
         },
         {
-            "url": "http://eportfolio.juezlti.eu/api/v1",
+            "url": "https://eportfolio.juezlti.eu/api/v1",
             "description": "Production server"
         }
     ],

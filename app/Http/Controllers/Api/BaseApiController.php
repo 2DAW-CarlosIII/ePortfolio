@@ -30,12 +30,12 @@ use App\Http\Controllers\Controller;
  * )
  *
  * @OA\Server(
- *     url="http://eportfolio.cifpcarlos3.es/api/v1",
+ *     url="https://eportfolio.cifpcarlos3.es/api/v1",
  *     description="Production server"
  * )
  *
  * @OA\Server(
- *     url="http://eportfolio.juezlti.eu/api/v1",
+ *     url="https://eportfolio.juezlti.eu/api/v1",
  *     description="Production server"
  * )
  *
