@@ -31,7 +31,5 @@ class DatabaseSeeder extends Seeder
         $this->call(EvaluacionEvidenciaSeeder::class);
         $this->call(ComentarioSeeder::class);
         $this->call(AsignacionRevisionSeeder::class);
-        $this->call(EvaluacionParSeeder::class);
-        $this->call(ComentarioParSeeder::class);
     }
 }

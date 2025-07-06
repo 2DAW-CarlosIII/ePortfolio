@@ -14,10 +14,10 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('codigo');
             $table->integer('horas_totales');
-            $table->string('curso_escolar');
-            $table->string('centro');
-            $table->unsignedBigInteger('docente_id');
-            $table->text('descripcion');
+            $table->string('curso_escolar')->nullable();
+            $table->string('centro')->nullable();
+            $table->unsignedBigInteger('docente_id')->nullable();
+            $table->text('descripcion')->nullable();
             $table->timestamps();
             $table->foreign('ciclo_formativo_id')->references('id')->on('ciclos_formativos')->onDelete('cascade');
             $table->foreign('docente_id')->references('id')->on('users')->onDelete('cascade');
