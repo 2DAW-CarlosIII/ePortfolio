@@ -34,6 +34,11 @@ use App\Http\Controllers\Controller;
  *     description="Production server"
  * )
  *
+ * @OA\Server(
+ *     url="http://eportfolio.juezlti.eu/api/v1",
+ *     description="Production server"
+ * )
+ *
  * @OA\SecurityScheme(
  *     securityScheme="sanctum",
  *     type="http",
