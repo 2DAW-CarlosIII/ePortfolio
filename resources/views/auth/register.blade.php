@@ -34,16 +34,6 @@
             <x-input-error :messages="$errors->get('password_confirmation')" />
         </div>
 
-        <div class="form-group">
-            <x-input-label for="role" value="Tipo de usuario" />
-            <select id="role" name="role" class="form-input" required>
-                <option value="">Selecciona tu rol</option>
-                <option value="estudiante" {{ old('role') == 'estudiante' ? 'selected' : '' }}>Estudiante</option>
-                <option value="docente" {{ old('role') == 'docente' ? 'selected' : '' }}>Docente</option>
-            </select>
-            <x-input-error :messages="$errors->get('role')" />
-        </div>
-
         <div class="form-footer">
             <a class="link" href="{{ route('login') }}">
                 ¿Ya tienes cuenta?
