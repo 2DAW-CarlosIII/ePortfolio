@@ -18,6 +18,9 @@ use LDAP\Result;
  * )
  */
 
+class CriteriosEvaluacionController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion",
@@ -57,7 +60,7 @@ use LDAP\Result;
  *         response=200,
  *         description="Successful operation",
  *         @OA\JsonContent(
- *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/CriteriosEvaluacion")),
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/CriterioEvaluacion")),
  *             @OA\Property(property="links", type="object"),
  *             @OA\Property(property="meta", type="object")
  *         )
@@ -67,139 +70,6 @@ use LDAP\Result;
  * )
  */
 
-/**
- * @OA\Post(
- *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion",
- *     tags={"CriteriosEvaluacion"},
- *     summary="Create a new criteriosevaluacion",
- *     description="Create a new criteriosevaluacion resource",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent ResultadoAprendizaje",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/StoreCriteriosEvaluacionRequest")
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Resource created successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/CriteriosEvaluacion")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Get(
- *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}",
- *     tags={"CriteriosEvaluacion"},
- *     summary="Show a specific criteriosevaluacion",
- *     description="Retrieve a specific criteriosevaluacion by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent ResultadoAprendizaje",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the criteriosevaluacion",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Successful operation",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/CriteriosEvaluacion")
- *         )
- *     ),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Put(
- *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}",
- *     tags={"CriteriosEvaluacion"},
- *     summary="Update a specific criteriosevaluacion",
- *     description="Update a specific criteriosevaluacion by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent ResultadoAprendizaje",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the criteriosevaluacion",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/UpdateCriteriosEvaluacionRequest")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Resource updated successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/CriteriosEvaluacion")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Delete(
- *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}",
- *     tags={"CriteriosEvaluacion"},
- *     summary="Delete a specific criteriosevaluacion",
- *     description="Delete a specific criteriosevaluacion by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the resultados-aprendizaje",
- *      required=true,
- *      @OA\Schema(type="integer")
- *   ),
- *    @OA\Response(
- *        response=204,
- *       description="Resource deleted successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string", example="CriteriosEvaluacion eliminado correctamente")
- *         )
- *     ),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-class CriteriosEvaluacionController extends Controller
-{
     public function index(Request $request, ResultadoAprendizaje $resultadoAprendizaje)
     {
         $query = $resultadoAprendizaje->criterios_evaluacion()->newQuery();
@@ -236,6 +106,37 @@ class CriteriosEvaluacionController extends Controller
         return CriteriosEvaluacionResource::collection($criteriosEvaluacions);
     }
 
+/**
+ * @OA\Post(
+ *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion",
+ *     tags={"CriteriosEvaluacion"},
+ *     summary="Create a new criteriosevaluacion",
+ *     description="Create a new criteriosevaluacion resource",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ResultadoAprendizaje",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreCriterioEvaluacionRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/CriterioEvaluacion")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function store(StoreCriteriosEvaluacionRequest $request, ResultadoAprendizaje $resultadoAprendizaje)
     {
         $data = $request->validated();
@@ -255,6 +156,40 @@ class CriteriosEvaluacionController extends Controller
         return new CriteriosEvaluacionResource($criterioEvaluacion);
     }
 
+/**
+ * @OA\Get(
+ *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}",
+ *     tags={"CriteriosEvaluacion"},
+ *     summary="Show a specific criteriosevaluacion",
+ *     description="Retrieve a specific criteriosevaluacion by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ResultadoAprendizaje",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the criteriosevaluacion",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/CriterioEvaluacion")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function show(ResultadoAprendizaje $resultadoAprendizaje, CriterioEvaluacion $criterioEvaluacion)
     {
         // Verificar que el criterio de evaluación pertenece al resultado de aprendizaje
@@ -267,6 +202,45 @@ class CriteriosEvaluacionController extends Controller
 
         return new CriteriosEvaluacionResource($criterioEvaluacion);
     }
+
+/**
+ * @OA\Put(
+ *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}",
+ *     tags={"CriteriosEvaluacion"},
+ *     summary="Update a specific criteriosevaluacion",
+ *     description="Update a specific criteriosevaluacion by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ResultadoAprendizaje",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the criteriosevaluacion",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateCriterioEvaluacionRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/CriterioEvaluacion")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function update(UpdateCriteriosEvaluacionRequest $request, ResultadoAprendizaje $resultadoAprendizaje, CriterioEvaluacion $criterioEvaluacion)
     {
@@ -285,6 +259,33 @@ class CriteriosEvaluacionController extends Controller
 
         return new CriteriosEvaluacionResource($criterioEvaluacion);
     }
+
+/**
+ * @OA\Delete(
+ *     path="/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}",
+ *     tags={"CriteriosEvaluacion"},
+ *     summary="Delete a specific criteriosevaluacion",
+ *     description="Delete a specific criteriosevaluacion by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the resultados-aprendizaje",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="CriterioEvaluacion eliminado correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function destroy(ResultadoAprendizaje $resultadoAprendizaje, CriterioEvaluacion $criterioEvaluacion)
     {

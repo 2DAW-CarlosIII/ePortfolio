@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
  * )
  */
 
+class ResultadoAprendizajeController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/modulos-formativos/{parent_id}/resultados-aprendizaje",
@@ -67,6 +70,42 @@ use Illuminate\Http\Request;
  * )
  */
 
+    public function index(Request $request, ModuloFormativo $moduloFormativo)
+    {
+        $query = $moduloFormativo->resultados_aprendizaje()->newQuery();
+
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('codigo', 'like', "%$search%")->orWhere('descripcion', 'like', "%$search%");
+            });
+        }
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $resultadoAprendizajes = $query->paginate($perPage);
+
+        return ResultadoAprendizajeResource::collection($resultadoAprendizajes);
+    }
+
 /**
  * @OA\Post(
  *     path="/modulos-formativos/{parent_id}/resultados-aprendizaje",
@@ -97,6 +136,18 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function store(StoreResultadoAprendizajeRequest $request, ModuloFormativo $moduloFormativo)
+    {
+        $data = $request->validated();
+        $data['modulo_formativo_id'] = $moduloFormativo->id; // Asignar el ID del módulo formativo
+        $resultadoAprendizaje = ResultadoAprendizaje::create($data);
+
+        // Cargar relaciones para la respuesta
+        $resultadoAprendizaje->load($this->getEagerLoadRelations());
+
+        return new ResultadoAprendizajeResource($resultadoAprendizaje);
+    }
 
 /**
  * @OA\Get(
@@ -131,6 +182,18 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function show(ModuloFormativo $moduloFormativo, ResultadoAprendizaje $resultadoAprendizaje)
+    {
+        if( $resultadoAprendizaje->modulo_formativo_id !== $moduloFormativo->id) {
+            return response()->json(['message' => 'Resultado de aprendizaje no encontrado en este módulo formativo'], 404);
+        }
+
+        // Cargar relaciones
+        $resultadoAprendizaje->load($this->getEagerLoadRelations());
+
+        return new ResultadoAprendizajeResource($resultadoAprendizaje);
+    }
 
 /**
  * @OA\Put(
@@ -171,6 +234,20 @@ use Illuminate\Http\Request;
  * )
  */
 
+    public function update(UpdateResultadoAprendizajeRequest $request, ModuloFormativo $moduloFormativo, ResultadoAprendizaje $resultadoAprendizaje)
+    {
+        if( $resultadoAprendizaje->modulo_formativo_id !== $moduloFormativo->id) {
+            return response()->json(['message' => 'Resultado de aprendizaje no encontrado en este módulo formativo'], 404);
+        }
+
+        $resultadoAprendizaje->update($request->validated());
+
+        // Cargar relaciones para la respuesta
+        $resultadoAprendizaje->load($this->getEagerLoadRelations());
+
+        return new ResultadoAprendizajeResource($resultadoAprendizaje);
+    }
+
 /**
  * @OA\Delete(
  *     path="/modulos-formativos/{parent_id}/resultados-aprendizaje/{id}",
@@ -197,82 +274,6 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
-
-class ResultadoAprendizajeController extends Controller
-{
-    public function index(Request $request, ModuloFormativo $moduloFormativo)
-    {
-        $query = $moduloFormativo->resultados_aprendizaje()->newQuery();
-
-        // Filtro de búsqueda
-        if ($request->has('search') && $request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('codigo', 'like', "%$search%")->orWhere('descripcion', 'like', "%$search%");
-            });
-        }
-
-        // Filtros adicionales
-        if ($request->has('estado') && $request->filled('estado')) {
-            $query->where('estado', $request->get('estado'));
-        }
-
-        if ($request->has('activo') && $request->filled('activo')) {
-            $query->where('activo', $request->boolean('activo'));
-        }
-
-        // Eager loading de relaciones comunes
-        $query->with($this->getEagerLoadRelations());
-
-        // Ordenamiento
-        $sortBy = $request->get('sort_by', 'id');
-        $sortDirection = $request->get('sort_direction', 'asc');
-        $query->orderBy($sortBy, $sortDirection);
-
-        // Paginación
-        $perPage = $request->get('per_page', 15);
-        $resultadoAprendizajes = $query->paginate($perPage);
-
-        return ResultadoAprendizajeResource::collection($resultadoAprendizajes);
-    }
-
-    public function store(StoreResultadoAprendizajeRequest $request, ModuloFormativo $moduloFormativo)
-    {
-        $data = $request->validated();
-        $data['modulo_formativo_id'] = $moduloFormativo->id; // Asignar el ID del módulo formativo
-        $resultadoAprendizaje = ResultadoAprendizaje::create($data);
-
-        // Cargar relaciones para la respuesta
-        $resultadoAprendizaje->load($this->getEagerLoadRelations());
-
-        return new ResultadoAprendizajeResource($resultadoAprendizaje);
-    }
-
-    public function show(ModuloFormativo $moduloFormativo, ResultadoAprendizaje $resultadoAprendizaje)
-    {
-        if( $resultadoAprendizaje->modulo_formativo_id !== $moduloFormativo->id) {
-            return response()->json(['message' => 'Resultado de aprendizaje no encontrado en este módulo formativo'], 404);
-        }
-
-        // Cargar relaciones
-        $resultadoAprendizaje->load($this->getEagerLoadRelations());
-
-        return new ResultadoAprendizajeResource($resultadoAprendizaje);
-    }
-
-    public function update(UpdateResultadoAprendizajeRequest $request, ModuloFormativo $moduloFormativo, ResultadoAprendizaje $resultadoAprendizaje)
-    {
-        if( $resultadoAprendizaje->modulo_formativo_id !== $moduloFormativo->id) {
-            return response()->json(['message' => 'Resultado de aprendizaje no encontrado en este módulo formativo'], 404);
-        }
-
-        $resultadoAprendizaje->update($request->validated());
-
-        // Cargar relaciones para la respuesta
-        $resultadoAprendizaje->load($this->getEagerLoadRelations());
-
-        return new ResultadoAprendizajeResource($resultadoAprendizaje);
-    }
 
     public function destroy(ModuloFormativo $moduloFormativo, ResultadoAprendizaje $resultadoAprendizaje)
     {

@@ -18,6 +18,9 @@ use App\Models\Evidencia;
  * )
  */
 
+class EvaluacionEvidenciaController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/users/{parent_id}/evaluaciones-evidencias",
@@ -67,6 +70,45 @@ use App\Models\Evidencia;
  * )
  */
 
+    public function index(Request $request, Evidencia $evidencia)
+    {
+        $query = $evidencia->evaluaciones()->newQuery();
+
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('puntuacion', 'like', "%$search%")
+                ->orWhere('observaciones', 'like', "%$search%")
+                ->orWhere('estado', 'like', "%$search%");
+            });
+        }
+
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $evaluacionEvidencias = $query->paginate($perPage);
+
+        return EvaluacionEvidenciaResource::collection($evaluacionEvidencias);
+    }
+
 /**
  * @OA\Post(
  *     path="/users/{parent_id}/evaluaciones-evidencias",
@@ -97,6 +139,21 @@ use App\Models\Evidencia;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function store(StoreEvaluacionEvidenciaRequest $request, Evidencia $evidencia)
+    {
+        $data = $request->validated();
+        $data['evidencia_id'] = $evidencia->id;
+        $data['user_id'] = auth()->id(); // Asignar el usuario autenticado
+        $data['fecha_evaluacion'] = now(); // Asignar la fecha actual
+
+        $evaluacionEvidencia = EvaluacionEvidencia::create($data);
+
+        // Cargar relaciones para la respuesta
+        $evaluacionEvidencia->load($this->getEagerLoadRelations());
+
+        return new EvaluacionEvidenciaResource($evaluacionEvidencia);
+    }
 
 /**
  * @OA\Get(
@@ -131,6 +188,19 @@ use App\Models\Evidencia;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function show(Evidencia $evidencia, EvaluacionEvidencia $evaluacionEvidencia)
+    {
+        // Verificar que el evaluacionEvidencia pertenece al evidencia
+        if ($evaluacionEvidencia->evidencia_id !== $evidencia->id) {
+            abort(404);
+        }
+
+        // Cargar relaciones
+        $evaluacionEvidencia->load($this->getEagerLoadRelations());
+
+        return new EvaluacionEvidenciaResource($evaluacionEvidencia);
+    }
 
 /**
  * @OA\Put(
@@ -171,6 +241,21 @@ use App\Models\Evidencia;
  * )
  */
 
+    public function update(UpdateEvaluacionEvidenciaRequest $request, Evidencia $evidencia, EvaluacionEvidencia $evaluacionEvidencia)
+    {
+        // Verificar que el evaluacionEvidencia pertenece al evidencia
+        if ($evaluacionEvidencia->evidencia_id !== $evidencia->id) {
+            abort(404);
+        }
+
+        $evaluacionEvidencia->update($request->validated());
+
+        // Cargar relaciones para la respuesta
+        $evaluacionEvidencia->load($this->getEagerLoadRelations());
+
+        return new EvaluacionEvidenciaResource($evaluacionEvidencia);
+    }
+
 /**
  * @OA\Delete(
  *     path="/users/{parent_id}/evaluaciones-evidencias/{id}",
@@ -197,90 +282,6 @@ use App\Models\Evidencia;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
-
-class EvaluacionEvidenciaController extends Controller
-{
-    public function index(Request $request, Evidencia $evidencia)
-    {
-        $query = $evidencia->evaluaciones()->newQuery();
-
-        // Filtro de búsqueda
-        if ($request->has('search') && $request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('puntuacion', 'like', "%$search%")
-                ->orWhere('observaciones', 'like', "%$search%")
-                ->orWhere('estado', 'like', "%$search%");
-            });
-        }
-
-
-        // Filtros adicionales
-        if ($request->has('estado') && $request->filled('estado')) {
-            $query->where('estado', $request->get('estado'));
-        }
-
-        if ($request->has('activo') && $request->filled('activo')) {
-            $query->where('activo', $request->boolean('activo'));
-        }
-
-        // Eager loading de relaciones comunes
-        $query->with($this->getEagerLoadRelations());
-
-        // Ordenamiento
-        $sortBy = $request->get('sort_by', 'id');
-        $sortDirection = $request->get('sort_direction', 'asc');
-        $query->orderBy($sortBy, $sortDirection);
-
-        // Paginación
-        $perPage = $request->get('per_page', 15);
-        $evaluacionEvidencias = $query->paginate($perPage);
-
-        return EvaluacionEvidenciaResource::collection($evaluacionEvidencias);
-    }
-
-    public function store(StoreEvaluacionEvidenciaRequest $request, Evidencia $evidencia)
-    {
-        $data = $request->validated();
-        $data['evidencia_id'] = $evidencia->id;
-        $data['user_id'] = auth()->id(); // Asignar el usuario autenticado
-        $data['fecha_evaluacion'] = now(); // Asignar la fecha actual
-
-        $evaluacionEvidencia = EvaluacionEvidencia::create($data);
-
-        // Cargar relaciones para la respuesta
-        $evaluacionEvidencia->load($this->getEagerLoadRelations());
-
-        return new EvaluacionEvidenciaResource($evaluacionEvidencia);
-    }
-
-    public function show(Evidencia $evidencia, EvaluacionEvidencia $evaluacionEvidencia)
-    {
-        // Verificar que el evaluacionEvidencia pertenece al evidencia
-        if ($evaluacionEvidencia->evidencia_id !== $evidencia->id) {
-            abort(404);
-        }
-
-        // Cargar relaciones
-        $evaluacionEvidencia->load($this->getEagerLoadRelations());
-
-        return new EvaluacionEvidenciaResource($evaluacionEvidencia);
-    }
-
-    public function update(UpdateEvaluacionEvidenciaRequest $request, Evidencia $evidencia, EvaluacionEvidencia $evaluacionEvidencia)
-    {
-        // Verificar que el evaluacionEvidencia pertenece al evidencia
-        if ($evaluacionEvidencia->evidencia_id !== $evidencia->id) {
-            abort(404);
-        }
-
-        $evaluacionEvidencia->update($request->validated());
-
-        // Cargar relaciones para la respuesta
-        $evaluacionEvidencia->load($this->getEagerLoadRelations());
-
-        return new EvaluacionEvidenciaResource($evaluacionEvidencia);
-    }
 
     public function destroy(Evidencia $evidencia, EvaluacionEvidencia $evaluacionEvidencia)
     {

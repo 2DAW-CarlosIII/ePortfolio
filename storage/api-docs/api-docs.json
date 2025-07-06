@@ -24,7 +24,7 @@
         },
         {
             "url": "http://eportfolio.cifpcarlos3.es/api/v1",
-            "description": "Local development server"
+            "description": "Production server"
         }
     ],
     "paths": {
@@ -394,14 +394,284 @@
                 }
             }
         },
+        "/familias-profesionales/{parent_id}/ciclos-formativos": {
+            "get": {
+                "tags": [
+                    "CicloFormativo"
+                ],
+                "summary": "List all cicloformativos",
+                "description": "Retrieve a paginated list of cicloformativos",
+                "operationId": "9ecd144756fbe202acd1e734bb2e50c7",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent FamiliaProfesional",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CicloFormativo"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "CicloFormativo"
+                ],
+                "summary": "Create a new cicloformativo",
+                "description": "Create a new cicloformativo resource",
+                "operationId": "c73b0affd708f591f1e8843be8653a3d",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent FamiliaProfesional",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCicloFormativoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CicloFormativo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/familias-profesionales/{parent_id}/ciclos-formativos/{id}": {
+            "get": {
+                "tags": [
+                    "CicloFormativo"
+                ],
+                "summary": "Show a specific cicloformativo",
+                "description": "Retrieve a specific cicloformativo by ID",
+                "operationId": "14f5b1c6dd23eae72d05276922702e77",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent FamiliaProfesional",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the cicloformativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CicloFormativo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "CicloFormativo"
+                ],
+                "summary": "Update a specific cicloformativo",
+                "description": "Update a specific cicloformativo by ID",
+                "operationId": "ebedb4720b22b11492a76e764d5e5422",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent FamiliaProfesional",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the cicloformativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCicloFormativoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CicloFormativo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "CicloFormativo"
                 ],
                 "summary": "Delete a specific cicloformativo",
                 "description": "Delete a specific cicloformativo by ID",
-                "operationId": "5e2a1889a5305893e02e96979bceffa2",
+                "operationId": "2b5e12ba02f77fec3158ca91436cbe1c",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -454,14 +724,284 @@
                 }
             }
         },
+        "/evidencias/{parent_id}/comentarios": {
+            "get": {
+                "tags": [
+                    "Comentario"
+                ],
+                "summary": "List all comentarios",
+                "description": "Retrieve a paginated list of comentarios",
+                "operationId": "9eafdeb4bdecff7071f1808c73c7c68b",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Comentario"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "Comentario"
+                ],
+                "summary": "Create a new comentario",
+                "description": "Create a new comentario resource",
+                "operationId": "4ad6d9d830fdb345f836d6b411111edf",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreComentarioRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Comentario"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/evidencias/{parent_id}/comentarios/{id}": {
+            "get": {
+                "tags": [
+                    "Comentario"
+                ],
+                "summary": "Show a specific comentario",
+                "description": "Retrieve a specific comentario by ID",
+                "operationId": "177442ffcde499c314523c898a6674ff",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the comentario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Comentario"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "Comentario"
+                ],
+                "summary": "Update a specific comentario",
+                "description": "Update a specific comentario by ID",
+                "operationId": "e0c09b4a39c824de61253f1c674e6eca",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the comentario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateComentarioRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Comentario"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "Comentario"
                 ],
                 "summary": "Delete a specific comentario",
                 "description": "Delete a specific comentario by ID",
-                "operationId": "f4235f418f797dbcda81de9557a5565a",
+                "operationId": "c84a264bf5866efa28a65aa3a814697d",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -514,14 +1054,284 @@
                 }
             }
         },
+        "/resultados-aprendizaje/{parent_id}/criterios-evaluacion": {
+            "get": {
+                "tags": [
+                    "CriteriosEvaluacion"
+                ],
+                "summary": "List all criteriosevaluacions",
+                "description": "Retrieve a paginated list of criteriosevaluacions",
+                "operationId": "97c3816aa6d87d4c1bd2c60536d9dd46",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ResultadoAprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CriterioEvaluacion"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "CriteriosEvaluacion"
+                ],
+                "summary": "Create a new criteriosevaluacion",
+                "description": "Create a new criteriosevaluacion resource",
+                "operationId": "0450bc1e03049ebbd4867801ab8e4f32",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ResultadoAprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCriterioEvaluacionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CriterioEvaluacion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}": {
+            "get": {
+                "tags": [
+                    "CriteriosEvaluacion"
+                ],
+                "summary": "Show a specific criteriosevaluacion",
+                "description": "Retrieve a specific criteriosevaluacion by ID",
+                "operationId": "9b640cf3cb5ff31bcea7e6e883bc5dd9",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ResultadoAprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the criteriosevaluacion",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CriterioEvaluacion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "CriteriosEvaluacion"
+                ],
+                "summary": "Update a specific criteriosevaluacion",
+                "description": "Update a specific criteriosevaluacion by ID",
+                "operationId": "eed01d58cc8af4ff48f2ff737e0a09d1",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ResultadoAprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the criteriosevaluacion",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCriterioEvaluacionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CriterioEvaluacion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "CriteriosEvaluacion"
                 ],
                 "summary": "Delete a specific criteriosevaluacion",
                 "description": "Delete a specific criteriosevaluacion by ID",
-                "operationId": "18c3326bd660ad48c6827fc81c874abf",
+                "operationId": "00d4b9847d02972c898ca7bfa1c85184",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -542,7 +1352,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "CriteriosEvaluacion eliminado correctamente"
+                                            "example": "CriterioEvaluacion eliminado correctamente"
                                         }
                                     },
                                     "type": "object"
@@ -565,14 +1375,284 @@
                 }
             }
         },
+        "/users/{parent_id}/evaluaciones-evidencias": {
+            "get": {
+                "tags": [
+                    "EvaluacionEvidencia"
+                ],
+                "summary": "List all evaluacionevidencias",
+                "description": "Retrieve a paginated list of evaluacionevidencias",
+                "operationId": "d22fb9d05b198b43acb376fd96c87d2b",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/EvaluacionEvidencia"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "EvaluacionEvidencia"
+                ],
+                "summary": "Create a new evaluacionevidencia",
+                "description": "Create a new evaluacionevidencia resource",
+                "operationId": "f308afa34023341a9f2ae4e5d3a32d36",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreEvaluacionEvidenciaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EvaluacionEvidencia"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/users/{parent_id}/evaluaciones-evidencias/{id}": {
+            "get": {
+                "tags": [
+                    "EvaluacionEvidencia"
+                ],
+                "summary": "Show a specific evaluacionevidencia",
+                "description": "Retrieve a specific evaluacionevidencia by ID",
+                "operationId": "999e63ae2c044145ac7145aa894aca0d",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the evaluacionevidencia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EvaluacionEvidencia"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "EvaluacionEvidencia"
+                ],
+                "summary": "Update a specific evaluacionevidencia",
+                "description": "Update a specific evaluacionevidencia by ID",
+                "operationId": "1938a5dc293f8dab150a122112a5eb28",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the evaluacionevidencia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateEvaluacionEvidenciaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EvaluacionEvidencia"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "EvaluacionEvidencia"
                 ],
                 "summary": "Delete a specific evaluacionevidencia",
                 "description": "Delete a specific evaluacionevidencia by ID",
-                "operationId": "6f693bb0a32b0589af2f530ac69a03ba",
+                "operationId": "3a7988699ea666905942635270f71b2e",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -616,14 +1696,284 @@
                 }
             }
         },
+        "/criterios-evaluacion/{parent_id}/evidencias": {
+            "get": {
+                "tags": [
+                    "Evidencia"
+                ],
+                "summary": "List all evidencias",
+                "description": "Retrieve a paginated list of evidencias",
+                "operationId": "e00a0401581376b46ddacfb37d6b11da",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent CriteriosEvaluacion",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Evidencia"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "Evidencia"
+                ],
+                "summary": "Create a new evidencia",
+                "description": "Create a new evidencia resource",
+                "operationId": "1083e755a6b77bd73a7b9376e55ed8b1",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent CriteriosEvaluacion",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreEvidenciaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Evidencia"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/criterios-evaluacion/{parent_id}/evidencias/{id}": {
+            "get": {
+                "tags": [
+                    "Evidencia"
+                ],
+                "summary": "Show a specific evidencia",
+                "description": "Retrieve a specific evidencia by ID",
+                "operationId": "5ad10782818d5ca5dc80020697db11df",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent CriteriosEvaluacion",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the evidencia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Evidencia"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "Evidencia"
+                ],
+                "summary": "Update a specific evidencia",
+                "description": "Update a specific evidencia by ID",
+                "operationId": "bdd86050a1c61fc4142ea2bf2c4dbd97",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent CriteriosEvaluacion",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the evidencia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateEvidenciaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Evidencia"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "Evidencia"
                 ],
                 "summary": "Delete a specific evidencia",
                 "description": "Delete a specific evidencia by ID",
-                "operationId": "dc515932ab760883b213ad2b98059025",
+                "operationId": "bcb5bbe2db7496c4f145be4ada884f7a",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -667,14 +2017,246 @@
                 }
             }
         },
+        "/familias-profesionales": {
+            "get": {
+                "tags": [
+                    "FamiliaProfesional"
+                ],
+                "summary": "List all familiaprofesionals",
+                "description": "Retrieve a paginated list of familiaprofesionals",
+                "operationId": "a566ea7189622f1903ff7b148ec7bd84",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/FamiliaProfesional"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "FamiliaProfesional"
+                ],
+                "summary": "Create a new familiaprofesional",
+                "description": "Create a new familiaprofesional resource",
+                "operationId": "c0d9197bc6056d788fd283f870fe2079",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreFamiliaProfesionalRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/FamiliaProfesional"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/familias-profesionales/{id}": {
+            "get": {
+                "tags": [
+                    "FamiliaProfesional"
+                ],
+                "summary": "Show a specific familiaprofesional",
+                "description": "Retrieve a specific familiaprofesional by ID",
+                "operationId": "0a515eea06013e0640b207178573ae1d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the familiaprofesional",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/FamiliaProfesional"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "FamiliaProfesional"
+                ],
+                "summary": "Update a specific familiaprofesional",
+                "description": "Update a specific familiaprofesional by ID",
+                "operationId": "1366b9a9638ec2490e2506567c8fd617",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the familiaprofesional",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateFamiliaProfesionalRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/FamiliaProfesional"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "FamiliaProfesional"
                 ],
                 "summary": "Delete a specific familiaprofesional",
                 "description": "Delete a specific familiaprofesional by ID",
-                "operationId": "be466b262aa545b1825f945576be7358",
+                "operationId": "8067e4abbe2ef9b52d7e14654e217646",
                 "parameters": [
                     {
                         "name": "id",
@@ -705,14 +2287,284 @@
                 }
             }
         },
+        "/modulos-formativos/{parent_id}/matriculas": {
+            "get": {
+                "tags": [
+                    "Matricula"
+                ],
+                "summary": "List all matriculas",
+                "description": "Retrieve a paginated list of matriculas",
+                "operationId": "e2b23d48c6b36e8b1beec2ff86970b4c",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Matricula"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "Matricula"
+                ],
+                "summary": "Create a new matricula",
+                "description": "Create a new matricula resource",
+                "operationId": "5141e92f5d4de0dc0154e98d479c242f",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMatriculaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Matricula"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/modulos-formativos/{parent_id}/matriculas/{id}": {
+            "get": {
+                "tags": [
+                    "Matricula"
+                ],
+                "summary": "Show a specific matricula",
+                "description": "Retrieve a specific matricula by ID",
+                "operationId": "1a26081d461d576b25e49d7058c88d8f",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the matricula",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Matricula"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "Matricula"
+                ],
+                "summary": "Update a specific matricula",
+                "description": "Update a specific matricula by ID",
+                "operationId": "6a8e9ed63e8b3fe6c64ca878490c98d5",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the matricula",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateMatriculaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Matricula"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "Matricula"
                 ],
                 "summary": "Delete a specific matricula",
                 "description": "Delete a specific matricula by ID",
-                "operationId": "becdf11934b52cf210ad401c3f9321ac",
+                "operationId": "00afc1c37240c3c7347dd2ae29a9eb85",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -756,14 +2608,284 @@
                 }
             }
         },
+        "/users/{parent_id}/modulos-formativos": {
+            "get": {
+                "tags": [
+                    "ModuloFormativo"
+                ],
+                "summary": "List all moduloformativos",
+                "description": "Retrieve a paginated list of moduloformativos",
+                "operationId": "a36b17b92170f5cbcce48364b6402714",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ModuloFormativo"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "ModuloFormativo"
+                ],
+                "summary": "Create a new moduloformativo",
+                "description": "Create a new moduloformativo resource",
+                "operationId": "6cb46288912d62a04d25eb3d91dfccd9",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreModuloFormativoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ModuloFormativo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/users/{parent_id}/modulos-formativos/{id}": {
+            "get": {
+                "tags": [
+                    "ModuloFormativo"
+                ],
+                "summary": "Show a specific moduloformativo",
+                "description": "Retrieve a specific moduloformativo by ID",
+                "operationId": "57f6f1d779825fec758f4e6a233faa96",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the moduloformativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ModuloFormativo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "ModuloFormativo"
+                ],
+                "summary": "Update a specific moduloformativo",
+                "description": "Update a specific moduloformativo by ID",
+                "operationId": "65b7fc301d314c28ad718d9a85a1c550",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the moduloformativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateModuloFormativoRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ModuloFormativo"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "ModuloFormativo"
                 ],
                 "summary": "Delete a specific moduloformativo",
                 "description": "Delete a specific moduloformativo by ID",
-                "operationId": "21e3aa8cc870462449a1163c2e815f55",
+                "operationId": "6e4c47e200ca958fb2327cb21c76cbba",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -807,14 +2929,284 @@
                 }
             }
         },
+        "/modulos-formativos/{parent_id}/planificacion-criterios": {
+            "get": {
+                "tags": [
+                    "PlanificacionCriterios"
+                ],
+                "summary": "List all planificacioncriterioss",
+                "description": "Retrieve a paginated list of planificacioncriterioss",
+                "operationId": "16de3645d3186e2bb8ca65cd80170a5b",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/PlanificacionCriterio"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "PlanificacionCriterios"
+                ],
+                "summary": "Create a new planificacioncriterios",
+                "description": "Create a new planificacioncriterios resource",
+                "operationId": "27122933322a3bfe35d3076df3577be8",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StorePlanificacionCriterioRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/PlanificacionCriterio"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/modulos-formativos/{parent_id}/planificacion-criterios/{id}": {
+            "get": {
+                "tags": [
+                    "PlanificacionCriterios"
+                ],
+                "summary": "Show a specific planificacioncriterios",
+                "description": "Retrieve a specific planificacioncriterios by ID",
+                "operationId": "e67c61a6b5cfc9a8f0bed25344d2877b",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the planificacioncriterios",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/PlanificacionCriterio"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "PlanificacionCriterios"
+                ],
+                "summary": "Update a specific planificacioncriterios",
+                "description": "Update a specific planificacioncriterios by ID",
+                "operationId": "a77a043c020050ac40c598bd244719cf",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the planificacioncriterios",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePlanificacionCriterioRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/PlanificacionCriterio"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "PlanificacionCriterios"
                 ],
                 "summary": "Delete a specific planificacioncriterios",
                 "description": "Delete a specific planificacioncriterios by ID",
-                "operationId": "3cc7a855de9259d4f151c1e117ab2ec5",
+                "operationId": "c87750e1deada06d59b03311095d934c",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -858,14 +3250,284 @@
                 }
             }
         },
+        "/modulos-formativos/{parent_id}/resultados-aprendizaje": {
+            "get": {
+                "tags": [
+                    "ResultadoAprendizaje"
+                ],
+                "summary": "List all resultadoaprendizajes",
+                "description": "Retrieve a paginated list of resultadoaprendizajes",
+                "operationId": "d5d12ff2cc064e23cd7bfecd3da5b534",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ResultadoAprendizaje"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "ResultadoAprendizaje"
+                ],
+                "summary": "Create a new resultadoaprendizaje",
+                "description": "Create a new resultadoaprendizaje resource",
+                "operationId": "ab676d397d4403c4210007aa85d960a3",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreResultadoAprendizajeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ResultadoAprendizaje"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/modulos-formativos/{parent_id}/resultados-aprendizaje/{id}": {
+            "get": {
+                "tags": [
+                    "ResultadoAprendizaje"
+                ],
+                "summary": "Show a specific resultadoaprendizaje",
+                "description": "Retrieve a specific resultadoaprendizaje by ID",
+                "operationId": "380e8c0222ceb61ec81131fc4c69c6eb",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the resultadoaprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ResultadoAprendizaje"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "ResultadoAprendizaje"
+                ],
+                "summary": "Update a specific resultadoaprendizaje",
+                "description": "Update a specific resultadoaprendizaje by ID",
+                "operationId": "c491f3fd40a6d1c3f7921b545eda1700",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the resultadoaprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateResultadoAprendizajeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ResultadoAprendizaje"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "ResultadoAprendizaje"
                 ],
                 "summary": "Delete a specific resultadoaprendizaje",
                 "description": "Delete a specific resultadoaprendizaje by ID",
-                "operationId": "3870c44225a9969e3e1cbb4427cbe4be",
+                "operationId": "40ffff57942d7d146be81a18cf040fd6",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -909,14 +3571,246 @@
                 }
             }
         },
+        "/roles": {
+            "get": {
+                "tags": [
+                    "Rol"
+                ],
+                "summary": "List all rols",
+                "description": "Retrieve a paginated list of rols",
+                "operationId": "219aa99f0ea40b14fbb5f3b9dadc6ad1",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Rol"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "post": {
+                "tags": [
+                    "Rol"
+                ],
+                "summary": "Create a new rol",
+                "description": "Create a new rol resource",
+                "operationId": "1a4844f88745b12f75ecda89bd20fc13",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreRolRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Rol"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            }
+        },
         "/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Rol"
+                ],
+                "summary": "Show a specific rol",
+                "description": "Retrieve a specific rol by ID",
+                "operationId": "2d60f8015c5031ab0253f9fcab7e9adf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the rol",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Rol"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
+            "put": {
+                "tags": [
+                    "Rol"
+                ],
+                "summary": "Update a specific rol",
+                "description": "Update a specific rol by ID",
+                "operationId": "610553774a54e7dadc84dfeaa45d043e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the rol",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateRolRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Rol"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": {
+                    "sanctum": {}
+                }
+            },
             "delete": {
                 "tags": [
                     "Rol"
                 ],
                 "summary": "Delete a specific rol",
                 "description": "Delete a specific rol by ID",
-                "operationId": "0440038bd2464683b54226ab1a6f738a",
+                "operationId": "5bb912c54b58cb39916f46cb9b73200b",
                 "parameters": [
                     {
                         "name": "id",
@@ -958,6 +3852,366 @@
                 "security": {
                     "sanctum": {}
                 }
+            }
+        },
+        "/api/stats": {
+            "get": {
+                "tags": [
+                    "Estadísticas"
+                ],
+                "summary": "Estadísticas generales del sistema",
+                "description": "Obtiene un resumen de estadísticas generales del sistema incluyendo usuarios, módulos, matrículas y evidencias",
+                "operationId": "15e4c40e8bf4ede8bde3c40ae809abc8",
+                "responses": {
+                    "200": {
+                        "description": "Estadísticas obtenidas exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "usuarios": {
+                                            "properties": {
+                                                "total": {
+                                                    "description": "Total de usuarios registrados",
+                                                    "type": "integer",
+                                                    "example": 250
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "modulos": {
+                                            "properties": {
+                                                "total": {
+                                                    "description": "Total de módulos formativos",
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "activos": {
+                                                    "description": "Módulos formativos activos",
+                                                    "type": "integer",
+                                                    "example": 8
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "matriculas": {
+                                            "properties": {
+                                                "total": {
+                                                    "description": "Total de matrículas",
+                                                    "type": "integer",
+                                                    "example": 180
+                                                },
+                                                "activas": {
+                                                    "description": "Matrículas activas",
+                                                    "type": "integer",
+                                                    "example": 165
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "evidencias": {
+                                            "properties": {
+                                                "total": {
+                                                    "description": "Total de evidencias",
+                                                    "type": "integer",
+                                                    "example": 1250
+                                                },
+                                                "validadas": {
+                                                    "description": "Evidencias validadas",
+                                                    "type": "integer",
+                                                    "example": 980
+                                                },
+                                                "pendientes": {
+                                                    "description": "Evidencias pendientes de validación",
+                                                    "type": "integer",
+                                                    "example": 270
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado - Token requerido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error interno del servidor"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/stats/estudiantes": {
+            "get": {
+                "tags": [
+                    "Estadísticas"
+                ],
+                "summary": "Estadísticas de estudiantes",
+                "description": "Obtiene estadísticas específicas sobre estudiantes, con posibilidad de filtrar por módulo formativo",
+                "operationId": "7b900ba8f3f511750e663fdae08f61b9",
+                "parameters": [
+                    {
+                        "name": "modulo_id",
+                        "in": "query",
+                        "description": "ID del módulo formativo para filtrar estadísticas",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Estadísticas de estudiantes obtenidas exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "total_estudiantes": {
+                                            "description": "Total de estudiantes registrados",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "con_evidencias": {
+                                            "description": "Estudiantes que tienen al menos una evidencia",
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado - Token requerido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos proporcionados no son válidos"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "modulo_id": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El campo modulo_id debe ser un número entero."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/stats/evidencias": {
+            "get": {
+                "tags": [
+                    "Estadísticas"
+                ],
+                "summary": "Estadísticas de evidencias por criterio",
+                "description": "Obtiene estadísticas detalladas sobre evidencias, con posibilidad de filtrar por criterio de evaluación y módulo formativo",
+                "operationId": "6271aba6df2e6052204b609962e3b7e5",
+                "parameters": [
+                    {
+                        "name": "criterio_id",
+                        "in": "query",
+                        "description": "ID del criterio de evaluación para filtrar evidencias",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 5
+                        }
+                    },
+                    {
+                        "name": "modulo_id",
+                        "in": "query",
+                        "description": "ID del módulo formativo para filtrar evidencias",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Estadísticas de evidencias obtenidas exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "total": {
+                                            "description": "Total de evidencias que coinciden con los filtros",
+                                            "type": "integer",
+                                            "example": 850
+                                        },
+                                        "por_estado": {
+                                            "description": "Distribución de evidencias por estado de validación",
+                                            "properties": {
+                                                "pendiente": {
+                                                    "type": "integer",
+                                                    "example": 125
+                                                },
+                                                "validada": {
+                                                    "type": "integer",
+                                                    "example": 650
+                                                },
+                                                "rechazada": {
+                                                    "type": "integer",
+                                                    "example": 75
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado - Token requerido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Los datos proporcionados no son válidos"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "criterio_id": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El campo criterio_id debe ser un número entero."
+                                                    }
+                                                },
+                                                "modulo_id": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El campo modulo_id debe ser un número entero."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recurso no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El criterio o módulo especificado no existe"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         }
     },
@@ -1391,7 +4645,7 @@
                 },
                 "type": "object"
             },
-            "StoreRoleRequest": {
+            "StoreRolRequest": {
                 "title": "Store Role Request",
                 "description": "Datos requeridos para crear un Rol",
                 "required": [
@@ -1778,7 +5032,7 @@
                 },
                 "type": "object"
             },
-            "UpdateRoleRequest": {
+            "UpdateRolRequest": {
                 "title": "Update Role Request",
                 "description": "Datos para actualizar un Rol",
                 "properties": {
@@ -2296,7 +5550,7 @@
                 },
                 "type": "object"
             },
-            "Role": {
+            "Rol": {
                 "title": "Rol",
                 "description": "Modelo de Rol",
                 "properties": {
@@ -2381,47 +5635,51 @@
         },
         {
             "name": "CicloFormativo",
-            "description": "CicloFormativo"
+            "description": "Operations related to CicloFormativo"
         },
         {
             "name": "Comentario",
-            "description": "Comentario"
+            "description": "Operations related to Comentario"
         },
         {
             "name": "CriteriosEvaluacion",
-            "description": "CriteriosEvaluacion"
+            "description": "Operations related to CriteriosEvaluacion"
         },
         {
             "name": "EvaluacionEvidencia",
-            "description": "EvaluacionEvidencia"
+            "description": "Operations related to EvaluacionEvidencia"
         },
         {
             "name": "Evidencia",
-            "description": "Evidencia"
+            "description": "Operations related to Evidencia"
         },
         {
             "name": "FamiliaProfesional",
-            "description": "FamiliaProfesional"
+            "description": "Operations related to FamiliaProfesional"
         },
         {
             "name": "Matricula",
-            "description": "Matricula"
+            "description": "Operations related to Matricula"
         },
         {
             "name": "ModuloFormativo",
-            "description": "ModuloFormativo"
+            "description": "Operations related to ModuloFormativo"
         },
         {
             "name": "PlanificacionCriterios",
-            "description": "PlanificacionCriterios"
+            "description": "Operations related to PlanificacionCriterios"
         },
         {
             "name": "ResultadoAprendizaje",
-            "description": "ResultadoAprendizaje"
+            "description": "Operations related to ResultadoAprendizaje"
         },
         {
             "name": "Rol",
-            "description": "Rol"
+            "description": "Operations related to Rol"
+        },
+        {
+            "name": "Estadísticas",
+            "description": "Endpoints para obtener estadísticas del sistema ePortfolio"
         }
     ]
 }

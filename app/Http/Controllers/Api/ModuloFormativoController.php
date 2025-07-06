@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
  * )
  */
 
+class ModuloFormativoController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/users/{parent_id}/modulos-formativos",
@@ -67,6 +70,42 @@ use Illuminate\Http\Request;
  * )
  */
 
+    public function index(Request $request, CicloFormativo $cicloFormativo)
+    {
+        $query = ModuloFormativo::query();
+
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%$search%")->orWhere('codigo', 'like', "%$search%")->orWhere('descripcion', 'like', "%$search%");
+            });
+        }
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $moduloFormativos = $query->paginate($perPage);
+
+        return ModuloFormativoResource::collection($moduloFormativos);
+    }
+
 /**
  * @OA\Post(
  *     path="/users/{parent_id}/modulos-formativos",
@@ -97,6 +136,19 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function store(StoreModuloFormativoRequest $request, CicloFormativo $cicloFormativo)
+    {
+        $data = $request->validated();
+        $data['ciclo_formativo_id'] = $cicloFormativo->id;
+        $data['docente_id'] = auth()->id(); // Asignar el docente actual
+        $moduloFormativo = ModuloFormativo::create($data);
+
+        // Cargar relaciones para la respuesta
+        $moduloFormativo->load($this->getEagerLoadRelations());
+
+        return new ModuloFormativoResource($moduloFormativo);
+    }
 
 /**
  * @OA\Get(
@@ -131,6 +183,18 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function show(CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
+    {
+        if($cicloFormativo->id !== $moduloFormativo->ciclo_formativo_id) {
+            return response()->json(['message' => 'ModuloFormativo not found in the specified CicloFormativo'], 404);
+        }
+
+        // Cargar relaciones
+        $moduloFormativo->load($this->getEagerLoadRelations());
+
+        return new ModuloFormativoResource($moduloFormativo);
+    }
 
 /**
  * @OA\Put(
@@ -171,6 +235,20 @@ use Illuminate\Http\Request;
  * )
  */
 
+    public function update(UpdateModuloFormativoRequest $request, CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
+    {
+        if($cicloFormativo->id !== $moduloFormativo->ciclo_formativo_id) {
+            return response()->json(['message' => 'ModuloFormativo not found in the specified CicloFormativo'], 404);
+        }
+
+        $moduloFormativo->update($request->validated());
+
+        // Cargar relaciones para la respuesta
+        $moduloFormativo->load($this->getEagerLoadRelations());
+
+        return new ModuloFormativoResource($moduloFormativo);
+    }
+
 /**
  * @OA\Delete(
  *     path="/users/{parent_id}/modulos-formativos/{id}",
@@ -197,83 +275,6 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
-
-class ModuloFormativoController extends Controller
-{
-    public function index(Request $request, CicloFormativo $cicloFormativo)
-    {
-        $query = ModuloFormativo::query();
-
-        // Filtro de búsqueda
-        if ($request->has('search') && $request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('nombre', 'like', "%$search%")->orWhere('codigo', 'like', "%$search%")->orWhere('descripcion', 'like', "%$search%");
-            });
-        }
-
-        // Filtros adicionales
-        if ($request->has('estado') && $request->filled('estado')) {
-            $query->where('estado', $request->get('estado'));
-        }
-
-        if ($request->has('activo') && $request->filled('activo')) {
-            $query->where('activo', $request->boolean('activo'));
-        }
-
-        // Eager loading de relaciones comunes
-        $query->with($this->getEagerLoadRelations());
-
-        // Ordenamiento
-        $sortBy = $request->get('sort_by', 'id');
-        $sortDirection = $request->get('sort_direction', 'asc');
-        $query->orderBy($sortBy, $sortDirection);
-
-        // Paginación
-        $perPage = $request->get('per_page', 15);
-        $moduloFormativos = $query->paginate($perPage);
-
-        return ModuloFormativoResource::collection($moduloFormativos);
-    }
-
-    public function store(StoreModuloFormativoRequest $request, CicloFormativo $cicloFormativo)
-    {
-        $data = $request->validated();
-        $data['ciclo_formativo_id'] = $cicloFormativo->id;
-        $data['docente_id'] = auth()->id(); // Asignar el docente actual
-        $moduloFormativo = ModuloFormativo::create($data);
-
-        // Cargar relaciones para la respuesta
-        $moduloFormativo->load($this->getEagerLoadRelations());
-
-        return new ModuloFormativoResource($moduloFormativo);
-    }
-
-    public function show(CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
-    {
-        if($cicloFormativo->id !== $moduloFormativo->ciclo_formativo_id) {
-            return response()->json(['message' => 'ModuloFormativo not found in the specified CicloFormativo'], 404);
-        }
-
-        // Cargar relaciones
-        $moduloFormativo->load($this->getEagerLoadRelations());
-
-        return new ModuloFormativoResource($moduloFormativo);
-    }
-
-    public function update(UpdateModuloFormativoRequest $request, CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
-    {
-        if($cicloFormativo->id !== $moduloFormativo->ciclo_formativo_id) {
-            return response()->json(['message' => 'ModuloFormativo not found in the specified CicloFormativo'], 404);
-        }
-
-        $moduloFormativo->update($request->validated());
-
-        // Cargar relaciones para la respuesta
-        $moduloFormativo->load($this->getEagerLoadRelations());
-
-        return new ModuloFormativoResource($moduloFormativo);
-    }
 
     public function destroy(CicloFormativo $cicloFormativo, ModuloFormativo $moduloFormativo)
     {

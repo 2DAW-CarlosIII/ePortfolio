@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @OA\Schema(
- *     schema="UpdateRoleRequest",
+ *     schema="UpdateRolRequest",
  *     type="object",
  *     title="Update Role Request",
  *     description="Datos para actualizar un Rol",

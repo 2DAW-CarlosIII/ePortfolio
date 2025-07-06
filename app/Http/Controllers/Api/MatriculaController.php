@@ -18,6 +18,9 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  * )
  */
 
+class MatriculaController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/modulos-formativos/{parent_id}/matriculas",
@@ -67,6 +70,35 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  * )
  */
 
+    public function index(Request $request, ModuloFormativo $moduloFormativo)
+    {
+        $query = Matricula::query();
+
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $matriculas = $query->paginate($perPage);
+
+        return MatriculaResource::collection($matriculas);
+    }
+
 /**
  * @OA\Post(
  *     path="/modulos-formativos/{parent_id}/matriculas",
@@ -97,6 +129,20 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function store(StoreMatriculaRequest $request, ModuloFormativo $moduloFormativo)
+    {
+        $data= $request->validated();
+        $data['modulo_formativo_id'] = $moduloFormativo->id;
+        $data['estudiante_id'] = $request->user()->id; // Asignar el ID del usuario autenticado como estudiante
+
+        $matricula = Matricula::create($data);
+
+        // Cargar relaciones para la respuesta
+        $matricula->load($this->getEagerLoadRelations());
+
+        return new MatriculaResource($matricula);
+    }
 
 /**
  * @OA\Get(
@@ -131,6 +177,19 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function show(ModuloFormativo $moduloFormativo, Matricula $matricula)
+    {
+
+        if ($matricula->modulo_formativo_id !== $moduloFormativo->id) {
+            return response()->json(['message' => 'Matricula not found'], 404);
+        }
+
+        // Cargar relaciones
+        $matricula->load($this->getEagerLoadRelations());
+
+        return new MatriculaResource($matricula);
+    }
 
 /**
  * @OA\Put(
@@ -171,6 +230,21 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  * )
  */
 
+    public function update(UpdateMatriculaRequest $request, ModuloFormativo $moduloFormativo, Matricula $matricula)
+    {
+
+        if ($matricula->modulo_formativo_id !== $moduloFormativo->id) {
+            return response()->json(['message' => 'Matricula not found'], 404);
+        }
+
+        $matricula->update($request->validated());
+
+        // Cargar relaciones para la respuesta
+        $matricula->load($this->getEagerLoadRelations());
+
+        return new MatriculaResource($matricula);
+    }
+
 /**
  * @OA\Delete(
  *     path="/modulos-formativos/{parent_id}/matriculas/{id}",
@@ -197,79 +271,6 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
-
-class MatriculaController extends Controller
-{
-    public function index(Request $request, ModuloFormativo $moduloFormativo)
-    {
-        $query = Matricula::query();
-
-
-        // Filtros adicionales
-        if ($request->has('estado') && $request->filled('estado')) {
-            $query->where('estado', $request->get('estado'));
-        }
-
-        if ($request->has('activo') && $request->filled('activo')) {
-            $query->where('activo', $request->boolean('activo'));
-        }
-
-        // Eager loading de relaciones comunes
-        $query->with($this->getEagerLoadRelations());
-
-        // Ordenamiento
-        $sortBy = $request->get('sort_by', 'id');
-        $sortDirection = $request->get('sort_direction', 'asc');
-        $query->orderBy($sortBy, $sortDirection);
-
-        // Paginación
-        $perPage = $request->get('per_page', 15);
-        $matriculas = $query->paginate($perPage);
-
-        return MatriculaResource::collection($matriculas);
-    }
-
-    public function store(StoreMatriculaRequest $request, ModuloFormativo $moduloFormativo)
-    {
-        $data= $request->validated();
-        $data['modulo_formativo_id'] = $moduloFormativo->id;
-        $data['estudiante_id'] = $request->user()->id; // Asignar el ID del usuario autenticado como estudiante
-
-        $matricula = Matricula::create($data);
-
-        // Cargar relaciones para la respuesta
-        $matricula->load($this->getEagerLoadRelations());
-
-        return new MatriculaResource($matricula);
-    }
-
-    public function show(ModuloFormativo $moduloFormativo, Matricula $matricula)
-    {
-
-        if ($matricula->modulo_formativo_id !== $moduloFormativo->id) {
-            return response()->json(['message' => 'Matricula not found'], 404);
-        }
-
-        // Cargar relaciones
-        $matricula->load($this->getEagerLoadRelations());
-
-        return new MatriculaResource($matricula);
-    }
-
-    public function update(UpdateMatriculaRequest $request, ModuloFormativo $moduloFormativo, Matricula $matricula)
-    {
-
-        if ($matricula->modulo_formativo_id !== $moduloFormativo->id) {
-            return response()->json(['message' => 'Matricula not found'], 404);
-        }
-
-        $matricula->update($request->validated());
-
-        // Cargar relaciones para la respuesta
-        $matricula->load($this->getEagerLoadRelations());
-
-        return new MatriculaResource($matricula);
-    }
 
     public function destroy(ModuloFormativo $moduloFormativo, Matricula $matricula)
     {

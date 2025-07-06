@@ -17,6 +17,9 @@ use Illuminate\Http\Request;
  * )
  */
 
+class FamiliaProfesionalController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/familias-profesionales",
@@ -59,115 +62,6 @@ use Illuminate\Http\Request;
  * )
  */
 
-/**
- * @OA\Post(
- *     path="/familias-profesionales",
- *     tags={"FamiliaProfesional"},
- *     summary="Create a new familiaprofesional",
- *     description="Create a new familiaprofesional resource",
- *     security={"sanctum":{}},
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/StoreFamiliaProfesionalRequest")
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Resource created successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/FamiliaProfesional")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Get(
- *     path="/familias-profesionales/{id}",
- *     tags={"FamiliaProfesional"},
- *     summary="Show a specific familiaprofesional",
- *     description="Retrieve a specific familiaprofesional by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the familiaprofesional",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Successful operation",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/FamiliaProfesional")
- *         )
- *     ),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Put(
- *     path="/familias-profesionales/{id}",
- *     tags={"FamiliaProfesional"},
- *     summary="Update a specific familiaprofesional",
- *     description="Update a specific familiaprofesional by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the familiaprofesional",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/UpdateFamiliaProfesionalRequest")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Resource updated successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/FamiliaProfesional")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Delete(
- *     path="/familias-profesionales/{id}",
- *     tags={"FamiliaProfesional"},
- *     summary="Delete a specific familiaprofesional",
- *     description="Delete a specific familiaprofesional by ID",
- *     security={"sanctum":{}},
- *    @OA\Parameter(
- *        name="id",
- *       in="path",
- *      description="ID of the familiaprofesional",
- *      required=true,
- *      @OA\Schema(type="integer")
- *   ),
- *    @OA\Response(
- *        response=204,
- *       description="Resource deleted successfully"
- * *   ),
- *   @OA\Response(response=404, description="Resource not found"),
- *  @OA\Response(response=401, description="Unauthenticated"),
- * @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-class FamiliaProfesionalController extends Controller
-{
     public function index(Request $request)
     {
         $query = FamiliaProfesional::query();
@@ -204,6 +98,30 @@ class FamiliaProfesionalController extends Controller
         return FamiliaProfesionalResource::collection($familiaProfesionals);
     }
 
+/**
+ * @OA\Post(
+ *     path="/familias-profesionales",
+ *     tags={"FamiliaProfesional"},
+ *     summary="Create a new familiaprofesional",
+ *     description="Create a new familiaprofesional resource",
+ *     security={"sanctum":{}},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreFamiliaProfesionalRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/FamiliaProfesional")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function store(StoreFamiliaProfesionalRequest $request)
     {
         $familiaProfesional = FamiliaProfesional::create($request->validated());
@@ -214,6 +132,33 @@ class FamiliaProfesionalController extends Controller
         return new FamiliaProfesionalResource($familiaProfesional);
     }
 
+/**
+ * @OA\Get(
+ *     path="/familias-profesionales/{id}",
+ *     tags={"FamiliaProfesional"},
+ *     summary="Show a specific familiaprofesional",
+ *     description="Retrieve a specific familiaprofesional by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the familiaprofesional",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/FamiliaProfesional")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function show(FamiliaProfesional $familiaProfesional)
     {
 
@@ -222,6 +167,38 @@ class FamiliaProfesionalController extends Controller
 
         return new FamiliaProfesionalResource($familiaProfesional);
     }
+
+/**
+ * @OA\Put(
+ *     path="/familias-profesionales/{id}",
+ *     tags={"FamiliaProfesional"},
+ *     summary="Update a specific familiaprofesional",
+ *     description="Update a specific familiaprofesional by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the familiaprofesional",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateFamiliaProfesionalRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/FamiliaProfesional")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function update(UpdateFamiliaProfesionalRequest $request, FamiliaProfesional $familiaProfesional)
     {
@@ -233,6 +210,30 @@ class FamiliaProfesionalController extends Controller
 
         return new FamiliaProfesionalResource($familiaProfesional);
     }
+
+/**
+ * @OA\Delete(
+ *     path="/familias-profesionales/{id}",
+ *     tags={"FamiliaProfesional"},
+ *     summary="Delete a specific familiaprofesional",
+ *     description="Delete a specific familiaprofesional by ID",
+ *     security={"sanctum":{}},
+ *    @OA\Parameter(
+ *        name="id",
+ *       in="path",
+ *      description="ID of the familiaprofesional",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully"
+ * *   ),
+ *   @OA\Response(response=404, description="Resource not found"),
+ *  @OA\Response(response=401, description="Unauthenticated"),
+ * @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function destroy(FamiliaProfesional $familiaProfesional)
     {

@@ -18,6 +18,9 @@ use App\Models\Evidencia;
  * )
  */
 
+class ComentarioController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/evidencias/{parent_id}/comentarios",
@@ -67,6 +70,42 @@ use App\Models\Evidencia;
  * )
  */
 
+    public function index(Request $request, Evidencia $evidencia)
+    {
+        $query = $evidencia->comentarios()->newQuery();
+
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('contenido', 'like', "%$search%");
+            });
+        }
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $comentarios = $query->paginate($perPage);
+
+        return ComentarioResource::collection($comentarios);
+    }
+
 /**
  * @OA\Post(
  *     path="/evidencias/{parent_id}/comentarios",
@@ -97,6 +136,21 @@ use App\Models\Evidencia;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function store(StoreComentarioRequest $request, Evidencia $evidencia)
+    {
+        $data = $request->validated();
+
+        $data['evidencia_id'] = $evidencia->id; // de la ruta anidada
+        $data['user_id'] = auth()->id(); // usuario autenticado
+
+        $comentario = Comentario::create($data);
+
+        // Cargar relaciones para la respuesta
+        $comentario->load($this->getEagerLoadRelations());
+
+        return new ComentarioResource($comentario);
+    }
 
 /**
  * @OA\Get(
@@ -131,6 +185,19 @@ use App\Models\Evidencia;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function show(Evidencia $evidencia, Comentario $comentario)
+    {
+        // Verificar que el comentario pertenece al evidencia
+        if ($comentario->evidencia_id !== $evidencia->id) {
+            abort(404);
+        }
+
+        // Cargar relaciones
+        $comentario->load($this->getEagerLoadRelations());
+
+        return new ComentarioResource($comentario);
+    }
 
 /**
  * @OA\Put(
@@ -171,6 +238,21 @@ use App\Models\Evidencia;
  * )
  */
 
+    public function update(UpdateComentarioRequest $request, Evidencia $evidencia, Comentario $comentario)
+    {
+        // Verificar que el comentario pertenece al evidencia
+        if ($comentario->evidencia_id !== $evidencia->id) {
+            abort(404);
+        }
+
+        $comentario->update($request->validated());
+
+        // Cargar relaciones para la respuesta
+        $comentario->load($this->getEagerLoadRelations());
+
+        return new ComentarioResource($comentario);
+    }
+
 /**
  * @OA\Delete(
  *     path="/evidencias/{parent_id}/comentarios/{id}",
@@ -204,87 +286,6 @@ use App\Models\Evidencia;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
-
-class ComentarioController extends Controller
-{
-    public function index(Request $request, Evidencia $evidencia)
-    {
-        $query = $evidencia->comentarios()->newQuery();
-
-        // Filtro de búsqueda
-        if ($request->has('search') && $request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('contenido', 'like', "%$search%");
-            });
-        }
-
-        // Filtros adicionales
-        if ($request->has('estado') && $request->filled('estado')) {
-            $query->where('estado', $request->get('estado'));
-        }
-
-        if ($request->has('activo') && $request->filled('activo')) {
-            $query->where('activo', $request->boolean('activo'));
-        }
-
-        // Eager loading de relaciones comunes
-        $query->with($this->getEagerLoadRelations());
-
-        // Ordenamiento
-        $sortBy = $request->get('sort_by', 'id');
-        $sortDirection = $request->get('sort_direction', 'asc');
-        $query->orderBy($sortBy, $sortDirection);
-
-        // Paginación
-        $perPage = $request->get('per_page', 15);
-        $comentarios = $query->paginate($perPage);
-
-        return ComentarioResource::collection($comentarios);
-    }
-
-    public function store(StoreComentarioRequest $request, Evidencia $evidencia)
-    {
-        $data = $request->validated();
-
-        $data['evidencia_id'] = $evidencia->id; // de la ruta anidada
-        $data['user_id'] = auth()->id(); // usuario autenticado
-
-        $comentario = Comentario::create($data);
-
-        // Cargar relaciones para la respuesta
-        $comentario->load($this->getEagerLoadRelations());
-
-        return new ComentarioResource($comentario);
-    }
-
-    public function show(Evidencia $evidencia, Comentario $comentario)
-    {
-        // Verificar que el comentario pertenece al evidencia
-        if ($comentario->evidencia_id !== $evidencia->id) {
-            abort(404);
-        }
-
-        // Cargar relaciones
-        $comentario->load($this->getEagerLoadRelations());
-
-        return new ComentarioResource($comentario);
-    }
-
-    public function update(UpdateComentarioRequest $request, Evidencia $evidencia, Comentario $comentario)
-    {
-        // Verificar que el comentario pertenece al evidencia
-        if ($comentario->evidencia_id !== $evidencia->id) {
-            abort(404);
-        }
-
-        $comentario->update($request->validated());
-
-        // Cargar relaciones para la respuesta
-        $comentario->load($this->getEagerLoadRelations());
-
-        return new ComentarioResource($comentario);
-    }
 
     public function destroy(Evidencia $evidencia, Comentario $comentario)
     {

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @OA\Schema(
- *     schema="StoreRoleRequest",
+ *     schema="StoreRolRequest",
  *     type="object",
  *     title="Store Role Request",
  *     description="Datos requeridos para crear un Rol",

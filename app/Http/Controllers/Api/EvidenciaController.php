@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
  * )
  */
 
+class EvidenciaController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/criterios-evaluacion/{parent_id}/evidencias",
@@ -67,6 +70,42 @@ use Illuminate\Http\Request;
  * )
  */
 
+    public function index(Request $request, CriterioEvaluacion $criterioEvaluacion)
+    {
+        $query = $criterioEvaluacion->evidencias()->newQuery();
+
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('descripcion', 'like', "%$search%");
+            });
+        }
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $evidencias = $query->paginate($perPage);
+
+        return EvidenciaResource::collection($evidencias);
+    }
+
 /**
  * @OA\Post(
  *     path="/criterios-evaluacion/{parent_id}/evidencias",
@@ -97,6 +136,21 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function store(StoreEvidenciaRequest $request, CriterioEvaluacion $criterioEvaluacion)
+    {
+        $data = $request->validated();
+        $data['criterio_evaluacion_id'] = $criterioEvaluacion->id;
+        $data['estudiante_id'] = auth()->id(); // Asignar el usuario autenticado
+        $data['fecha_creacion'] = now(); // Asignar la fecha actual
+
+        $evidencia = Evidencia::create($data);
+
+        // Cargar relaciones para la respuesta
+        $evidencia->load($this->getEagerLoadRelations());
+
+        return new EvidenciaResource($evidencia);
+    }
 
 /**
  * @OA\Get(
@@ -131,6 +185,18 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
+
+    public function show(CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
+    {
+        if( $evidencia->criterio_evaluacion_id !== $criterioEvaluacion->id) {
+            return response()->json(['message' => 'Evidencia no encontrada'], 404);
+        }
+
+        // Cargar relaciones
+        $evidencia->load($this->getEagerLoadRelations());
+
+        return new EvidenciaResource($evidencia);
+    }
 
 /**
  * @OA\Put(
@@ -171,6 +237,20 @@ use Illuminate\Http\Request;
  * )
  */
 
+    public function update(UpdateEvidenciaRequest $request, CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
+    {
+        if( $evidencia->criterio_evaluacion_id !== $criterioEvaluacion->id) {
+            return response()->json(['message' => 'Evidencia no encontrada'], 404);
+        }
+
+        $evidencia->update($request->validated());
+
+        // Cargar relaciones para la respuesta
+        $evidencia->load($this->getEagerLoadRelations());
+
+        return new EvidenciaResource($evidencia);
+    }
+
 /**
  * @OA\Delete(
  *     path="/criterios-evaluacion/{parent_id}/evidencias/{id}",
@@ -197,85 +277,6 @@ use Illuminate\Http\Request;
  *     @OA\Response(response=403, description="Forbidden")
  * )
  */
-
-class EvidenciaController extends Controller
-{
-    public function index(Request $request, CriterioEvaluacion $criterioEvaluacion)
-    {
-        $query = $criterioEvaluacion->evidencias()->newQuery();
-
-        // Filtro de búsqueda
-        if ($request->has('search') && $request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('descripcion', 'like', "%$search%");
-            });
-        }
-
-        // Filtros adicionales
-        if ($request->has('estado') && $request->filled('estado')) {
-            $query->where('estado', $request->get('estado'));
-        }
-
-        if ($request->has('activo') && $request->filled('activo')) {
-            $query->where('activo', $request->boolean('activo'));
-        }
-
-        // Eager loading de relaciones comunes
-        $query->with($this->getEagerLoadRelations());
-
-        // Ordenamiento
-        $sortBy = $request->get('sort_by', 'id');
-        $sortDirection = $request->get('sort_direction', 'asc');
-        $query->orderBy($sortBy, $sortDirection);
-
-        // Paginación
-        $perPage = $request->get('per_page', 15);
-        $evidencias = $query->paginate($perPage);
-
-        return EvidenciaResource::collection($evidencias);
-    }
-
-    public function store(StoreEvidenciaRequest $request, CriterioEvaluacion $criterioEvaluacion)
-    {
-        $data = $request->validated();
-        $data['criterio_evaluacion_id'] = $criterioEvaluacion->id;
-        $data['estudiante_id'] = auth()->id(); // Asignar el usuario autenticado
-        $data['fecha_creacion'] = now(); // Asignar la fecha actual
-
-        $evidencia = Evidencia::create($data);
-
-        // Cargar relaciones para la respuesta
-        $evidencia->load($this->getEagerLoadRelations());
-
-        return new EvidenciaResource($evidencia);
-    }
-
-    public function show(CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
-    {
-        if( $evidencia->criterio_evaluacion_id !== $criterioEvaluacion->id) {
-            return response()->json(['message' => 'Evidencia no encontrada'], 404);
-        }
-
-        // Cargar relaciones
-        $evidencia->load($this->getEagerLoadRelations());
-
-        return new EvidenciaResource($evidencia);
-    }
-
-    public function update(UpdateEvidenciaRequest $request, CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
-    {
-        if( $evidencia->criterio_evaluacion_id !== $criterioEvaluacion->id) {
-            return response()->json(['message' => 'Evidencia no encontrada'], 404);
-        }
-
-        $evidencia->update($request->validated());
-
-        // Cargar relaciones para la respuesta
-        $evidencia->load($this->getEagerLoadRelations());
-
-        return new EvidenciaResource($evidencia);
-    }
 
     public function destroy(CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
     {

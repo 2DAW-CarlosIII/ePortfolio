@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
  * )
  */
 
+class PlanificacionCriteriosController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/modulos-formativos/{parent_id}/planificacion-criterios",
@@ -57,7 +60,7 @@ use Illuminate\Http\Request;
  *         response=200,
  *         description="Successful operation",
  *         @OA\JsonContent(
- *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/PlanificacionCriterios")),
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/PlanificacionCriterio")),
  *             @OA\Property(property="links", type="object"),
  *             @OA\Property(property="meta", type="object")
  *         )
@@ -67,139 +70,6 @@ use Illuminate\Http\Request;
  * )
  */
 
-/**
- * @OA\Post(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios",
- *     tags={"PlanificacionCriterios"},
- *     summary="Create a new planificacioncriterios",
- *     description="Create a new planificacioncriterios resource",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent ModuloFormativo",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/StorePlanificacionCriteriosRequest")
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Resource created successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterios")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Get(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
- *     tags={"PlanificacionCriterios"},
- *     summary="Show a specific planificacioncriterios",
- *     description="Retrieve a specific planificacioncriterios by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent ModuloFormativo",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the planificacioncriterios",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Successful operation",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterios")
- *         )
- *     ),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Put(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
- *     tags={"PlanificacionCriterios"},
- *     summary="Update a specific planificacioncriterios",
- *     description="Update a specific planificacioncriterios by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent ModuloFormativo",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the planificacioncriterios",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/UpdatePlanificacionCriteriosRequest")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Resource updated successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterios")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Delete(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
- *     tags={"PlanificacionCriterios"},
- *     summary="Delete a specific planificacioncriterios",
- *     description="Delete a specific planificacioncriterios by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the criterio de evaluación",
- *      required=true,
- *      @OA\Schema(type="integer")
- *   ),
- *    @OA\Response(
- *        response=204,
- *       description="Resource deleted successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string", example="PlanificacionCriterios eliminado correctamente")
- *         )
- *     ),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-class PlanificacionCriteriosController extends Controller
-{
     public function index(Request $request, CriterioEvaluacion $criterioEvaluacion)
     {
         $query = $criterioEvaluacion->planificacion_criterios()->newQuery();
@@ -228,6 +98,37 @@ class PlanificacionCriteriosController extends Controller
         return PlanificacionCriteriosResource::collection($planificacionCriterios);
     }
 
+/**
+ * @OA\Post(
+ *     path="/modulos-formativos/{parent_id}/planificacion-criterios",
+ *     tags={"PlanificacionCriterios"},
+ *     summary="Create a new planificacioncriterios",
+ *     description="Create a new planificacioncriterios resource",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StorePlanificacionCriterioRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterio")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function store(StorePlanificacionCriteriosRequest $request, CriterioEvaluacion $criterioEvaluacion)
     {
         $data = $request->validated();
@@ -241,6 +142,40 @@ class PlanificacionCriteriosController extends Controller
         return new PlanificacionCriteriosResource($planificacionCriterio);
     }
 
+/**
+ * @OA\Get(
+ *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
+ *     tags={"PlanificacionCriterios"},
+ *     summary="Show a specific planificacioncriterios",
+ *     description="Retrieve a specific planificacioncriterios by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the planificacioncriterios",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterio")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function show(CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
     {
         if($criterioEvaluacion->id !== $planificacionCriterio->criterio_evaluacion_id) {
@@ -252,6 +187,45 @@ class PlanificacionCriteriosController extends Controller
 
         return new PlanificacionCriteriosResource($planificacionCriterio);
     }
+
+/**
+ * @OA\Put(
+ *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
+ *     tags={"PlanificacionCriterios"},
+ *     summary="Update a specific planificacioncriterios",
+ *     description="Update a specific planificacioncriterios by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the planificacioncriterios",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdatePlanificacionCriterioRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterio")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function update(UpdatePlanificacionCriteriosRequest $request, CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
     {
@@ -266,6 +240,33 @@ class PlanificacionCriteriosController extends Controller
 
         return new PlanificacionCriteriosResource($planificacionCriterio);
     }
+
+/**
+ * @OA\Delete(
+ *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
+ *     tags={"PlanificacionCriterios"},
+ *     summary="Delete a specific planificacioncriterios",
+ *     description="Delete a specific planificacioncriterios by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the criterio de evaluación",
+ *      required=true,
+ *      @OA\Schema(type="integer")
+ *   ),
+ *    @OA\Response(
+ *        response=204,
+ *       description="Resource deleted successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="PlanificacionCriterios eliminado correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function destroy(CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
     {

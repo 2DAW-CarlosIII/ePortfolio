@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @OA\Schema(
- *     schema="Role",
+ *     schema="Rol",
  *     type="object",
  *     title="Rol",
  *     description="Modelo de Rol",

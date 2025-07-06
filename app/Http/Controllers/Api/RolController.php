@@ -17,6 +17,9 @@ use Illuminate\Http\Request;
  * )
  */
 
+class RolController extends Controller
+{
+
 /**
  * @OA\Get(
  *     path="/roles",
@@ -59,118 +62,6 @@ use Illuminate\Http\Request;
  * )
  */
 
-/**
- * @OA\Post(
- *     path="/roles",
- *     tags={"Rol"},
- *     summary="Create a new rol",
- *     description="Create a new rol resource",
- *     security={"sanctum":{}},
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/StoreRolRequest")
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Resource created successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/Rol")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Get(
- *     path="/roles/{id}",
- *     tags={"Rol"},
- *     summary="Show a specific rol",
- *     description="Retrieve a specific rol by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the rol",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Successful operation",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/Rol")
- *         )
- *     ),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Put(
- *     path="/roles/{id}",
- *     tags={"Rol"},
- *     summary="Update a specific rol",
- *     description="Update a specific rol by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID of the rol",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/UpdateRolRequest")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Resource updated successfully",
- *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/Rol")
- *         )
- *     ),
- *     @OA\Response(response=422, description="Validation errors"),
- *     @OA\Response(response=404, description="Resource not found"),
- *     @OA\Response(response=401, description="Unauthenticated"),
- *     @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-/**
- * @OA\Delete(
- *     path="/roles/{id}",
- *     tags={"Rol"},
- *     summary="Delete a specific rol",
- *     description="Delete a specific rol by ID",
- *     security={"sanctum":{}},
- *     @OA\Parameter(
- *        name="id",
- *        in="path",
- *        description="ID of the rol",
- *        required=true,
- *        @OA\Schema(type="integer")
- *    ),
- *    @OA\Response(
- *        response=200,
- *        description="Resource deleted successfully",
- *        @OA\JsonContent(
- *            @OA\Property(property="message", type="string", example="Rol eliminado correctamente")
- *       )
- *    ),
- *    @OA\Response(response=404, description="Resource not found"),
- *    @OA\Response(response=401, description="Unauthenticated"),
- *    @OA\Response(response=403, description="Forbidden")
- * )
- */
-
-class RolController extends Controller
-{
     public function index(Request $request)
     {
         $query = Rol::query();
@@ -207,6 +98,30 @@ class RolController extends Controller
         return RolResource::collection($rols);
     }
 
+/**
+ * @OA\Post(
+ *     path="/roles",
+ *     tags={"Rol"},
+ *     summary="Create a new rol",
+ *     description="Create a new rol resource",
+ *     security={"sanctum":{}},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreRolRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/Rol")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function store(StoreRolRequest $request)
     {
         $rol = Rol::create($request->validated());
@@ -217,6 +132,33 @@ class RolController extends Controller
         return new RolResource($rol);
     }
 
+/**
+ * @OA\Get(
+ *     path="/roles/{id}",
+ *     tags={"Rol"},
+ *     summary="Show a specific rol",
+ *     description="Retrieve a specific rol by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the rol",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/Rol")
+ *         )
+ *     ),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
     public function show(Rol $rol)
     {
 
@@ -225,6 +167,38 @@ class RolController extends Controller
 
         return new RolResource($rol);
     }
+
+/**
+ * @OA\Put(
+ *     path="/roles/{id}",
+ *     tags={"Rol"},
+ *     summary="Update a specific rol",
+ *     description="Update a specific rol by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the rol",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateRolRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Resource updated successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/Rol")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function update(UpdateRolRequest $request, Rol $rol)
     {
@@ -235,6 +209,33 @@ class RolController extends Controller
 
         return new RolResource($rol);
     }
+
+/**
+ * @OA\Delete(
+ *     path="/roles/{id}",
+ *     tags={"Rol"},
+ *     summary="Delete a specific rol",
+ *     description="Delete a specific rol by ID",
+ *     security={"sanctum":{}},
+ *     @OA\Parameter(
+ *        name="id",
+ *        in="path",
+ *        description="ID of the rol",
+ *        required=true,
+ *        @OA\Schema(type="integer")
+ *    ),
+ *    @OA\Response(
+ *        response=200,
+ *        description="Resource deleted successfully",
+ *        @OA\JsonContent(
+ *            @OA\Property(property="message", type="string", example="Rol eliminado correctamente")
+ *       )
+ *    ),
+ *    @OA\Response(response=404, description="Resource not found"),
+ *    @OA\Response(response=401, description="Unauthenticated"),
+ *    @OA\Response(response=403, description="Forbidden")
+ * )
+ */
 
     public function destroy(Rol $rol)
     {

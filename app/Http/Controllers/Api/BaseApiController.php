@@ -31,7 +31,7 @@ use App\Http\Controllers\Controller;
  *
  * @OA\Server(
  *     url="http://eportfolio.cifpcarlos3.es/api/v1",
- *     description="Local development server"
+ *     description="Production server"
  * )
  *
  * @OA\SecurityScheme(
