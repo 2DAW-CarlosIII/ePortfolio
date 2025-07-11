@@ -35,7 +35,7 @@ class StoreFamiliaProfesionalRequest extends FormRequest
         return [
             'nombre' => ['required', 'string', 'max:255'],
             'codigo' => ['required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i', 'unique:familias_profesionales,codigo'],
-            'descripcion' => ['required', 'string', 'max:65535']
+            'descripcion' => ['string', 'max:65535']
         ];
     }
 

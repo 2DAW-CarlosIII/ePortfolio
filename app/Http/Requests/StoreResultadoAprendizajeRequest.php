@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Resultado Aprendizaje Request",
  *     description="Datos requeridos para crear un Resultado de Aprendizaje",
- *     required={"modulo_formativo_id", "codigo", "descripcion", "peso_porcentaje", "orden"},
+ *     required={"codigo", "descripcion", "peso_porcentaje", "orden"},
  *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
  *     @OA\Property(property="codigo", type="string", maxLength=50, description="Código del resultado de aprendizaje"),
  *     @OA\Property(property="descripcion", type="string", description="Descripción del resultado de aprendizaje"),

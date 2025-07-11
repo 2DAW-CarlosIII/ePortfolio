@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Ciclo Formativo Request",
  *     description="Datos requeridos para crear un Ciclo Formativo",
- *     required={"familia_profesional_id", "nombre", "codigo", "grado"},
+ *     required={"nombre", "codigo", "grado"},
  *     @OA\Property(property="familia_profesional_id", type="integer", description="ID de la familia profesional"),
  *     @OA\Property(property="nombre", type="string", maxLength=255, description="Nombre del ciclo formativo"),
  *     @OA\Property(property="codigo", type="string", maxLength=50, description="Código único del ciclo formativo"),
@@ -38,7 +38,7 @@ class StoreCicloFormativoRequest extends FormRequest
             'nombre' => ['required', 'string', 'max:255'],
             'codigo' => ['required', 'string', 'string', 'max:50', 'regex:/^[A-Z0-9_-]+$/i', 'unique:ciclos_formativos,codigo'],
             'grado' => ['required', 'in:basico,medio,superior'],
-            'descripcion' => ['required', 'string', 'max:65535']
+            'descripcion' => ['string', 'max:65535']
         ];
     }
 

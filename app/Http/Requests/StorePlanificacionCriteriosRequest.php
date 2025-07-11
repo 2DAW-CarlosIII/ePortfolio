@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Planificación Criterio Request",
  *     description="Datos requeridos para crear una Planificación de Criterio",
- *     required={"criterio_evaluacion_id", "modulo_formativo_id", "fecha_apertura", "fecha_cierre", "activo"},
+ *     required={"fecha_apertura", "fecha_cierre", "activo"},
  *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
  *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
  *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
@@ -39,7 +39,7 @@ class StorePlanificacionCriteriosRequest extends FormRequest
             'fecha_apertura' => ['required', 'date'],
             'fecha_cierre' => ['required', 'date', 'after:today'],
             'activo' => ['required', 'boolean'],
-            'observaciones' => ['required', 'string', 'max:65535']
+            'observaciones' => ['string', 'max:65535']
         ];
     }
 

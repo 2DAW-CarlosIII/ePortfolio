@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Matrícula Request",
  *     description="Datos requeridos para crear una Matrícula",
- *     required={"estudiante_id", "modulo_formativo_id", "fecha_matricula", "estado"},
+ *     required={"fecha_matricula", "estado"},
  *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
  *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
  *     @OA\Property(property="fecha_matricula", type="string", format="date", description="Fecha de matrícula"),

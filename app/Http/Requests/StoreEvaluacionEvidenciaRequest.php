@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Evaluación Evidencia Request",
  *     description="Datos requeridos para crear una Evaluación de Evidencia",
- *     required={"evidencia_id", "user_id", "puntuacion", "estado"},
+ *     required={"puntuacion", "estado"},
  *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
  *     @OA\Property(property="user_id", type="integer", description="ID del usuario que comenta"),
  *     @OA\Property(property="contenido", type="string", description="Contenido del comentario"),
@@ -36,7 +36,7 @@ class StoreEvaluacionEvidenciaRequest extends FormRequest
         return [
             'puntuacion' => ['required', 'numeric', 'between:0,10'],
             'estado' => ['required', 'in:pendiente,aprobada,rechazada'],
-            'observaciones' => ['required', 'string', 'max:65535'],
+            'observaciones' => ['string', 'max:65535'],
         ];
     }
 

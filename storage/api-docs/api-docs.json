@@ -4225,9 +4225,7 @@
                 "title": "Store Asignación Revisión Request",
                 "description": "Datos requeridos para crear una Asignación de Revisión",
                 "required": [
-                    "evidencia_id",
                     "revisor_id",
-                    "asignado_por_id",
                     "fecha_asignacion",
                     "fecha_limite",
                     "estado"
@@ -4271,7 +4269,6 @@
                 "title": "Store Ciclo Formativo Request",
                 "description": "Datos requeridos para crear un Ciclo Formativo",
                 "required": [
-                    "familia_profesional_id",
                     "nombre",
                     "codigo",
                     "grado"
@@ -4310,8 +4307,6 @@
                 "title": "Store Comentario Request",
                 "description": "Datos requeridos para crear un Comentario",
                 "required": [
-                    "evidencia_id",
-                    "user_id",
                     "contenido",
                     "tipo"
                 ],
@@ -4344,7 +4339,6 @@
                 "title": "Store Criterio Evaluación Request",
                 "description": "Datos requeridos para crear un Criterio de Evaluación",
                 "required": [
-                    "resultado_aprendizaje_id",
                     "codigo",
                     "descripcion",
                     "peso_porcentaje",
@@ -4383,8 +4377,6 @@
                 "title": "Store Evaluación Evidencia Request",
                 "description": "Datos requeridos para crear una Evaluación de Evidencia",
                 "required": [
-                    "evidencia_id",
-                    "user_id",
                     "puntuacion",
                     "estado"
                 ],
@@ -4417,10 +4409,9 @@
                 "title": "Store Evidencia Request",
                 "description": "Datos requeridos para crear una Evidencia",
                 "required": [
-                    "estudiante_id",
-                    "criterio_evaluacion_id",
                     "url",
-                    "descripcion"
+                    "descripcion",
+                    "estado_validacion"
                 ],
                 "properties": {
                     "estudiante_id": {
@@ -4486,8 +4477,6 @@
                 "title": "Store Matrícula Request",
                 "description": "Datos requeridos para crear una Matrícula",
                 "required": [
-                    "estudiante_id",
-                    "modulo_formativo_id",
                     "fecha_matricula",
                     "estado"
                 ],
@@ -4521,13 +4510,11 @@
                 "title": "Store Módulo Formativo Request",
                 "description": "Datos requeridos para crear un Módulo Formativo",
                 "required": [
-                    "ciclo_formativo_id",
                     "nombre",
                     "codigo",
                     "horas_totales",
                     "curso_escolar",
-                    "centro",
-                    "docente_id"
+                    "centro"
                 ],
                 "properties": {
                     "ciclo_formativo_id": {
@@ -4574,8 +4561,6 @@
                 "title": "Store Planificación Criterio Request",
                 "description": "Datos requeridos para crear una Planificación de Criterio",
                 "required": [
-                    "criterio_evaluacion_id",
-                    "modulo_formativo_id",
                     "fecha_apertura",
                     "fecha_cierre",
                     "activo"
@@ -4614,7 +4599,6 @@
                 "title": "Store Resultado Aprendizaje Request",
                 "description": "Datos requeridos para crear un Resultado de Aprendizaje",
                 "required": [
-                    "modulo_formativo_id",
                     "codigo",
                     "descripcion",
                     "peso_porcentaje",

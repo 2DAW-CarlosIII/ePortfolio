@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Módulo Formativo Request",
  *     description="Datos requeridos para crear un Módulo Formativo",
- *     required={"ciclo_formativo_id", "nombre", "codigo", "horas_totales", "curso_escolar", "centro", "docente_id"},
+ *     required={"nombre", "codigo", "horas_totales", "curso_escolar", "centro"},
  *     @OA\Property(property="ciclo_formativo_id", type="integer", description="ID del ciclo formativo"),
  *     @OA\Property(property="nombre", type="string", maxLength=255, description="Nombre del módulo formativo"),
  *     @OA\Property(property="codigo", type="string", maxLength=50, description="Código del módulo formativo"),
@@ -43,7 +43,7 @@ class StoreModuloFormativoRequest extends FormRequest
             'horas_totales' => ['required', 'integer', 'min:1', 'max:2000'],
             'curso_escolar' => ['required', 'string', 'max:255'],
             'centro' => ['required', 'string', 'max:255'],
-            'descripcion' => ['required', 'string', 'max:65535']
+            'descripcion' => ['string', 'max:65535']
         ];
     }
 

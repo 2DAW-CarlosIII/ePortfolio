@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Evidencia Request",
  *     description="Datos requeridos para crear una Evidencia",
- *     required={"estudiante_id", "criterio_evaluacion_id", "url", "descripcion"},
+ *     required={"url", "descripcion", "estado_validacion"},
  *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
  *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
  *     @OA\Property(property="url", type="string", format="url", description="URL de la evidencia"),

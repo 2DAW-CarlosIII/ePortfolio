@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Asignación Revisión Request",
  *     description="Datos requeridos para crear una Asignación de Revisión",
- *     required={"evidencia_id", "revisor_id", "asignado_por_id", "fecha_asignacion", "fecha_limite", "estado"},
+ *     required={"revisor_id", "fecha_asignacion", "fecha_limite", "estado"},
  *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
  *     @OA\Property(property="revisor_id", type="integer", description="ID del revisor"),
  *     @OA\Property(property="asignado_por_id", type="integer", description="ID del usuario que asigna"),

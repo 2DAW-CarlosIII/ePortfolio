@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Comentario Request",
  *     description="Datos requeridos para crear un Comentario",
- *     required={"evidencia_id", "user_id", "contenido", "tipo"},
+ *     required={"contenido", "tipo"},
  *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
  *     @OA\Property(property="user_id", type="integer", description="ID del usuario que comenta"),
  *     @OA\Property(property="contenido", type="string", description="Contenido del comentario"),
