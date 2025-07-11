@@ -59,18 +59,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // User profile routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
+    Route::get('/user', function () {
+        return auth()->user();
     });
 
     Route::put('/user', function (Request $request) {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->user()->id,
         ]);
 
         $request->user()->update($request->only(['name', 'email']));
 
-        return $request->user();
+        return auth()->user();
     });
 });
