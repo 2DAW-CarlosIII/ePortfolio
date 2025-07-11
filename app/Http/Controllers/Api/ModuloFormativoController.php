@@ -27,7 +27,7 @@ class ModuloFormativoController extends Controller
  *     tags={"ModuloFormativo"},
  *     summary="List all moduloformativos",
  *     description="Retrieve a paginated list of moduloformativos",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -112,7 +112,7 @@ class ModuloFormativoController extends Controller
  *     tags={"ModuloFormativo"},
  *     summary="Create a new moduloformativo",
  *     description="Create a new moduloformativo resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -156,7 +156,7 @@ class ModuloFormativoController extends Controller
  *     tags={"ModuloFormativo"},
  *     summary="Show a specific moduloformativo",
  *     description="Retrieve a specific moduloformativo by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -202,7 +202,7 @@ class ModuloFormativoController extends Controller
  *     tags={"ModuloFormativo"},
  *     summary="Update a specific moduloformativo",
  *     description="Update a specific moduloformativo by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -255,7 +255,7 @@ class ModuloFormativoController extends Controller
  *     tags={"ModuloFormativo"},
  *     summary="Delete a specific moduloformativo",
  *     description="Delete a specific moduloformativo by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

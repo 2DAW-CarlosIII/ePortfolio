@@ -27,7 +27,7 @@ class PlanificacionCriteriosController extends Controller
  *     tags={"PlanificacionCriterios"},
  *     summary="List all planificacioncriterioss",
  *     description="Retrieve a paginated list of planificacioncriterioss",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -104,7 +104,7 @@ class PlanificacionCriteriosController extends Controller
  *     tags={"PlanificacionCriterios"},
  *     summary="Create a new planificacioncriterios",
  *     description="Create a new planificacioncriterios resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -148,7 +148,7 @@ class PlanificacionCriteriosController extends Controller
  *     tags={"PlanificacionCriterios"},
  *     summary="Show a specific planificacioncriterios",
  *     description="Retrieve a specific planificacioncriterios by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -194,7 +194,7 @@ class PlanificacionCriteriosController extends Controller
  *     tags={"PlanificacionCriterios"},
  *     summary="Update a specific planificacioncriterios",
  *     description="Update a specific planificacioncriterios by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -247,7 +247,7 @@ class PlanificacionCriteriosController extends Controller
  *     tags={"PlanificacionCriterios"},
  *     summary="Delete a specific planificacioncriterios",
  *     description="Delete a specific planificacioncriterios by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

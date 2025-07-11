@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Route;
 // ePortfolio API Routes - Generated automatically
 // Do not modify this section manually
 
-Route::prefix('v1')->group(function () {
-//Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
 
     // Health check endpoint
     Route::get('/health', function () {

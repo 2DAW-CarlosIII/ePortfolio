@@ -27,7 +27,7 @@ class EvaluacionEvidenciaController extends Controller
  *     tags={"EvaluacionEvidencia"},
  *     summary="List all evaluacionevidencias",
  *     description="Retrieve a paginated list of evaluacionevidencias",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -115,7 +115,7 @@ class EvaluacionEvidenciaController extends Controller
  *     tags={"EvaluacionEvidencia"},
  *     summary="Create a new evaluacionevidencia",
  *     description="Create a new evaluacionevidencia resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -161,7 +161,7 @@ class EvaluacionEvidenciaController extends Controller
  *     tags={"EvaluacionEvidencia"},
  *     summary="Show a specific evaluacionevidencia",
  *     description="Retrieve a specific evaluacionevidencia by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -208,7 +208,7 @@ class EvaluacionEvidenciaController extends Controller
  *     tags={"EvaluacionEvidencia"},
  *     summary="Update a specific evaluacionevidencia",
  *     description="Update a specific evaluacionevidencia by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -262,7 +262,7 @@ class EvaluacionEvidenciaController extends Controller
  *     tags={"EvaluacionEvidencia"},
  *     summary="Delete a specific evaluacionevidencia",
  *     description="Delete a specific evaluacionevidencia by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

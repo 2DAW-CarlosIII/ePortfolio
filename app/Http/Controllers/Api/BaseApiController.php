@@ -68,6 +68,7 @@ class BaseApiController extends Controller
      * @OA\Get(
      *     path="/health",
      *     tags={"Health"},
+     *     security={{"sanctum":{}}},
      *     summary="Health check endpoint",
      *     description="Returns the health status of the API",
      *     @OA\Response(

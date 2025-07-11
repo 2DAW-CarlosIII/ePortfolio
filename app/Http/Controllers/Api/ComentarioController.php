@@ -27,7 +27,7 @@ class ComentarioController extends Controller
  *     tags={"Comentario"},
  *     summary="List all comentarios",
  *     description="Retrieve a paginated list of comentarios",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -112,7 +112,7 @@ class ComentarioController extends Controller
  *     tags={"Comentario"},
  *     summary="Create a new comentario",
  *     description="Create a new comentario resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -158,7 +158,7 @@ class ComentarioController extends Controller
  *     tags={"Comentario"},
  *     summary="Show a specific comentario",
  *     description="Retrieve a specific comentario by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -205,7 +205,7 @@ class ComentarioController extends Controller
  *     tags={"Comentario"},
  *     summary="Update a specific comentario",
  *     description="Update a specific comentario by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -259,7 +259,7 @@ class ComentarioController extends Controller
  *     tags={"Comentario"},
  *     summary="Delete a specific comentario",
  *     description="Delete a specific comentario by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

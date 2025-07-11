@@ -112,9 +112,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -170,9 +172,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/evidencias/{parent_id}/asignaciones-revision/{id}": {
@@ -229,9 +233,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -299,9 +305,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -357,9 +365,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/health": {
@@ -395,7 +405,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/familias-profesionales/{parent_id}/ciclos-formativos": {
@@ -478,9 +493,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -536,9 +553,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/familias-profesionales/{parent_id}/ciclos-formativos/{id}": {
@@ -595,9 +614,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -665,9 +686,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -723,9 +746,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/evidencias/{parent_id}/comentarios": {
@@ -808,9 +833,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -866,9 +893,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/evidencias/{parent_id}/comentarios/{id}": {
@@ -925,9 +954,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -995,9 +1026,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1053,9 +1086,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/resultados-aprendizaje/{parent_id}/criterios-evaluacion": {
@@ -1138,9 +1173,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -1196,9 +1233,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}": {
@@ -1255,9 +1294,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -1325,9 +1366,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1374,9 +1417,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/users/{parent_id}/evaluaciones-evidencias": {
@@ -1459,9 +1504,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -1517,9 +1564,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/users/{parent_id}/evaluaciones-evidencias/{id}": {
@@ -1576,9 +1625,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -1646,9 +1697,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1695,9 +1748,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/criterios-evaluacion/{parent_id}/evidencias": {
@@ -1780,9 +1835,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -1838,9 +1895,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/criterios-evaluacion/{parent_id}/evidencias/{id}": {
@@ -1897,9 +1956,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -1967,9 +2028,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -2016,9 +2079,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/familias-profesionales": {
@@ -2092,9 +2157,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -2139,9 +2206,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/familias-profesionales/{id}": {
@@ -2189,9 +2258,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -2250,9 +2321,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -2286,9 +2359,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/modulos-formativos/{parent_id}/matriculas": {
@@ -2371,9 +2446,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -2429,9 +2506,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/modulos-formativos/{parent_id}/matriculas/{id}": {
@@ -2488,9 +2567,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -2558,9 +2639,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -2607,9 +2690,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/users/{parent_id}/modulos-formativos": {
@@ -2692,9 +2777,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -2750,9 +2837,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/users/{parent_id}/modulos-formativos/{id}": {
@@ -2809,9 +2898,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -2879,9 +2970,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -2928,9 +3021,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/modulos-formativos/{parent_id}/planificacion-criterios": {
@@ -3013,9 +3108,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -3071,9 +3168,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/modulos-formativos/{parent_id}/planificacion-criterios/{id}": {
@@ -3130,9 +3229,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -3200,9 +3301,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -3249,9 +3352,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/modulos-formativos/{parent_id}/resultados-aprendizaje": {
@@ -3334,9 +3439,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -3392,9 +3499,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/modulos-formativos/{parent_id}/resultados-aprendizaje/{id}": {
@@ -3451,9 +3560,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -3521,9 +3632,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -3570,9 +3683,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/roles": {
@@ -3646,9 +3761,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -3693,9 +3810,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/roles/{id}": {
@@ -3743,9 +3862,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -3804,9 +3925,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -3853,9 +3976,11 @@
                         "description": "Forbidden"
                     }
                 },
-                "security": {
-                    "sanctum": {}
-                }
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/stats": {

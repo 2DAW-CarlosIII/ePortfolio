@@ -26,7 +26,7 @@ class FamiliaProfesionalController extends Controller
  *     tags={"FamiliaProfesional"},
  *     summary="List all familiaprofesionals",
  *     description="Retrieve a paginated list of familiaprofesionals",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="search",
  *         in="query",
@@ -104,7 +104,7 @@ class FamiliaProfesionalController extends Controller
  *     tags={"FamiliaProfesional"},
  *     summary="Create a new familiaprofesional",
  *     description="Create a new familiaprofesional resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(ref="#/components/schemas/StoreFamiliaProfesionalRequest")
@@ -138,7 +138,7 @@ class FamiliaProfesionalController extends Controller
  *     tags={"FamiliaProfesional"},
  *     summary="Show a specific familiaprofesional",
  *     description="Retrieve a specific familiaprofesional by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -174,7 +174,7 @@ class FamiliaProfesionalController extends Controller
  *     tags={"FamiliaProfesional"},
  *     summary="Update a specific familiaprofesional",
  *     description="Update a specific familiaprofesional by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -217,7 +217,7 @@ class FamiliaProfesionalController extends Controller
  *     tags={"FamiliaProfesional"},
  *     summary="Delete a specific familiaprofesional",
  *     description="Delete a specific familiaprofesional by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *    @OA\Parameter(
  *        name="id",
  *       in="path",

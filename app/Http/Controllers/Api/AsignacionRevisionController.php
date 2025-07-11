@@ -27,7 +27,7 @@ class AsignacionRevisionController extends Controller
      *     tags={"AsignacionRevision"},
      *     summary="List all asignacionrevisions",
      *     description="Retrieve a paginated list of asignacionrevisions",
-     *     security={"sanctum":{}},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="parent_id",
      *         in="path",
@@ -105,7 +105,7 @@ class AsignacionRevisionController extends Controller
      *     tags={"AsignacionRevision"},
      *     summary="Create a new asignacionrevision",
      *     description="Create a new asignacionrevision resource",
-     *     security={"sanctum":{}},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="parent_id",
      *         in="path",
@@ -151,7 +151,7 @@ class AsignacionRevisionController extends Controller
      *     tags={"AsignacionRevision"},
      *     summary="Show a specific asignacionrevision",
      *     description="Retrieve a specific asignacionrevision by ID",
-     *     security={"sanctum":{}},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="parent_id",
      *         in="path",
@@ -198,7 +198,7 @@ class AsignacionRevisionController extends Controller
      *     tags={"AsignacionRevision"},
      *     summary="Update a specific asignacionrevision",
      *     description="Update a specific asignacionrevision by ID",
-     *     security={"sanctum":{}},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="parent_id",
      *         in="path",
@@ -252,7 +252,7 @@ class AsignacionRevisionController extends Controller
      *     tags={"AsignacionRevision"},
      *     summary="Delete a specific asignacionrevision",
      *     description="Delete a specific asignacionrevision by ID",
-     *     security={"sanctum":{}},
+     *     security={{"sanctum":{}}},
      *     @OA\Parameter(
      *         name="parent_id",
      *         in="path",

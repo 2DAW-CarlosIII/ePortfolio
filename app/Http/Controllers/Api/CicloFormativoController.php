@@ -27,7 +27,7 @@ class CicloFormativoController extends Controller
  *     tags={"CicloFormativo"},
  *     summary="List all cicloformativos",
  *     description="Retrieve a paginated list of cicloformativos",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -112,7 +112,7 @@ class CicloFormativoController extends Controller
  *     tags={"CicloFormativo"},
  *     summary="Create a new cicloformativo",
  *     description="Create a new cicloformativo resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -153,7 +153,7 @@ class CicloFormativoController extends Controller
  *     tags={"CicloFormativo"},
  *     summary="Show a specific cicloformativo",
  *     description="Retrieve a specific cicloformativo by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -200,7 +200,7 @@ class CicloFormativoController extends Controller
  *     tags={"CicloFormativo"},
  *     summary="Update a specific cicloformativo",
  *     description="Update a specific cicloformativo by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -254,7 +254,7 @@ class CicloFormativoController extends Controller
  *     tags={"CicloFormativo"},
  *     summary="Delete a specific cicloformativo",
  *     description="Delete a specific cicloformativo by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

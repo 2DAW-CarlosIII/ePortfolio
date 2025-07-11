@@ -27,7 +27,7 @@ class CriteriosEvaluacionController extends Controller
  *     tags={"CriteriosEvaluacion"},
  *     summary="List all criteriosevaluacions",
  *     description="Retrieve a paginated list of criteriosevaluacions",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -112,7 +112,7 @@ class CriteriosEvaluacionController extends Controller
  *     tags={"CriteriosEvaluacion"},
  *     summary="Create a new criteriosevaluacion",
  *     description="Create a new criteriosevaluacion resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -162,7 +162,7 @@ class CriteriosEvaluacionController extends Controller
  *     tags={"CriteriosEvaluacion"},
  *     summary="Show a specific criteriosevaluacion",
  *     description="Retrieve a specific criteriosevaluacion by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -209,7 +209,7 @@ class CriteriosEvaluacionController extends Controller
  *     tags={"CriteriosEvaluacion"},
  *     summary="Update a specific criteriosevaluacion",
  *     description="Update a specific criteriosevaluacion by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -266,7 +266,7 @@ class CriteriosEvaluacionController extends Controller
  *     tags={"CriteriosEvaluacion"},
  *     summary="Delete a specific criteriosevaluacion",
  *     description="Delete a specific criteriosevaluacion by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

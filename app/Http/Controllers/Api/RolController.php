@@ -26,7 +26,7 @@ class RolController extends Controller
  *     tags={"Rol"},
  *     summary="List all rols",
  *     description="Retrieve a paginated list of rols",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="search",
  *         in="query",
@@ -104,7 +104,7 @@ class RolController extends Controller
  *     tags={"Rol"},
  *     summary="Create a new rol",
  *     description="Create a new rol resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(ref="#/components/schemas/StoreRolRequest")
@@ -138,7 +138,7 @@ class RolController extends Controller
  *     tags={"Rol"},
  *     summary="Show a specific rol",
  *     description="Retrieve a specific rol by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -174,7 +174,7 @@ class RolController extends Controller
  *     tags={"Rol"},
  *     summary="Update a specific rol",
  *     description="Update a specific rol by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -216,7 +216,7 @@ class RolController extends Controller
  *     tags={"Rol"},
  *     summary="Delete a specific rol",
  *     description="Delete a specific rol by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *        name="id",
  *        in="path",

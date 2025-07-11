@@ -27,7 +27,7 @@ class MatriculaController extends Controller
  *     tags={"Matricula"},
  *     summary="List all matriculas",
  *     description="Retrieve a paginated list of matriculas",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -105,7 +105,7 @@ class MatriculaController extends Controller
  *     tags={"Matricula"},
  *     summary="Create a new matricula",
  *     description="Create a new matricula resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -150,7 +150,7 @@ class MatriculaController extends Controller
  *     tags={"Matricula"},
  *     summary="Show a specific matricula",
  *     description="Retrieve a specific matricula by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -197,7 +197,7 @@ class MatriculaController extends Controller
  *     tags={"Matricula"},
  *     summary="Update a specific matricula",
  *     description="Update a specific matricula by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -251,7 +251,7 @@ class MatriculaController extends Controller
  *     tags={"Matricula"},
  *     summary="Delete a specific matricula",
  *     description="Delete a specific matricula by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

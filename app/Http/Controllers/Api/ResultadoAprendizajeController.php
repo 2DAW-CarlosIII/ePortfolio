@@ -27,7 +27,7 @@ class ResultadoAprendizajeController extends Controller
  *     tags={"ResultadoAprendizaje"},
  *     summary="List all resultadoaprendizajes",
  *     description="Retrieve a paginated list of resultadoaprendizajes",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -112,7 +112,7 @@ class ResultadoAprendizajeController extends Controller
  *     tags={"ResultadoAprendizaje"},
  *     summary="Create a new resultadoaprendizaje",
  *     description="Create a new resultadoaprendizaje resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -155,7 +155,7 @@ class ResultadoAprendizajeController extends Controller
  *     tags={"ResultadoAprendizaje"},
  *     summary="Show a specific resultadoaprendizaje",
  *     description="Retrieve a specific resultadoaprendizaje by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -201,7 +201,7 @@ class ResultadoAprendizajeController extends Controller
  *     tags={"ResultadoAprendizaje"},
  *     summary="Update a specific resultadoaprendizaje",
  *     description="Update a specific resultadoaprendizaje by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -254,7 +254,7 @@ class ResultadoAprendizajeController extends Controller
  *     tags={"ResultadoAprendizaje"},
  *     summary="Delete a specific resultadoaprendizaje",
  *     description="Delete a specific resultadoaprendizaje by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",

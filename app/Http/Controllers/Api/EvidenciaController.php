@@ -27,7 +27,7 @@ class EvidenciaController extends Controller
  *     tags={"Evidencia"},
  *     summary="List all evidencias",
  *     description="Retrieve a paginated list of evidencias",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -112,7 +112,7 @@ class EvidenciaController extends Controller
  *     tags={"Evidencia"},
  *     summary="Create a new evidencia",
  *     description="Create a new evidencia resource",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -158,7 +158,7 @@ class EvidenciaController extends Controller
  *     tags={"Evidencia"},
  *     summary="Show a specific evidencia",
  *     description="Retrieve a specific evidencia by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -204,7 +204,7 @@ class EvidenciaController extends Controller
  *     tags={"Evidencia"},
  *     summary="Update a specific evidencia",
  *     description="Update a specific evidencia by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
@@ -257,7 +257,7 @@ class EvidenciaController extends Controller
  *     tags={"Evidencia"},
  *     summary="Delete a specific evidencia",
  *     description="Delete a specific evidencia by ID",
- *     security={"sanctum":{}},
+ *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
