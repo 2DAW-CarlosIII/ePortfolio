@@ -139,4 +139,17 @@ return [
         'password' => env('ADMIN_PASSWORD', 'admin'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    |
+    | This key is utilized to set the URL where dashboard is deployed
+    |
+    */
+
+    'dashboard' => [
+        'url' => env('DASHBOARD_URL'),
+    ],
+
 ];
