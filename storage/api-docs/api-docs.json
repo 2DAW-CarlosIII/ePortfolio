@@ -2697,19 +2697,19 @@
                 ]
             }
         },
-        "/users/{parent_id}/modulos-formativos": {
+        "/ciclos-formativos/{parent_id}/modulos-formativos": {
             "get": {
                 "tags": [
                     "ModuloFormativo"
                 ],
-                "summary": "List all moduloformativos",
-                "description": "Retrieve a paginated list of moduloformativos",
-                "operationId": "a36b17b92170f5cbcce48364b6402714",
+                "summary": "List all modulos formativos of a ciclo formativo",
+                "description": "Retrieve a paginated list of modulos formativos of a specific ciclo formativo",
+                "operationId": "b6def01839cc706ed17f639457accb25",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent CicloFormativo",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2787,14 +2787,14 @@
                 "tags": [
                     "ModuloFormativo"
                 ],
-                "summary": "Create a new moduloformativo",
-                "description": "Create a new moduloformativo resource",
-                "operationId": "6cb46288912d62a04d25eb3d91dfccd9",
+                "summary": "Create a new moduloformativo of a ciclo formativo",
+                "description": "Create a new moduloformativo resource of a specific ciclo formativo",
+                "operationId": "2fea8798fc3d058e6f8fed3397b20fd2",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent CicloFormativo",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2844,19 +2844,19 @@
                 ]
             }
         },
-        "/users/{parent_id}/modulos-formativos/{id}": {
+        "/ciclos-formativos/{parent_id}/modulos-formativos/{id}": {
             "get": {
                 "tags": [
                     "ModuloFormativo"
                 ],
                 "summary": "Show a specific moduloformativo",
                 "description": "Retrieve a specific moduloformativo by ID",
-                "operationId": "57f6f1d779825fec758f4e6a233faa96",
+                "operationId": "a36ce7bf496b2b189193ec0093b3a892",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent CicloFormativo",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2910,12 +2910,12 @@
                 ],
                 "summary": "Update a specific moduloformativo",
                 "description": "Update a specific moduloformativo by ID",
-                "operationId": "65b7fc301d314c28ad718d9a85a1c550",
+                "operationId": "11ce3c346e22026b7ca49eacae6db302",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent CicloFormativo",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2982,7 +2982,7 @@
                 ],
                 "summary": "Delete a specific moduloformativo",
                 "description": "Delete a specific moduloformativo by ID",
-                "operationId": "6e4c47e200ca958fb2327cb21c76cbba",
+                "operationId": "711902383b2abd41d7462b8910260778",
                 "parameters": [
                     {
                         "name": "parent_id",

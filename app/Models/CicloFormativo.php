@@ -35,12 +35,12 @@ class CicloFormativo extends Model
         'grado',
         'descripcion'
     ];
-    public function familias_profesionale()
+    public function familia_profesional()
     {
-        return $this->belongsTo(FamiliaProfesional::class, 'familias_profesionale_id');
+        return $this->belongsTo(FamiliaProfesional::class, 'familia_profesional_id');
     }
     public function modulos_formativos()
     {
-        return $this->hasMany(ModuloFormativo::class, 'ciclos_formativo_id');
+        return $this->hasMany(ModuloFormativo::class, 'ciclo_formativo_id');
     }
 }

@@ -23,15 +23,15 @@ class ModuloFormativoController extends Controller
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/modulos-formativos",
+ *     path="/ciclos-formativos/{parent_id}/modulos-formativos",
  *     tags={"ModuloFormativo"},
- *     summary="List all moduloformativos",
- *     description="Retrieve a paginated list of moduloformativos",
+ *     summary="List all modulos formativos of a ciclo formativo",
+ *     description="Retrieve a paginated list of modulos formativos of a specific ciclo formativo",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent CicloFormativo",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -72,7 +72,7 @@ class ModuloFormativoController extends Controller
 
     public function index(Request $request, CicloFormativo $cicloFormativo)
     {
-        $query = ModuloFormativo::query();
+        $query = $cicloFormativo->modulos_formativos()->newQuery();
 
         // Filtro de búsqueda
         if ($request->has('search') && $request->filled('search')) {
@@ -108,15 +108,15 @@ class ModuloFormativoController extends Controller
 
 /**
  * @OA\Post(
- *     path="/users/{parent_id}/modulos-formativos",
+ *     path="/ciclos-formativos/{parent_id}/modulos-formativos",
  *     tags={"ModuloFormativo"},
- *     summary="Create a new moduloformativo",
- *     description="Create a new moduloformativo resource",
+ *     summary="Create a new moduloformativo of a ciclo formativo",
+ *     description="Create a new moduloformativo resource of a specific ciclo formativo",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent CicloFormativo",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -152,7 +152,7 @@ class ModuloFormativoController extends Controller
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/modulos-formativos/{id}",
+ *     path="/ciclos-formativos/{parent_id}/modulos-formativos/{id}",
  *     tags={"ModuloFormativo"},
  *     summary="Show a specific moduloformativo",
  *     description="Retrieve a specific moduloformativo by ID",
@@ -160,7 +160,7 @@ class ModuloFormativoController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent CicloFormativo",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -198,7 +198,7 @@ class ModuloFormativoController extends Controller
 
 /**
  * @OA\Put(
- *     path="/users/{parent_id}/modulos-formativos/{id}",
+ *     path="/ciclos-formativos/{parent_id}/modulos-formativos/{id}",
  *     tags={"ModuloFormativo"},
  *     summary="Update a specific moduloformativo",
  *     description="Update a specific moduloformativo by ID",
@@ -206,7 +206,7 @@ class ModuloFormativoController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent CicloFormativo",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -251,7 +251,7 @@ class ModuloFormativoController extends Controller
 
 /**
  * @OA\Delete(
- *     path="/users/{parent_id}/modulos-formativos/{id}",
+ *     path="/ciclos-formativos/{parent_id}/modulos-formativos/{id}",
  *     tags={"ModuloFormativo"},
  *     summary="Delete a specific moduloformativo",
  *     description="Delete a specific moduloformativo by ID",
