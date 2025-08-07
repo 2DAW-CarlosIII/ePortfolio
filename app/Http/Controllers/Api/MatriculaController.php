@@ -10,6 +10,7 @@ use App\Http\Resources\MatriculaResource;
 use App\Models\ModuloFormativo;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\AssignOp\Mod;
+use App\Http\Resources\ModuloFormativoResource;
 
 /**
  * @OA\Tag(
@@ -97,6 +98,40 @@ class MatriculaController extends Controller
         $matriculas = $query->paginate($perPage);
 
         return MatriculaResource::collection($matriculas);
+    }
+
+/**
+ * @OA\Get(
+ *     path="/modulos-matriculados",
+ *     tags={"Matricula"},
+ *     summary="Listar módulos en los que el usuario autenticado está matriculado",
+ *     description="Devuelve una colección de módulos formativos en los que el usuario autenticado tiene matrícula.",
+ *     security={{"sanctum":{}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Lista de módulos matriculados",
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="array",
+ *                 @OA\Items(ref="#/components/schemas/ModuloFormativo")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
+
+    public function modulosMatriculados(Request $request)
+    {
+        $user = $request->user();
+
+        // Obtener los módulos en los que el usuario está matriculado
+        $modulos = ModuloFormativo::whereHas('matriculas', function ($q) use ($user) {
+            $q->where('estudiante_id', $user->id);
+        })->get();
+
+        return ModuloFormativoResource::collection($modulos);
     }
 
 /**

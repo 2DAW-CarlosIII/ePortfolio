@@ -2513,6 +2513,44 @@
                 ]
             }
         },
+        "/modulos-matriculados": {
+            "get": {
+                "tags": [
+                    "Matricula"
+                ],
+                "summary": "Listar módulos en los que el usuario autenticado está matriculado",
+                "description": "Devuelve una colección de módulos formativos en los que el usuario autenticado tiene matrícula.",
+                "operationId": "eafab2e66401dfc73d9ae325dd27d8b5",
+                "responses": {
+                    "200": {
+                        "description": "Lista de módulos matriculados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ModuloFormativo"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/modulos-formativos/{parent_id}/matriculas/{id}": {
             "get": {
                 "tags": [

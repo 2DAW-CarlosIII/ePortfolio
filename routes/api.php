@@ -64,6 +64,10 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     // User management routes (if needed)
     Route::apiResource('users', App\Http\Controllers\Api\UserController::class)
         ->only(['index', 'show', 'update']);
+    Route::get('modulos-matriculados', [App\Http\Controllers\Api\MatriculaController::class, 'modulosMatriculados'])
+        ->name('api.matriculas.modulos-matriculados');
+    Route::get('modulos-impartidos', [App\Http\Controllers\Api\ModuloFormativoController::class, 'modulosImpartidos'])
+        ->name('api.modulos-formativos.modulos-impartidos');
 
 });
 
