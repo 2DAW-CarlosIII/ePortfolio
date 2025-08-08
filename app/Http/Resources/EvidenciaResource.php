@@ -23,7 +23,6 @@ class EvidenciaResource extends JsonResource
                 substr($this->descripcion ?? '', 0, 100) . '...'
             ),
             'estado_validacion' => $this->estado_validacion,
-            'fecha_creacion' => $this->fecha_creacion?->format('Y-m-d H:i:s'),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'user' => new UserResource($this->whenLoaded('user')),

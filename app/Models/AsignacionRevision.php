@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
  *     @OA\Property(property="revisor_id", type="integer", description="ID del revisor"),
  *     @OA\Property(property="asignado_por_id", type="integer", description="ID del usuario que asigna"),
- *     @OA\Property(property="fecha_asignacion", type="string", format="date", description="Fecha de asignación"),
  *     @OA\Property(property="fecha_limite", type="string", format="date", description="Fecha límite"),
  *     @OA\Property(property="estado", type="string", enum={"pendiente", "en_revision", "completada"}, description="Estado de la revisión"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
@@ -33,12 +32,10 @@ class AsignacionRevision extends Model
         'evidencia_id',
         'revisor_id',
         'asignado_por_id',
-        'fecha_asignacion',
         'fecha_limite',
         'estado'
     ];
     protected $casts = [
-        'fecha_asignacion' => 'date',
         'fecha_limite' => 'date'
     ];
     public function evidencia()

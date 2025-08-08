@@ -19,8 +19,7 @@ class EvaluacionEvidenciaFactory extends Factory
             'user_id' => \App\Models\User::factory(),
             'puntuacion' => fake()->randomFloat(2, 0, 10),
             'estado' => fake()->randomElement(['pendiente', 'aprobada', 'rechazada']),
-            'observaciones' => fake()->paragraph(),
-            'fecha_evaluacion' => fake()->dateTime()
+            'observaciones' => fake()->paragraph()
         ];
     }
 }

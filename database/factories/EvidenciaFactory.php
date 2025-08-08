@@ -19,8 +19,7 @@ class EvidenciaFactory extends Factory
             'criterio_evaluacion_id' => \App\Models\CriterioEvaluacion::factory(),
             'url' => fake()->sentence(3),
             'descripcion' => fake()->paragraph(),
-            'estado_validacion' => fake()->randomElement(['pendiente', 'validada', 'rechazada']),
-            'fecha_creacion' => fake()->dateTime()
+            'estado_validacion' => fake()->randomElement(['pendiente', 'validada', 'rechazada'])
         ];
     }
 }

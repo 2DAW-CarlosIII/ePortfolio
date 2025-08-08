@@ -16,9 +16,7 @@ class MatriculaFactory extends Factory
     {
         return [
             'estudiante_id' => \App\Models\User::factory(),
-            'modulo_formativo_id' => \App\Models\ModuloFormativo::factory(),
-            'fecha_matricula' => fake()->date(),
-            'estado' => fake()->randomElement(['activa', 'suspendida', 'finalizada'])
+            'modulo_formativo_id' => \App\Models\ModuloFormativo::factory()
         ];
     }
 }

@@ -13,16 +13,15 @@ class AsignacionRevisionTest extends TestCase
     public function test_it_has_fillable_attributes()
     {
         $fillable = (new AsignacionRevision())->getFillable();
-        
+
         $expected = [
             'evidencia_id',
             'revisor_id',
             'asignado_por_id',
-            'fecha_asignacion',
             'fecha_limite',
             'estado'
         ];
-        
+
         $this->assertEquals($expected, $fillable);
     }
 
@@ -35,7 +34,7 @@ class AsignacionRevisionTest extends TestCase
     public function test_it_can_be_created_with_factory()
     {
         $asignacionRevision = AsignacionRevision::factory()->create();
-        
+
         $this->assertInstanceOf(AsignacionRevision::class, $asignacionRevision);
         $this->assertDatabaseHas('asignaciones_revision', [
             'id' => $asignacionRevision->id

@@ -205,23 +205,7 @@ class FamiliaProfesionalApiTest extends FeatureTestCase
             $response->assertUnprocessable()
                      ->assertJsonValidationErrors('codigo');
         }
-        public function test_requires_descripcion_field()
-        {
-            // Arrange
-            $data = [
-            'nombre' => $this->faker->words(3, true),
-            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-            'descripcion' => $this->faker->paragraph()
-        ];
-            unset($data['descripcion']);
 
-            // Act
-            $response = $this->postJson("/api/v1/familias-profesionales", $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('descripcion');
-        }
         public function test_codigo_must_be_unique()
         {
             // Arrange

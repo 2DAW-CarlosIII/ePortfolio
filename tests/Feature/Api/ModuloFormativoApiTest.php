@@ -307,27 +307,6 @@ class ModuloFormativoApiTest extends FeatureTestCase
                     ->assertJsonValidationErrors('centro');
     }
 
-    public function test_requires_descripcion_field()
-    {
-        // Arrange
-        $data = [
-        'nombre' => $this->faker->words(3, true),
-        'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-        'horas_totales' => $this->faker->numberBetween(20, 200),
-        'curso_escolar' => $this->faker->words(3, true),
-        'centro' => $this->faker->words(3, true),
-        'descripcion' => $this->faker->paragraph()
-    ];
-        unset($data['descripcion']);
-
-        // Act
-        $response = $this->postJson("/api/v1/ciclos-formativos/{$this->cicloFormativo->id}/modulos-formativos", $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                    ->assertJsonValidationErrors('descripcion');
-    }
-
     public function test_requires_authentication()
     {
         // Arrange

@@ -13,14 +13,12 @@ class MatriculaTest extends TestCase
     public function test_it_has_fillable_attributes()
     {
         $fillable = (new Matricula())->getFillable();
-        
+
         $expected = [
             'estudiante_id',
-            'modulo_formativo_id',
-            'fecha_matricula',
-            'estado'
+            'modulo_formativo_id'
         ];
-        
+
         $this->assertEquals($expected, $fillable);
     }
 
@@ -33,7 +31,7 @@ class MatriculaTest extends TestCase
     public function test_it_can_be_created_with_factory()
     {
         $matricula = Matricula::factory()->create();
-        
+
         $this->assertInstanceOf(Matricula::class, $matricula);
         $this->assertDatabaseHas('matriculas', [
             'id' => $matricula->id

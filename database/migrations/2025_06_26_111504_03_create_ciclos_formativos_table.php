@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('codigo');
             $table->enum('grado', ['basico', 'medio', 'superior']);
-            $table->text('descripcion');
+            $table->text('descripcion')->nullable();
             $table->timestamps();
             $table->foreign('familia_profesional_id')->references('id')->on('familias_profesionales')->onDelete('cascade');
             $table->unique(['codigo', 'familia_profesional_id'], 'unique_ciclo_codigo_familia');

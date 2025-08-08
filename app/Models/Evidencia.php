@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="url", type="string", description="URL de la evidencia"),
  *     @OA\Property(property="descripcion", type="string", description="Descripción de la evidencia"),
  *     @OA\Property(property="estado_validacion", type="string", enum={"pendiente", "validada", "rechazada"}, description="Estado de validación"),
- *     @OA\Property(property="fecha_creacion", type="string", format="date-time", description="Fecha de creación de la evidencia"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Fecha de actualización"),
  * )
@@ -34,19 +33,17 @@ class Evidencia extends Model
         'criterio_evaluacion_id',
         'url',
         'descripcion',
-        'estado_validacion',
-        'fecha_creacion'
+        'estado_validacion'
     ];
-    protected $casts = [
-        'fecha_creacion' => 'datetime'
-    ];
+    protected $casts = [];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
     public function criterios_evaluacion()
     {
-        return $this->belongsTo(CriteriosEvaluacion::class, 'criterios_evaluacion_id');
+        return $this->belongsTo(CriterioEvaluacion::class, 'criterios_evaluacion_id');
     }
     public function evaluaciones()
     {

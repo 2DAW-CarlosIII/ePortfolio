@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="puntuacion", type="number", format="float", description="Puntuación otorgada"),
  *     @OA\Property(property="estado", type="string", enum={"pendiente", "completada", "revisada"}, description="Estado de la evaluación"),
  *     @OA\Property(property="observaciones", type="string", description="Observaciones de la evaluación"),
- *     @OA\Property(property="fecha_evaluacion", type="string", format="date-time", description="Fecha de evaluación"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Fecha de actualización"),
  * )
@@ -34,12 +33,10 @@ class EvaluacionEvidencia extends Model
         'user_id',
         'puntuacion',
         'estado',
-        'observaciones',
-        'fecha_evaluacion'
+        'observaciones'
     ];
     protected $casts = [
-        'puntuacion' => 'decimal:2',
-        'fecha_evaluacion' => 'datetime'
+        'puntuacion' => 'decimal:2'
     ];
     public function evidencia()
     {

@@ -12,8 +12,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('estudiante_id');
             $table->unsignedBigInteger('modulo_formativo_id');
-            $table->date('fecha_matricula');
-            $table->enum('estado', ['activa', 'suspendida', 'finalizada']);
             $table->timestamps();
             $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('modulo_formativo_id')->references('id')->on('modulos_formativos')->onDelete('cascade');

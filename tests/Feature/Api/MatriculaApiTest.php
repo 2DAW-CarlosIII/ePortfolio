@@ -56,7 +56,7 @@ class MatriculaApiTest extends FeatureTestCase
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'estudiante_id', 'modulo_formativo_id', 'fecha_matricula', 'estado', 'created_at', 'updated_at']
+                         '*' => ['id', 'estudiante_id', 'modulo_formativo_id', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -68,10 +68,7 @@ class MatriculaApiTest extends FeatureTestCase
     public function test_can_create_matricula()
     {
         // Arrange
-        $data = [
-            'fecha_matricula' => $this->faker->date('Y-m-d H:i:s'),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
+        $data = [];
 
         // Act
         $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
@@ -79,13 +76,8 @@ class MatriculaApiTest extends FeatureTestCase
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'modulo_formativo_id', 'fecha_matricula', 'estado', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'modulo_formativo_id', 'created_at', 'updated_at']
                  ]);
-
-        $this->assertDatabaseHas('matriculas', [
-            'fecha_matricula' => $data['fecha_matricula'],
-            'estado' => $data['estado']
-        ]);
     }
 
     public function test_can_show_matricula()
@@ -101,33 +93,8 @@ class MatriculaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'modulo_formativo_id', 'fecha_matricula', 'estado', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'modulo_formativo_id', 'created_at', 'updated_at']
                  ]);
-    }
-
-    public function test_can_update_matricula()
-    {
-        // Arrange
-        $matricula = Matricula::factory()->create([
-            'modulo_formativo_id' => $this->moduloFormativo->id,
-        ]);
-        $updateData = [
-            'fecha_matricula' => $this->faker->date('Y-m-d'),
-            'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-        ];
-
-        // Act
-        $response = $this->putJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas/{$matricula->id}", $updateData);
-
-        // Assert
-        $response->assertOk()
-                 ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'modulo_formativo_id', 'fecha_matricula', 'estado', 'created_at', 'updated_at']
-                 ]);
-
-        $matricula->refresh();
-        $this->assertEquals($updateData['fecha_matricula'], $matricula->fecha_matricula->format('Y-m-d'));
-        $this->assertEquals($updateData['estado'], $matricula->estado);
     }
 
     public function test_can_delete_matricula()
@@ -167,53 +134,6 @@ class MatriculaApiTest extends FeatureTestCase
 
         $this->assertCount(10, $response->json('data'));
         $this->assertEquals(25, $response->json('meta.total'));
-    }
-
-    public function test_requires_estado_field()
-    {
-        // Arrange
-        $data = [
-        'fecha_matricula' => $this->faker->date(),
-        'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-    ];
-        unset($data['estado']);
-
-        // Act
-        $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                    ->assertJsonValidationErrors('estado');
-    }
-    public function test_estado_accepts_valid_values()
-    {
-        foreach (['activa', 'suspendida', 'finalizada'] as $value) {
-            $data = [
-        'fecha_matricula' => $this->faker->date(),
-        'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-    ];
-            $data['estado'] = $value;
-
-            $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
-            $response->assertCreated();
-        }
-    }
-
-    public function test_estado_rejects_invalid_values()
-    {
-        // Arrange
-        $data = [
-        'fecha_matricula' => $this->faker->date(),
-        'estado' => $this->faker->randomElement(['activa', 'suspendida', 'finalizada'])
-    ];
-        $data['estado'] = 'invalid_value';
-
-        // Act
-        $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                    ->assertJsonValidationErrors('estado');
     }
 
     public function test_requires_authentication()

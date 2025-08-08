@@ -19,8 +19,7 @@ class EvaluacionEvidenciaTest extends TestCase
             'user_id',
             'puntuacion',
             'estado',
-            'observaciones',
-            'fecha_evaluacion'
+            'observaciones'
         ];
 
         $this->assertEquals($expected, $fillable);

@@ -14,8 +14,6 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="id", type="integer", description="ID único"),
  *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
  *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
- *     @OA\Property(property="fecha_matricula", type="string", format="date", description="Fecha de matrícula"),
- *     @OA\Property(property="estado", type="string", enum={"activa", "inactiva", "finalizada"}, description="Estado de la matrícula"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Fecha de actualización"),
  * )
@@ -29,13 +27,10 @@ class Matricula extends Model
 
     protected $fillable = [
         'estudiante_id',
-        'modulo_formativo_id',
-        'fecha_matricula',
-        'estado'
+        'modulo_formativo_id'
     ];
-    protected $casts = [
-        'fecha_matricula' => 'date'
-    ];
+    protected $casts = [];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

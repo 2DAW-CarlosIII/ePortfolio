@@ -39,7 +39,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_asignacion', 'fecha_limite', 'estado', 'created_at', 'updated_at']
+                         '*' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_limite', 'estado', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -53,7 +53,6 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         // Arrange
         $data = [
             'revisor_id' => User::factory()->create()->id,
-            'fecha_asignacion' => now()->format('Y-m-d H:i:s'),
             'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
@@ -64,11 +63,10 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_asignacion', 'fecha_limite', 'estado', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_limite', 'estado', 'created_at', 'updated_at']
                  ]);
 
         $this->assertDatabaseHas('asignaciones_revision', [
-            'fecha_asignacion' => $data['fecha_asignacion'],
             'fecha_limite' => $data['fecha_limite'],
             'estado' => $data['estado']
         ]);
@@ -85,7 +83,7 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_asignacion', 'fecha_limite', 'estado', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_limite', 'estado', 'created_at', 'updated_at']
                  ]);
     }
 
@@ -94,7 +92,6 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         // Arrange
         $asignacionRevision = AsignacionRevision::factory()->create(['evidencia_id' => $this->evidencia->id]);
         $updateData = [
-            'fecha_asignacion' => now()->format('Y-m-d'),
             'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
@@ -105,11 +102,10 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_asignacion', 'fecha_limite', 'estado', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_limite', 'estado', 'created_at', 'updated_at']
                  ]);
 
         $asignacionRevision->refresh();
-        $this->assertEquals($updateData['fecha_asignacion'], $asignacionRevision->fecha_asignacion->format('Y-m-d'));
         $this->assertEquals($updateData['fecha_limite'], $asignacionRevision->fecha_limite->format('Y-m-d'));
         $this->assertEquals($updateData['estado'], $asignacionRevision->estado);
     }
@@ -177,7 +173,6 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => now()->format('Y-m-d'),
             'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
@@ -191,28 +186,10 @@ class AsignacionRevisionApiTest extends FeatureTestCase
                      ->assertJsonValidationErrors('revisor_id');
         }
 
-        public function test_requires_fecha_asignacion_field()
-        {
-            // Arrange
-            $data = [
-            'fecha_asignacion' => now()->format('Y-m-d'),
-            'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
-            'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
-        ];
-            unset($data['fecha_asignacion']);
-
-            // Act
-            $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision", $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('fecha_asignacion');
-        }
         public function test_requires_fecha_limite_field()
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => now()->format('Y-m-d'),
             'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
@@ -229,7 +206,6 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         {
             // Arrange
             $data = [
-            'fecha_asignacion' => now()->format('Y-m-d'),
             'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];
@@ -248,7 +224,6 @@ class AsignacionRevisionApiTest extends FeatureTestCase
             foreach (['pendiente', 'completada', 'expirada'] as $value) {
                 $data = [
                     'revisor_id' => User::factory()->create()->id,
-                    'fecha_asignacion' => now()->format('Y-m-d'),
                     'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
                     'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
                 ];
@@ -264,7 +239,6 @@ class AsignacionRevisionApiTest extends FeatureTestCase
             // Arrange
             $data = [
             'revisor_id' => User::factory()->create()->id,
-            'fecha_asignacion' => now()->format('Y-m-d'),
             'fecha_limite' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'estado' => $this->faker->randomElement(['pendiente', 'completada', 'expirada'])
         ];

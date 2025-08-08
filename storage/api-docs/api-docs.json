@@ -4389,7 +4389,6 @@
                 "description": "Datos requeridos para crear una Asignación de Revisión",
                 "required": [
                     "revisor_id",
-                    "fecha_asignacion",
                     "fecha_limite",
                     "estado"
                 ],
@@ -4405,11 +4404,6 @@
                     "asignado_por_id": {
                         "description": "ID del usuario que asigna",
                         "type": "integer"
-                    },
-                    "fecha_asignacion": {
-                        "description": "Fecha de asignación",
-                        "type": "string",
-                        "format": "date"
                     },
                     "fecha_limite": {
                         "description": "Fecha límite para la revisión",
@@ -4602,11 +4596,6 @@
                             "validada",
                             "rechazada"
                         ]
-                    },
-                    "fecha_creacion": {
-                        "description": "Fecha de creación de la evidencia",
-                        "type": "string",
-                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -4639,10 +4628,6 @@
             "StoreMatriculaRequest": {
                 "title": "Store Matrícula Request",
                 "description": "Datos requeridos para crear una Matrícula",
-                "required": [
-                    "fecha_matricula",
-                    "estado"
-                ],
                 "properties": {
                     "estudiante_id": {
                         "description": "ID del estudiante",
@@ -4651,20 +4636,6 @@
                     "modulo_formativo_id": {
                         "description": "ID del módulo formativo",
                         "type": "integer"
-                    },
-                    "fecha_matricula": {
-                        "description": "Fecha de matrícula",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "estado": {
-                        "description": "Estado de la matrícula",
-                        "type": "string",
-                        "enum": [
-                            "activa",
-                            "inactiva",
-                            "finalizada"
-                        ]
                     }
                 },
                 "type": "object"
@@ -4800,7 +4771,8 @@
                 "title": "Store Role Request",
                 "description": "Datos requeridos para crear un Rol",
                 "required": [
-                    "name"
+                    "name",
+                    "description"
                 ],
                 "properties": {
                     "name": {
@@ -4830,11 +4802,6 @@
                     "asignado_por_id": {
                         "description": "ID del usuario que asigna",
                         "type": "integer"
-                    },
-                    "fecha_asignacion": {
-                        "description": "Fecha de asignación",
-                        "type": "string",
-                        "format": "date"
                     },
                     "fecha_limite": {
                         "description": "Fecha límite para la revisión",
@@ -4977,11 +4944,6 @@
                     "observaciones": {
                         "description": "Observaciones de la evaluación",
                         "type": "string"
-                    },
-                    "fecha_evaluacion": {
-                        "description": "Fecha de evaluación",
-                        "type": "string",
-                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -5015,11 +4977,6 @@
                             "validada",
                             "rechazada"
                         ]
-                    },
-                    "fecha_creacion": {
-                        "description": "Fecha de creación de la evidencia",
-                        "type": "string",
-                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -5056,11 +5013,6 @@
                     "modulo_formativo_id": {
                         "description": "ID del módulo formativo",
                         "type": "integer"
-                    },
-                    "fecha_matricula": {
-                        "description": "Fecha de matrícula",
-                        "type": "string",
-                        "format": "date"
                     },
                     "estado": {
                         "description": "Estado de la matrícula",
@@ -5218,11 +5170,6 @@
                     "asignado_por_id": {
                         "description": "ID del usuario que asigna",
                         "type": "integer"
-                    },
-                    "fecha_asignacion": {
-                        "description": "Fecha de asignación",
-                        "type": "string",
-                        "format": "date"
                     },
                     "fecha_limite": {
                         "description": "Fecha límite",
@@ -5414,11 +5361,6 @@
                         "description": "Observaciones de la evaluación",
                         "type": "string"
                     },
-                    "fecha_evaluacion": {
-                        "description": "Fecha de evaluación",
-                        "type": "string",
-                        "format": "date-time"
-                    },
                     "created_at": {
                         "description": "Fecha de creación",
                         "type": "string",
@@ -5464,11 +5406,6 @@
                             "validada",
                             "rechazada"
                         ]
-                    },
-                    "fecha_creacion": {
-                        "description": "Fecha de creación de la evidencia",
-                        "type": "string",
-                        "format": "date-time"
                     },
                     "created_at": {
                         "description": "Fecha de creación",
@@ -5531,20 +5468,6 @@
                     "modulo_formativo_id": {
                         "description": "ID del módulo formativo",
                         "type": "integer"
-                    },
-                    "fecha_matricula": {
-                        "description": "Fecha de matrícula",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "estado": {
-                        "description": "Estado de la matrícula",
-                        "type": "string",
-                        "enum": [
-                            "activa",
-                            "inactiva",
-                            "finalizada"
-                        ]
                     },
                     "created_at": {
                         "description": "Fecha de creación",

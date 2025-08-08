@@ -218,24 +218,6 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
         $response->assertUnprocessable()
                     ->assertJsonValidationErrors('activo');
     }
-    public function test_requires_observaciones_field()
-    {
-        // Arrange
-        $data = [
-            'fecha_apertura' => now()->format('Y-m-d'),
-            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
-            'activo' => $this->faker->boolean(),
-            'observaciones' => $this->faker->paragraph()
-        ];
-        unset($data['observaciones']);
-
-        // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios", $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                    ->assertJsonValidationErrors('observaciones');
-    }
 
     public function test_requires_authentication()
     {

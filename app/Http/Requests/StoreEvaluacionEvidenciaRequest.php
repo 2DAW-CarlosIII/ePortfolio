@@ -73,8 +73,7 @@ class StoreEvaluacionEvidenciaRequest extends FormRequest
         return [
             'puntuacion' => 'puntuación',
             'estado' => 'estado',
-            'observaciones' => 'observaciones',
-            'fecha_evaluacion' => 'fecha de evaluación'
+            'observaciones' => 'observaciones'
         ];
     }
 }

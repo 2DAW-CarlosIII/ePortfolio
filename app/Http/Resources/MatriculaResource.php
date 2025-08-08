@@ -16,8 +16,6 @@ class MatriculaResource extends JsonResource
             'id' => (int) $this->id,
             'estudiante_id' => $this->estudiante_id,
             'modulo_formativo_id' => $this->modulo_formativo_id,
-            'fecha_matricula' => $this->fecha_matricula?->format('Y-m-d'),
-            'estado' => $this->estado,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'user' => new UserResource($this->whenLoaded('user')),
@@ -36,7 +34,7 @@ class MatriculaResource extends JsonResource
                     default => 'gray',
                 },
             ],
-            'dias_matriculado' => $this->fecha_matricula?->diffInDays(now())
+            'dias_matriculado' => $this->created_at?->diffInDays(now())
         ];
     }
 

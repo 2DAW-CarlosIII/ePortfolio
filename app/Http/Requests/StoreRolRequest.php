@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Role Request",
  *     description="Datos requeridos para crear un Rol",
- *     required={"name"},
+ *     required={"name", "description"},
  *     @OA\Property(property="name", type="string", maxLength=255, description="Nombre único del rol"),
  *     @OA\Property(property="description", type="string", description="Descripción del rol"),
  * )
@@ -33,7 +33,7 @@ class StoreRolRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:roles,name'],
-            'description' => ['string', 'max:65535']
+            'description' => ['required', 'string', 'max:65535']
         ];
     }
 

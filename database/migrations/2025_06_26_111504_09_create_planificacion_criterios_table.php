@@ -14,7 +14,7 @@ return new class extends Migration
             $table->date('fecha_apertura');
             $table->date('fecha_cierre');
             $table->boolean('activo')->default(false);
-            $table->text('observaciones');
+            $table->text('observaciones')->nullable();
             $table->timestamps();
             $table->foreign('criterio_evaluacion_id')->references('id')->on('criterios_evaluacion')->onDelete('cascade');
         });

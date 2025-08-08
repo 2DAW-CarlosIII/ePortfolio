@@ -39,7 +39,7 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'fecha_evaluacion', 'created_at', 'updated_at']
+                         '*' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -63,7 +63,7 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'fecha_evaluacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'created_at', 'updated_at']
                  ]);
 
         $this->assertDatabaseHas('evaluaciones_evidencias', [
@@ -84,7 +84,7 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'fecha_evaluacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'created_at', 'updated_at']
                  ]);
     }
 
@@ -104,7 +104,7 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'fecha_evaluacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'created_at', 'updated_at']
                  ]);
 
         $evaluacionEvidencia->refresh();
@@ -204,23 +204,6 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
             // Assert
             $response->assertUnprocessable()
                      ->assertJsonValidationErrors('estado');
-        }
-        public function test_requires_observaciones_field()
-        {
-            // Arrange
-            $data = [
-            'puntuacion' => $this->faker->randomFloat(2, 0, 10),
-            'estado' => $this->faker->randomElement(['pendiente', 'aprobada', 'rechazada']),
-            'observaciones' => $this->faker->paragraph()
-        ];
-            unset($data['observaciones']);
-
-            // Act
-            $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/evaluaciones-evidencias", $data);
-
-            // Assert
-            $response->assertUnprocessable()
-                     ->assertJsonValidationErrors('observaciones');
         }
 
         public function test_estado_accepts_valid_values()

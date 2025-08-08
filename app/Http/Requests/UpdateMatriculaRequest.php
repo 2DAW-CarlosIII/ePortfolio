@@ -12,7 +12,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *     description="Datos para actualizar una Matrícula",
  *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
  *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
- *     @OA\Property(property="fecha_matricula", type="string", format="date", description="Fecha de matrícula"),
  *     @OA\Property(property="estado", type="string", enum={"activa", "inactiva", "finalizada"}, description="Estado de la matrícula"),
  * )
  */
@@ -32,10 +31,7 @@ class UpdateMatriculaRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'fecha_matricula' => ['sometimes', 'required', 'date', 'before_or_equal:today'],
-            'estado' => ['sometimes', 'required', 'in:activa,suspendida,finalizada']
-        ];
+        return [];
     }
 
     /**
@@ -67,9 +63,6 @@ class UpdateMatriculaRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return [
-            'fecha_matricula' => 'fecha de matrícula',
-            'estado' => 'estado'
-        ];
+        return [];
     }
 }

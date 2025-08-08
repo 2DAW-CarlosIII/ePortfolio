@@ -40,7 +40,7 @@ class EvidenciaApiTest extends FeatureTestCase
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'fecha_creacion', 'created_at', 'updated_at']
+                         '*' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -64,7 +64,7 @@ class EvidenciaApiTest extends FeatureTestCase
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'fecha_creacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                  ]);
 
         $this->assertDatabaseHas('evidencias', [
@@ -87,7 +87,7 @@ class EvidenciaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'fecha_creacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                  ]);
     }
 
@@ -109,7 +109,7 @@ class EvidenciaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'fecha_creacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                  ]);
 
         $evidencia->refresh();

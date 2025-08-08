@@ -244,24 +244,6 @@ class CicloFormativoApiTest extends FeatureTestCase
         $response->assertUnprocessable()
                     ->assertJsonValidationErrors('grado');
     }
-    public function test_requires_descripcion_field()
-    {
-        // Arrange
-        $data = [
-        'nombre' => $this->faker->words(3, true),
-        'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
-        'grado' => $this->faker->randomElement(['basico', 'medio', 'superior']),
-        'descripcion' => $this->faker->paragraph()
-    ];
-        unset($data['descripcion']);
-
-        // Act
-        $response = $this->postJson("/api/v1/familias-profesionales/{$this->familia->id}/ciclos-formativos", $data);
-
-        // Assert
-        $response->assertUnprocessable()
-                    ->assertJsonValidationErrors('descripcion');
-    }
     public function test_codigo_must_be_unique()
     {
         // Arrange

@@ -10,11 +10,10 @@ use Illuminate\Foundation\Http\FormRequest;
  *     type="object",
  *     title="Store Asignación Revisión Request",
  *     description="Datos requeridos para crear una Asignación de Revisión",
- *     required={"revisor_id", "fecha_asignacion", "fecha_limite", "estado"},
+ *     required={"revisor_id", "fecha_limite", "estado"},
  *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
  *     @OA\Property(property="revisor_id", type="integer", description="ID del revisor"),
  *     @OA\Property(property="asignado_por_id", type="integer", description="ID del usuario que asigna"),
- *     @OA\Property(property="fecha_asignacion", type="string", format="date", description="Fecha de asignación"),
  *     @OA\Property(property="fecha_limite", type="string", format="date", description="Fecha límite para la revisión"),
  *     @OA\Property(property="estado", type="string", enum={"pendiente", "en_revision", "completada"}, description="Estado de la revisión"),
  * )
@@ -39,7 +38,6 @@ class StoreAsignacionRevisionRequest extends FormRequest
             // 'evidencia_id' => ['required', 'integer', 'exists:evidencias,id'],
             'revisor_id' => ['required', 'integer', 'exists:users,id'],
             // 'asignado_por_id' => ['required', 'integer', 'exists:users,id'],
-            'fecha_asignacion' => ['required', 'date'],
             'fecha_limite' => ['required', 'date', 'after:today'],
             'estado' => ['required', 'in:pendiente,completada,expirada']
         ];
@@ -76,7 +74,6 @@ class StoreAsignacionRevisionRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'fecha_asignacion' => 'fecha de asignación',
             'fecha_limite' => 'fecha límite',
             'estado' => 'estado'
         ];

@@ -13,7 +13,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
  *     @OA\Property(property="revisor_id", type="integer", description="ID del revisor"),
  *     @OA\Property(property="asignado_por_id", type="integer", description="ID del usuario que asigna"),
- *     @OA\Property(property="fecha_asignacion", type="string", format="date", description="Fecha de asignación"),
  *     @OA\Property(property="fecha_limite", type="string", format="date", description="Fecha límite para la revisión"),
  *     @OA\Property(property="estado", type="string", enum={"pendiente", "en_revision", "completada"}, description="Estado de la revisión"),
  * )
@@ -38,7 +37,6 @@ class UpdateAsignacionRevisionRequest extends FormRequest
             'evidencia_id' => ['sometimes', 'required', 'integer', 'exists:evidencias,id'],
             'revisor_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
             'asignado_por_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
-            'fecha_asignacion' => ['sometimes', 'required', 'date'],
             'fecha_limite' => ['sometimes', 'required', 'date', 'after:today'],
             'estado' => ['sometimes', 'required', 'in:pendiente,completada,expirada']
         ];
@@ -74,7 +72,6 @@ class UpdateAsignacionRevisionRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'fecha_asignacion' => 'fecha de asignación',
             'fecha_limite' => 'fecha límite',
             'estado' => 'estado'
         ];

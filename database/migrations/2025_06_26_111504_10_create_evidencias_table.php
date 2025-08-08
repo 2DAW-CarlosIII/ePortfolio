@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('url');
             $table->text('descripcion');
             $table->enum('estado_validacion', ['pendiente', 'validada', 'rechazada']);
-            $table->timestamp('fecha_creacion');
             $table->timestamps();
             $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('criterio_evaluacion_id')->references('id')->on('criterios_evaluacion')->onDelete('cascade');

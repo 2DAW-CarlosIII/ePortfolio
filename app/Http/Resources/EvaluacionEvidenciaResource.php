@@ -19,7 +19,6 @@ class EvaluacionEvidenciaResource extends JsonResource
             'puntuacion' => number_format((float) $this->puntuacion, 2, '.', ''),
             'estado' => $this->estado,
             'observaciones' => $this->observaciones,
-            'fecha_evaluacion' => $this->fecha_evaluacion?->format('Y-m-d H:i:s'),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'evidencia' => new EvidenciaResource($this->whenLoaded('evidencia')),

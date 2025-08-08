@@ -15,7 +15,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *     @OA\Property(property="url", type="string", format="url", description="URL de la evidencia"),
  *     @OA\Property(property="descripcion", type="string", description="Descripción de la evidencia"),
  *     @OA\Property(property="estado_validacion", type="string", enum={"pendiente", "validada", "rechazada"}, description="Estado de validación"),
- *     @OA\Property(property="fecha_creacion", type="string", format="date-time", description="Fecha de creación de la evidencia"),
  * )
  */
 
@@ -73,8 +72,7 @@ class UpdateEvidenciaRequest extends FormRequest
         return [
             'url' => 'URL',
             'descripcion' => 'descripción',
-            'estado_validacion' => 'estado de validación',
-            'fecha_creacion' => 'fecha de creación'
+            'estado_validacion' => 'estado de validación'
         ];
     }
 }

@@ -15,7 +15,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *     @OA\Property(property="puntuacion", type="number", format="float", minimum=0, maximum=10, description="Puntuación otorgada (0-10)"),
  *     @OA\Property(property="estado", type="string", enum={"pendiente", "completada", "revisada"}, description="Estado de la evaluación"),
  *     @OA\Property(property="observaciones", type="string", description="Observaciones de la evaluación"),
- *     @OA\Property(property="fecha_evaluacion", type="string", format="date-time", description="Fecha de evaluación"),
  * )
  */
 
@@ -73,8 +72,7 @@ class UpdateEvaluacionEvidenciaRequest extends FormRequest
         return [
             'puntuacion' => 'puntuación',
             'estado' => 'estado',
-            'observaciones' => 'observaciones',
-            'fecha_evaluacion' => 'fecha de evaluación'
+            'observaciones' => 'observaciones'
         ];
     }
 }

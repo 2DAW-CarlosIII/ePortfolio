@@ -17,7 +17,6 @@ class AsignacionRevisionResource extends JsonResource
             'evidencia_id' => $this->evidencia_id,
             'revisor_id' => $this->revisor_id,
             'asignado_por_id' => $this->asignado_por_id,
-            'fecha_asignacion' => $this->fecha_asignacion?->format('Y-m-d'),
             'fecha_limite' => $this->fecha_limite?->format('Y-m-d'),
             'estado' => $this->estado,
             'created_at' => $this->created_at?->toISOString(),

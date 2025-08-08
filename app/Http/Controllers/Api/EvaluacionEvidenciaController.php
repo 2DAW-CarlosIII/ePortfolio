@@ -145,7 +145,6 @@ class EvaluacionEvidenciaController extends Controller
         $data = $request->validated();
         $data['evidencia_id'] = $evidencia->id;
         $data['user_id'] = auth()->id(); // Asignar el usuario autenticado
-        $data['fecha_evaluacion'] = now(); // Asignar la fecha actual
 
         $evaluacionEvidencia = EvaluacionEvidencia::create($data);
 

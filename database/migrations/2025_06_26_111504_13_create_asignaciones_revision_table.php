@@ -13,7 +13,6 @@ return new class extends Migration
             $table->unsignedBigInteger('evidencia_id');
             $table->unsignedBigInteger('revisor_id');
             $table->unsignedBigInteger('asignado_por_id');
-            $table->date('fecha_asignacion');
             $table->date('fecha_limite');
             $table->enum('estado', ['pendiente', 'completada', 'expirada']);
             $table->timestamps();
