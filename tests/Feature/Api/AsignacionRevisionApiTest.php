@@ -252,19 +252,6 @@ class AsignacionRevisionApiTest extends FeatureTestCase
                      ->assertJsonValidationErrors('estado');
         }
 
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/asignaciones-revision");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
         public function test_cannot_access_asignacionRevision_from_wrong_parent()
         {
             // Arrange

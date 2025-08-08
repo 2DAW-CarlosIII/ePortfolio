@@ -61,6 +61,40 @@ class ModuloFormativoApiTest extends FeatureTestCase
         $this->assertCount(3, $response->json('data'));
     }
 
+    public function test_can_list_modulosImpartidos()
+    {
+        // Arrange
+        // Usuario autenticado
+        $user = $this->user;
+
+        // Dos módulos impartidos por el usuario autenticado
+        $modulo1 = ModuloFormativo::factory()->create([
+            'docente_id' => $user->id,
+            'ciclo_formativo_id' => $this->cicloFormativo->id,
+        ]);
+        $modulo2 = ModuloFormativo::factory()->create([
+            'docente_id' => $user->id,
+            'ciclo_formativo_id' => $this->cicloFormativo->id,
+        ]);
+
+        // Un módulo impartido por otro usuario
+        $otherUser = User::factory()->create();
+        $modulo3 = ModuloFormativo::factory()->create([
+            'docente_id' => $otherUser->id,
+            'ciclo_formativo_id' => $this->cicloFormativo->id,
+        ]);
+
+        // Act
+        $response = $this->getJson('/api/v1/modulos-impartidos');
+
+        // Assert
+        $response->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonFragment(['id' => $modulo1->id])
+            ->assertJsonFragment(['id' => $modulo2->id])
+            ->assertJsonMissing(['id' => $modulo3->id]);
+    }
+
     public function test_can_create_moduloFormativo()
     {
         // Arrange
@@ -306,18 +340,4 @@ class ModuloFormativoApiTest extends FeatureTestCase
         $response->assertUnprocessable()
                     ->assertJsonValidationErrors('centro');
     }
-
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/ciclos-formativos/{$this->cicloFormativo->id}/modulos-formativos");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
 }

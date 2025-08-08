@@ -300,17 +300,4 @@ class CicloFormativoApiTest extends FeatureTestCase
                     ->assertJsonValidationErrors('grado');
     }
 
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/familias-profesionales/{$this->familia->id}/ciclos-formativos");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
 }

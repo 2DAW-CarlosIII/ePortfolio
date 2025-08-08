@@ -107,6 +107,38 @@ class ModuloFormativoController extends Controller
     }
 
 /**
+ * @OA\Get(
+ *     path="/modulos-impartidos",
+ *     tags={"ModuloFormativo"},
+ *     summary="Listar módulos en los que el usuario autenticado imparte docencia",
+ *     description="Devuelve una colección de módulos formativos en los que el usuario autenticado imparte docencia.",
+ *     security={{"sanctum":{}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Lista de módulos impartidos por el usuario autenticado",
+ *         @OA\JsonContent(
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="array",
+ *                 @OA\Items(ref="#/components/schemas/ModuloFormativo")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
+
+    public function modulosImpartidos(Request $request)
+    {
+        $user = $request->user();
+
+        // Obtener los módulos en los que el usuario imparte docencia
+        $modulos = ModuloFormativo::where('docente_id', $user->id)->get();
+
+        return ModuloFormativoResource::collection($modulos);
+    }
+
+/**
  * @OA\Post(
  *     path="/ciclos-formativos/{parent_id}/modulos-formativos",
  *     tags={"ModuloFormativo"},

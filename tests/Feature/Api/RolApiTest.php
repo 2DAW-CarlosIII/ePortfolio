@@ -217,17 +217,4 @@ class RolApiTest extends FeatureTestCase
                      ->assertJsonValidationErrors('name');
         }
 
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/roles");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
 }

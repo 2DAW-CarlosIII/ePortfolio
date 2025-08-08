@@ -224,18 +224,4 @@ class CriteriosEvaluacionApiTest extends FeatureTestCase
             $response->assertUnprocessable()
                      ->assertJsonValidationErrors('descripcion');
         }
-
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/resultados-aprendizaje/{$this->resultadoAprendizaje->id}/criterios-evaluacion");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
 }

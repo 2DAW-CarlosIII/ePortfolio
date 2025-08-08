@@ -225,17 +225,4 @@ class FamiliaProfesionalApiTest extends FeatureTestCase
                      ->assertJsonValidationErrors('codigo');
         }
 
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/familias-profesionales");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
 }

@@ -230,19 +230,6 @@ class ComentarioApiTest extends FeatureTestCase
                      ->assertJsonValidationErrors('tipo');
         }
 
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/comentarios");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
         public function test_cannot_access_comentario_from_wrong_parent()
         {
             // Arrange

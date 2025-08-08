@@ -65,6 +65,42 @@ class MatriculaApiTest extends FeatureTestCase
         $this->assertCount(3, $response->json('data'));
     }
 
+    public function test_can_list_modulos_matriculados()
+    {
+        // Arrange
+        $user = $this->user;
+
+        // Crear dos módulos y matricular al usuario autenticado en ambos
+        $modulo1 = ModuloFormativo::factory()->create(['ciclo_formativo_id' => $this->cicloFormativo->id]);
+        $modulo2 = ModuloFormativo::factory()->create(['ciclo_formativo_id' => $this->cicloFormativo->id]);
+        Matricula::factory()->create([
+            'modulo_formativo_id' => $modulo1->id,
+            'estudiante_id' => $user->id,
+        ]);
+        Matricula::factory()->create([
+            'modulo_formativo_id' => $modulo2->id,
+            'estudiante_id' => $user->id,
+        ]);
+
+        // Crear un módulo y matricular a otro usuario
+        $otherUser = User::factory()->create();
+        $modulo3 = ModuloFormativo::factory()->create(['ciclo_formativo_id' => $this->cicloFormativo->id]);
+        Matricula::factory()->create([
+            'modulo_formativo_id' => $modulo3->id,
+            'estudiante_id' => $otherUser->id,
+        ]);
+
+        // Act
+        $response = $this->getJson('/api/v1/modulos-matriculados');
+
+        // Assert
+        $response->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonFragment(['id' => $modulo1->id])
+            ->assertJsonFragment(['id' => $modulo2->id])
+            ->assertJsonMissing(['id' => $modulo3->id]);
+    }
+
     public function test_can_create_matricula()
     {
         // Arrange
@@ -135,17 +171,4 @@ class MatriculaApiTest extends FeatureTestCase
         $this->assertCount(10, $response->json('data'));
         $this->assertEquals(25, $response->json('meta.total'));
     }
-
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
 }

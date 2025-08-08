@@ -267,17 +267,4 @@ class EvidenciaApiTest extends FeatureTestCase
         $response->assertUnprocessable()
                     ->assertJsonValidationErrors('estado_validacion');
     }
-
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
 }

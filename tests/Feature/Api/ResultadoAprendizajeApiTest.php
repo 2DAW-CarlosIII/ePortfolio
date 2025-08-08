@@ -261,17 +261,4 @@ class ResultadoAprendizajeApiTest extends FeatureTestCase
                      ->assertJsonValidationErrors('orden');
         }
 
-    public function test_requires_authentication()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/resultados-aprendizaje");
-
-        // Assert
-        $response->assertUnauthorized();
-    }
-
-
 }

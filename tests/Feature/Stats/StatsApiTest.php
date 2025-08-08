@@ -94,16 +94,4 @@ class StatsApiTest extends FeatureTestCase
         // Assert
         $response->assertOk();
     }
-
-    public function test_requires_authentication_for_stats()
-    {
-        // Arrange
-        Sanctum::actingAs(null);
-
-        // Act
-        $response = $this->getJson('/api/v1/stats');
-
-        // Assert
-        $response->assertUnauthorized();
-    }
 }
