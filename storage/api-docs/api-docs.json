@@ -2882,6 +2882,44 @@
                 ]
             }
         },
+        "/modulos-impartidos": {
+            "get": {
+                "tags": [
+                    "ModuloFormativo"
+                ],
+                "summary": "Listar módulos en los que el usuario autenticado imparte docencia",
+                "description": "Devuelve una colección de módulos formativos en los que el usuario autenticado imparte docencia.",
+                "operationId": "369dbc24cafd4864d87105fc361df623",
+                "responses": {
+                    "200": {
+                        "description": "Lista de módulos impartidos por el usuario autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ModuloFormativo"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/ciclos-formativos/{parent_id}/modulos-formativos/{id}": {
             "get": {
                 "tags": [
