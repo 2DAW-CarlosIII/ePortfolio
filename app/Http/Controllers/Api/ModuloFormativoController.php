@@ -56,6 +56,20 @@ class ModuloFormativoController extends Controller
  *         required=false,
  *         @OA\Schema(type="integer", default=1)
  *     ),
+ *     @OA\Parameter(
+ *         name="sort_by",
+ *         in="query",
+ *         description="Field to sort by",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_direction",
+ *         in="query",
+ *         description="direction of sorting (asc or desc)",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Successful operation",
@@ -111,7 +125,8 @@ class ModuloFormativoController extends Controller
  *     path="/modulos-impartidos",
  *     tags={"ModuloFormativo"},
  *     summary="Listar módulos en los que el usuario autenticado imparte docencia",
- *     description="Devuelve una colección de módulos formativos en los que el usuario autenticado imparte docencia.",
+ *     description="Devuelve una colección de módulos formativos en los que el usuario autenticado imparte docencia,
+ *                  ordenados por el nombre del módulo.",
  *     security={{"sanctum":{}}},
  *     @OA\Response(
  *         response=200,
@@ -133,7 +148,9 @@ class ModuloFormativoController extends Controller
         $user = $request->user();
 
         // Obtener los módulos en los que el usuario imparte docencia
-        $modulos = ModuloFormativo::where('docente_id', $user->id)->get();
+        $modulos = ModuloFormativo::where('docente_id', $user->id)
+            ->orderBy('nombre', 'asc')
+            ->get();
 
         return ModuloFormativoResource::collection($modulos);
     }

@@ -48,6 +48,20 @@ class FamiliaProfesionalController extends Controller
  *         required=false,
  *         @OA\Schema(type="integer", default=1)
  *     ),
+ *     @OA\Parameter(
+ *         name="sort_by",
+ *         in="query",
+ *         description="Field to sort by",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_direction",
+ *         in="query",
+ *         description="direction of sorting (asc or desc)",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Successful operation",
