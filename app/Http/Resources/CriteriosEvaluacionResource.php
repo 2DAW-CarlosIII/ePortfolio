@@ -26,8 +26,8 @@ class CriteriosEvaluacionResource extends JsonResource
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'resultados_aprendizaje' => new ResultadoAprendizajeResource($this->whenLoaded('resultados_aprendizaje')),
-            'planificacion_criterios' => PlanificacionCriteriosResource::collection($this->whenLoaded('planificacion_criterios')),
-            'planificacion_criterios_count' => $this->whenCounted('planificacion_criterios'),
+            'tareas' => TareaResource::collection($this->whenLoaded('tareas')),
+            'tareas_count' => $this->whenCounted('tareas'),
             'evidencias' => EvidenciaResource::collection($this->whenLoaded('evidencias')),
             'evidencias_count' => $this->whenCounted('evidencias')
         ];

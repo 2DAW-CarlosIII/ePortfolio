@@ -7,7 +7,7 @@ use App\Models\Evidencia;
 use App\Http\Requests\StoreEvidenciaRequest;
 use App\Http\Requests\UpdateEvidenciaRequest;
 use App\Http\Resources\EvidenciaResource;
-use App\Models\CriterioEvaluacion;
+use App\Models\Tarea;
 use Illuminate\Http\Request;
 
 
@@ -23,7 +23,7 @@ class EvidenciaController extends Controller
 
 /**
  * @OA\Get(
- *     path="/criterios-evaluacion/{parent_id}/evidencias",
+ *     path="/tareas/{parent_id}/evidencias",
  *     tags={"Evidencia"},
  *     summary="List all evidencias",
  *     description="Retrieve a paginated list of evidencias",
@@ -31,7 +31,7 @@ class EvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent CriteriosEvaluacion",
+ *         description="ID of the parent Tarea",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -70,9 +70,9 @@ class EvidenciaController extends Controller
  * )
  */
 
-    public function index(Request $request, CriterioEvaluacion $criterioEvaluacion)
+    public function index(Request $request, Tarea $tarea)
     {
-        $query = $criterioEvaluacion->evidencias()->newQuery();
+        $query = $tarea->evidencias()->newQuery();
 
         // Filtro de búsqueda
         if ($request->has('search') && $request->filled('search')) {
@@ -108,7 +108,7 @@ class EvidenciaController extends Controller
 
 /**
  * @OA\Post(
- *     path="/criterios-evaluacion/{parent_id}/evidencias",
+ *     path="/tareas/{parent_id}/evidencias",
  *     tags={"Evidencia"},
  *     summary="Create a new evidencia",
  *     description="Create a new evidencia resource",
@@ -116,7 +116,7 @@ class EvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent CriteriosEvaluacion",
+ *         description="ID of the parent Tarea",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -137,10 +137,10 @@ class EvidenciaController extends Controller
  * )
  */
 
-    public function store(StoreEvidenciaRequest $request, CriterioEvaluacion $criterioEvaluacion)
+    public function store(StoreEvidenciaRequest $request, Tarea $tarea)
     {
         $data = $request->validated();
-        $data['criterio_evaluacion_id'] = $criterioEvaluacion->id;
+        $data['tarea_id'] = $tarea->id;
         $data['estudiante_id'] = auth()->id(); // Asignar el usuario autenticado
 
         $evidencia = Evidencia::create($data);
@@ -153,7 +153,7 @@ class EvidenciaController extends Controller
 
 /**
  * @OA\Get(
- *     path="/criterios-evaluacion/{parent_id}/evidencias/{id}",
+ *     path="/tareas/{parent_id}/evidencias/{id}",
  *     tags={"Evidencia"},
  *     summary="Show a specific evidencia",
  *     description="Retrieve a specific evidencia by ID",
@@ -161,7 +161,7 @@ class EvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent CriteriosEvaluacion",
+ *         description="ID of the parent Tarea",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -185,9 +185,9 @@ class EvidenciaController extends Controller
  * )
  */
 
-    public function show(CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
+    public function show(Tarea $tarea, Evidencia $evidencia)
     {
-        if( $evidencia->criterio_evaluacion_id !== $criterioEvaluacion->id) {
+        if( $evidencia->tarea_id !== $tarea->id) {
             return response()->json(['message' => 'Evidencia no encontrada'], 404);
         }
 
@@ -199,7 +199,7 @@ class EvidenciaController extends Controller
 
 /**
  * @OA\Put(
- *     path="/criterios-evaluacion/{parent_id}/evidencias/{id}",
+ *     path="/tareas/{parent_id}/evidencias/{id}",
  *     tags={"Evidencia"},
  *     summary="Update a specific evidencia",
  *     description="Update a specific evidencia by ID",
@@ -207,7 +207,7 @@ class EvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent CriteriosEvaluacion",
+ *         description="ID of the parent Tarea",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -236,9 +236,9 @@ class EvidenciaController extends Controller
  * )
  */
 
-    public function update(UpdateEvidenciaRequest $request, CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
+    public function update(UpdateEvidenciaRequest $request, Tarea $tarea, Evidencia $evidencia)
     {
-        if( $evidencia->criterio_evaluacion_id !== $criterioEvaluacion->id) {
+        if( $evidencia->tarea_id !== $tarea->id) {
             return response()->json(['message' => 'Evidencia no encontrada'], 404);
         }
 
@@ -252,7 +252,7 @@ class EvidenciaController extends Controller
 
 /**
  * @OA\Delete(
- *     path="/criterios-evaluacion/{parent_id}/evidencias/{id}",
+ *     path="/tareas/{parent_id}/evidencias/{id}",
  *     tags={"Evidencia"},
  *     summary="Delete a specific evidencia",
  *     description="Delete a specific evidencia by ID",
@@ -260,7 +260,7 @@ class EvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the criteria evaluación",
+ *         description="ID of the tarea",
  *      required=true,
  *      @OA\Schema(type="integer")
  *   ),
@@ -277,9 +277,9 @@ class EvidenciaController extends Controller
  * )
  */
 
-    public function destroy(CriterioEvaluacion $criterioEvaluacion, Evidencia $evidencia)
+    public function destroy(Tarea $tarea, Evidencia $evidencia)
     {
-        if( $evidencia->criterio_evaluacion_id !== $criterioEvaluacion->id) {
+        if( $evidencia->tarea_id !== $tarea->id) {
             return response()->json(['message' => 'Evidencia no encontrada'], 404);
         }
 

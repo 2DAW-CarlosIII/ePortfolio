@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\PlanificacionCriterios;
+use App\Models\Tarea;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PlanificacionCriterios>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tareas>
  */
-class PlanificacionCriteriosFactory extends Factory
+class TareaFactory extends Factory
 {
-    protected $model = PlanificacionCriterios::class;
+    protected $model = Tarea::class;
 
     public function definition(): array
     {

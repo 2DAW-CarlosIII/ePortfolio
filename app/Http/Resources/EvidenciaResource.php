@@ -15,7 +15,7 @@ class EvidenciaResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'estudiante_id' => $this->estudiante_id,
-            'criterio_evaluacion_id' => $this->criterio_evaluacion_id,
+            'tarea_id' => $this->criterio_evaluacion_id,
             'url' => $this->url,
             'descripcion' => $this->descripcion,
             'descripcion_excerpt' => $this->when(
@@ -26,7 +26,7 @@ class EvidenciaResource extends JsonResource
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'user' => new UserResource($this->whenLoaded('user')),
-            'criterios_evaluacion' => new CriteriosEvaluacionResource($this->whenLoaded('criterios_evaluacion')),
+            'tarea' => new TareaResource($this->whenLoaded('tarea')),
             'evaluaciones_evidencias' => EvaluacionEvidenciaResource::collection($this->whenLoaded('evaluaciones_evidencias')),
             'evaluaciones_evidencias_count' => $this->whenCounted('evaluaciones_evidencias'),
             'comentarios' => ComentarioResource::collection($this->whenLoaded('comentarios')),

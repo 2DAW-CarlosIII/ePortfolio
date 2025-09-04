@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\CriterioEvaluacion;
+use App\Models\Tarea;
 use App\Models\Evidencia;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +15,7 @@ class EvidenciaApiTest extends FeatureTestCase
     use WithFaker;
 
     protected User $user;
-    protected CriterioEvaluacion $criterioEvaluacion;
+    protected Tarea $tarea;
 
 
     protected function setUp(): void
@@ -24,23 +24,23 @@ class EvidenciaApiTest extends FeatureTestCase
 
         $this->user = User::factory()->create();
         Sanctum::actingAs($this->user);
-        $this->criterioEvaluacion = CriterioEvaluacion::factory()->create();
+        $this->tarea = Tarea::factory()->create();
 
     }
 
     public function test_can_list_evidencias()
     {
         // Arrange
-        Evidencia::factory()->count(3)->create(['criterio_evaluacion_id' => $this->criterioEvaluacion->id]);
+        Evidencia::factory()->count(3)->create(['tarea_id' => $this->tarea->id]);
 
         // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias");
+        $response = $this->getJson("/api/v1/tareas/{$this->tarea->id}/evidencias");
 
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
+                         '*' => ['id', 'estudiante_id', 'tarea_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -59,12 +59,12 @@ class EvidenciaApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias", $data);
+        $response = $this->postJson("/api/v1/tareas/{$this->tarea->id}/evidencias", $data);
 
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'tarea_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                  ]);
 
         $this->assertDatabaseHas('evidencias', [
@@ -78,16 +78,16 @@ class EvidenciaApiTest extends FeatureTestCase
     {
         // Arrange
         $evidencia = Evidencia::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
+            'tarea_id' => $this->tarea->id
         ]);
 
         // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias/{$evidencia->id}");
+        $response = $this->getJson("/api/v1/tareas/{$this->tarea->id}/evidencias/{$evidencia->id}");
 
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'tarea_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                  ]);
     }
 
@@ -95,7 +95,7 @@ class EvidenciaApiTest extends FeatureTestCase
     {
         // Arrange
         $evidencia = Evidencia::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
+            'tarea_id' => $this->tarea->id
         ]);
         $updateData = [
             'url' => $this->faker->url(),
@@ -104,12 +104,12 @@ class EvidenciaApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->putJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias/{$evidencia->id}", $updateData);
+        $response = $this->putJson("/api/v1/tareas/{$this->tarea->id}/evidencias/{$evidencia->id}", $updateData);
 
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'criterio_evaluacion_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante_id', 'tarea_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
                  ]);
 
         $evidencia->refresh();
@@ -122,11 +122,11 @@ class EvidenciaApiTest extends FeatureTestCase
     {
         // Arrange
         $evidencia = Evidencia::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
+            'tarea_id' => $this->tarea->id
         ]);
 
         // Act
-        $response = $this->deleteJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias/{$evidencia->id}");
+        $response = $this->deleteJson("/api/v1/tareas/{$this->tarea->id}/evidencias/{$evidencia->id}");
 
         // Assert
         $response->assertOk()
@@ -140,18 +140,18 @@ class EvidenciaApiTest extends FeatureTestCase
         // Arrange
         $searchTerm = 'test search';
         $evidencia1 = Evidencia::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id,
+            'tarea_id' => $this->tarea->id,
             'descripcion' => 'Contains test search term',
 
         ]);
         $evidencia2 = Evidencia::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id,
+            'tarea_id' => $this->tarea->id,
             'descripcion' => 'Different content',
 
         ]);
 
         // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias?search=" . urlencode($searchTerm));
+        $response = $this->getJson("/api/v1/tareas/{$this->tarea->id}/evidencias?search=" . urlencode($searchTerm));
 
         // Assert
         $response->assertOk();
@@ -165,11 +165,11 @@ class EvidenciaApiTest extends FeatureTestCase
     {
         // Arrange
         Evidencia::factory()->count(25)->create(
-            ['criterio_evaluacion_id' => $this->criterioEvaluacion->id]
+            ['tarea_id' => $this->tarea->id]
         );
 
         // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias?per_page=10");
+        $response = $this->getJson("/api/v1/tareas/{$this->tarea->id}/evidencias?per_page=10");
 
         // Assert
         $response->assertOk()
@@ -194,7 +194,7 @@ class EvidenciaApiTest extends FeatureTestCase
         unset($data['url']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias", $data);
+        $response = $this->postJson("/api/v1/tareas/{$this->tarea->id}/evidencias", $data);
 
         // Assert
         $response->assertUnprocessable()
@@ -211,7 +211,7 @@ class EvidenciaApiTest extends FeatureTestCase
         unset($data['descripcion']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias", $data);
+        $response = $this->postJson("/api/v1/tareas/{$this->tarea->id}/evidencias", $data);
 
         // Assert
         $response->assertUnprocessable()
@@ -228,7 +228,7 @@ class EvidenciaApiTest extends FeatureTestCase
         unset($data['estado_validacion']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias", $data);
+        $response = $this->postJson("/api/v1/tareas/{$this->tarea->id}/evidencias", $data);
 
         // Assert
         $response->assertUnprocessable()
@@ -245,7 +245,7 @@ class EvidenciaApiTest extends FeatureTestCase
     ];
             $data['estado_validacion'] = $value;
 
-            $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias", $data);
+            $response = $this->postJson("/api/v1/tareas/{$this->tarea->id}/evidencias", $data);
             $response->assertCreated();
         }
     }
@@ -261,7 +261,7 @@ class EvidenciaApiTest extends FeatureTestCase
         $data['estado_validacion'] = 'invalid_value';
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/evidencias", $data);
+        $response = $this->postJson("/api/v1/tareas/{$this->tarea->id}/evidencias", $data);
 
         // Assert
         $response->assertUnprocessable()

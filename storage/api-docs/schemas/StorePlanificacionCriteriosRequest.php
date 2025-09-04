@@ -2,10 +2,10 @@
 
 /**
  * @OA\Schema(
- *     schema="StorePlanificacionCriteriosRequest",
+ *     schema="StoreTareasRequest",
  *     type="object",
- *     title="Store PlanificacionCriterios Request",
- *     description="Request body for creating a new PlanificacionCriterios",
+ *     title="Store Tareas Request",
+ *     description="Request body for creating a new Tareas",
  *     required={"fecha_apertura", "fecha_cierre", "activo", "observaciones"},
  *         @OA\Property(
  *             property="criterio_evaluacion_id",
@@ -39,7 +39,7 @@
  *         ),
  * )
  */
-class StorePlanificacionCriteriosRequestSchema
+class StoreTareasRequestSchema
 {
     // This class is used only for OpenAPI documentation
 }

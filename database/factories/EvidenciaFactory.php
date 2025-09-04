@@ -16,7 +16,7 @@ class EvidenciaFactory extends Factory
     {
         return [
             'estudiante_id' => \App\Models\User::factory(),
-            'criterio_evaluacion_id' => \App\Models\CriterioEvaluacion::factory(),
+            'tarea_id' => \App\Models\Tarea::factory(),
             'url' => fake()->sentence(3),
             'descripcion' => fake()->paragraph(),
             'estado_validacion' => fake()->randomElement(['pendiente', 'validada', 'rechazada'])

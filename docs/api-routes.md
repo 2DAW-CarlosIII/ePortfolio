@@ -1,6 +1,6 @@
 # ePortfolio API Routes
 
-Documentación generada automáticamente el 2025-06-26 17:15:35
+Documentación generada automáticamente el 2025-09-04 17:15:35
 
 ## Base URL
 
@@ -46,13 +46,16 @@ curl -H "Authorization: Bearer {token}" http://localhost:8000/api/v1/endpoint
 
 | Recurso | Parent | Endpoints |
 |---------|--------|-----------|
-| CicloFormativo | FamiliaProfesional | `GET,POST /familias-profesionales/{id}/ciclos-formativos` <br> `GET,PUT,DELETE /familias-profesionales/{parent_id}/ciclos-formativos/{id}` |
-| ModuloFormativo | User | `GET,POST /users/{id}/modulos-formativos` <br> `GET,PUT,DELETE /users/{parent_id}/modulos-formativos/{id}` |
+| CicloFormativo | FamiliaProfesional | `GET,POST /familias-profesionales/{parent_id}/ciclos-formativos` <br> `GET,PUT,DELETE /familias-profesionales/{parent_id}/ciclos-formativos/{id}` |
+
+
+
+| ModuloFormativo | CicloFormativo | `GET,POST /ciclos-formativos/{parent_id}/modulos-formativos` <br> `GET,PUT,DELETE /ciclos-formativos/{parent_id}/modulos-formativos/{id}` |
 | ResultadoAprendizaje | ModuloFormativo | `GET,POST /modulos-formativos/{id}/resultados-aprendizaje` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/resultados-aprendizaje/{id}` |
 | CriteriosEvaluacion | ResultadoAprendizaje | `GET,POST /resultados-aprendizaje/{id}/criterios-evaluacion` <br> `GET,PUT,DELETE /resultados-aprendizaje/{parent_id}/criterios-evaluacion/{id}` |
-| Matricula | ModuloFormativo | `GET,POST /modulos-formativos/{id}/matriculas` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/matriculas/{id}` |
-| PlanificacionCriterios | ModuloFormativo | `GET,POST /modulos-formativos/{id}/planificacion-criterios` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/planificacion-criterios/{id}` |
-| Evidencia | CriteriosEvaluacion | `GET,POST /criterios-evaluacion/{id}/evidencias` <br> `GET,PUT,DELETE /criterios-evaluacion/{parent_id}/evidencias/{id}` |
+| Matricula | ModuloFormativo | `GET,POST /modulos-formativos/{parent_id}/matriculas` <br> `GET,PUT,DELETE /modulos-formativos/{parent_id}/matriculas/{id}` |
+| Tarea | CriteriosEvaluacion | `GET,POST /criterios-evaluacion/{parent_id}/tareas` <br> `GET,PUT,DELETE /criterios-evaluacion/{parent_id}/tareas/{id}` |
+| Evidencia | Tarea | `GET,POST /tareas/{parent_id}/evidencias` <br> `GET,PUT,DELETE /tareas/{parent_id}/evidencias/{id}` |
 | EvaluacionEvidencia | User | `GET,POST /users/{id}/evaluaciones-evidencias` <br> `GET,PUT,DELETE /users/{parent_id}/evaluaciones-evidencias/{id}` |
 | Comentario | User | `GET,POST /users/{id}/comentarios` <br> `GET,PUT,DELETE /users/{parent_id}/comentarios/{id}` |
 | AsignacionRevision | User | `GET,POST /users/{id}/asignaciones-revision` <br> `GET,PUT,DELETE /users/{parent_id}/asignaciones-revision/{id}` |

@@ -2,20 +2,15 @@
 
 /**
  * @OA\Schema(
- *     schema="PlanificacionCriterios",
+ *     schema="Tarea",
  *     type="object",
- *     title="PlanificacionCriterios",
- *     description="PlanificacionCriterios model",
- *     @OA\Xml(name="PlanificacionCriterios"),
+ *     title="Tarea",
+ *     description="Tarea model",
+ *     @OA\Xml(name="Tareas"),
  *         @OA\Property(
  *             property="id",
  *             type="integer",
  *             description="Unique identifier"
- *         ),
- *         @OA\Property(
- *             property="criterio_evaluacion_id",
- *             type="integer",
- *             description="Criterio Evaluacion Id"
  *         ),
  *         @OA\Property(
  *             property="modulo_formativo_id",
@@ -58,7 +53,7 @@
  *         ),
  * )
  */
-class PlanificacionCriteriosSchema
+class TareaSchema
 {
     // This class is used only for OpenAPI documentation
 }

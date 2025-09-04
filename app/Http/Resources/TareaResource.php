@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlanificacionCriteriosResource extends JsonResource
+class TareaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -33,7 +33,7 @@ class PlanificacionCriteriosResource extends JsonResource
     {
         return [
             'meta' => [
-                'resource_type' => 'planificacion_criterios',
+                'resource_type' => 'tareas',
                 'generated_at' => now()->toISOString(),
             ],
         ];

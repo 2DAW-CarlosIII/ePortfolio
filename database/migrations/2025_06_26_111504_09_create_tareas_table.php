@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('planificacion_criterios', function (Blueprint $table) {
+        Schema::create('tareas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('criterio_evaluacion_id');
             $table->date('fecha_apertura');
@@ -22,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('planificacion_criterios');
+        Schema::dropIfExists('tareas');
     }
 };

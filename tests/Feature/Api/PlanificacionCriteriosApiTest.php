@@ -3,14 +3,14 @@
 namespace Tests\Feature\Api;
 
 use App\Models\CriterioEvaluacion;
-use App\Models\PlanificacionCriterios;
+use App\Models\Tareas;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class PlanificacionCriteriosApiTest extends FeatureTestCase
+class TareasApiTest extends FeatureTestCase
 {
     use WithFaker;
 
@@ -32,12 +32,12 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
     public function test_can_list_planificacionCriterioss()
     {
         // Arrange
-        PlanificacionCriterios::factory()->count(3)->create([
+        Tareas::factory()->count(3)->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 
         // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios");
+        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas");
 
         // Assert
         $response->assertOk()
@@ -63,7 +63,7 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios", $data);
+        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
 
         // Assert
         $response->assertCreated()
@@ -71,7 +71,7 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
                      'data' => ['id', 'criterio_evaluacion_id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
                  ]);
 
-        $this->assertDatabaseHas('planificacion_criterios', [
+        $this->assertDatabaseHas('tareas', [
             'fecha_apertura' => $data['fecha_apertura'],
             'fecha_cierre' => $data['fecha_cierre'],
             'activo' => $data['activo'],
@@ -82,12 +82,12 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
     public function test_can_show_planificacionCriterios()
     {
         // Arrange
-        $planificacionCriterios = PlanificacionCriterios::factory()->create([
+        $tarea = Tareas::factory()->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 
         // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios/{$planificacionCriterios->id}");
+        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas/{$tarea->id}");
 
         // Assert
         $response->assertOk()
@@ -99,7 +99,7 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
     public function test_can_update_planificacionCriterios()
     {
         // Arrange
-        $planificacionCriterios = PlanificacionCriterios::factory()->create([
+        $tarea = Tareas::factory()->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
         $updateData = [
@@ -110,7 +110,7 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->putJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios/{$planificacionCriterios->id}", $updateData);
+        $response = $this->putJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas/{$tarea->id}", $updateData);
 
         // Assert
         $response->assertOk()
@@ -118,39 +118,39 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
                      'data' => ['id', 'criterio_evaluacion_id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
                  ]);
 
-        $planificacionCriterios->refresh();
-        $this->assertEquals($updateData['fecha_apertura'], $planificacionCriterios->fecha_apertura->format('Y-m-d'));
-        $this->assertEquals($updateData['fecha_cierre'], $planificacionCriterios->fecha_cierre->format('Y-m-d'));
-        $this->assertEquals($updateData['activo'], $planificacionCriterios->activo);
-        $this->assertEquals($updateData['observaciones'], $planificacionCriterios->observaciones);
+        $tarea->refresh();
+        $this->assertEquals($updateData['fecha_apertura'], $tarea->fecha_apertura->format('Y-m-d'));
+        $this->assertEquals($updateData['fecha_cierre'], $tarea->fecha_cierre->format('Y-m-d'));
+        $this->assertEquals($updateData['activo'], $tarea->activo);
+        $this->assertEquals($updateData['observaciones'], $tarea->observaciones);
     }
 
     public function test_can_delete_planificacionCriterios()
     {
         // Arrange
-        $planificacionCriterios = PlanificacionCriterios::factory()->create([
+        $tarea = Tareas::factory()->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 
         // Act
-        $response = $this->deleteJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios/{$planificacionCriterios->id}");
+        $response = $this->deleteJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas/{$tarea->id}");
 
         // Assert
         $response->assertOk()
                  ->assertJson([
-                     'message' => 'PlanificacionCriterios eliminado correctamente'
+                     'message' => 'Tareas eliminado correctamente'
                  ]);
     }
 
     public function test_can_paginate_planificacionCriterioss()
     {
         // Arrange
-        PlanificacionCriterios::factory()->count(25)->create([
+        Tareas::factory()->count(25)->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 
         // Act
-        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios?per_page=10");
+        $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas?per_page=10");
 
         // Assert
         $response->assertOk()
@@ -176,7 +176,7 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
         unset($data['fecha_apertura']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios", $data);
+        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
 
         // Assert
         $response->assertUnprocessable()
@@ -194,7 +194,7 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
         unset($data['fecha_cierre']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios", $data);
+        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
 
         // Assert
         $response->assertUnprocessable()
@@ -212,7 +212,7 @@ class PlanificacionCriteriosApiTest extends FeatureTestCase
         unset($data['activo']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/planificacion-criterios", $data);
+        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
 
         // Assert
         $response->assertUnprocessable()

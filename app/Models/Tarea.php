@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @OA\Schema(
- *     schema="PlanificacionCriterio",
+ *     schema="Tarea",
  *     type="object",
  *     title="Planificación de Criterio",
  *     description="Modelo de Planificación de Criterio",
  *     @OA\Property(property="id", type="integer", description="ID único"),
- *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
  *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
  *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
  *     @OA\Property(property="fecha_cierre", type="string", format="date", description="Fecha de cierre"),
@@ -23,11 +22,11 @@ use Illuminate\Database\Eloquent\Model;
  * )
  */
 
-class PlanificacionCriterios extends Model
+class Tarea extends Model
 {
     use HasFactory;
 
-    protected $table = 'planificacion_criterios';
+    protected $table = 'tareas';
 
     protected $fillable = [
         'criterio_evaluacion_id',
@@ -43,6 +42,11 @@ class PlanificacionCriterios extends Model
     ];
     public function criterios_evaluacion()
     {
-        return $this->belongsTo(CriteriosEvaluacion::class, 'criterios_evaluacion_id');
+        return $this->belongsToMany(CriterioEvaluacion::class, 'criterios_tareas', 'tarea_id', 'criterio_evaluacion_id');
+    }
+
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class, 'tarea_id');
     }
 }

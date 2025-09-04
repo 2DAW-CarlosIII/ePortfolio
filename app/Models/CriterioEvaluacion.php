@@ -42,9 +42,9 @@ class CriterioEvaluacion extends Model
     {
         return $this->belongsTo(ResultadoAprendizaje::class, 'resultado_aprendizaje_id');
     }
-    public function planificacion_criterios()
+    public function tareas()
     {
-        return $this->hasMany(PlanificacionCriterios::class, 'criterio_evaluacion_id');
+        return $this->belongsToMany(Tarea::class, 'criterios_tareas', 'criterio_evaluacion_id', 'tarea_id');
     }
     public function evidencias()
     {

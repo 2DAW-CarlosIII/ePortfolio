@@ -6,10 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @OA\Schema(
- *     schema="UpdatePlanificacionCriterioRequest",
+ *     schema="StorePlanificacionCriterioRequest",
  *     type="object",
- *     title="Update Planificación Criterio Request",
- *     description="Datos para actualizar una Planificación de Criterio",
+ *     title="Store Planificación Criterio Request",
+ *     description="Datos requeridos para crear una Planificación de Criterio",
+ *     required={"fecha_apertura", "fecha_cierre", "activo"},
  *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
  *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
  *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
@@ -19,7 +20,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * )
  */
 
-class UpdatePlanificacionCriteriosRequest extends FormRequest
+class StoreTareaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,10 +36,10 @@ class UpdatePlanificacionCriteriosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fecha_apertura' => ['sometimes', 'required', 'date'],
-            'fecha_cierre' => ['sometimes', 'required', 'date', 'after:today'],
-            'activo' => ['sometimes', 'required', 'boolean'],
-            'observaciones' => ['sometimes', 'required', 'string', 'max:65535']
+            'fecha_apertura' => ['required', 'date'],
+            'fecha_cierre' => ['required', 'date', 'after:today'],
+            'activo' => ['required', 'boolean'],
+            'observaciones' => ['string', 'max:65535']
         ];
     }
 
@@ -57,6 +58,7 @@ class UpdatePlanificacionCriteriosRequest extends FormRequest
             'boolean' => 'El campo :attribute debe ser verdadero o falso.',
             'email' => 'El campo :attribute debe ser un email válido.',
             'url' => 'El campo :attribute debe ser una URL válida.',
+            'unique' => 'El valor del campo :attribute ya existe.',
             'exists' => 'El valor seleccionado en :attribute no es válido.',
             'max' => 'El campo :attribute no puede tener más de :max caracteres.',
             'min' => 'El campo :attribute debe tener al menos :min caracteres.',

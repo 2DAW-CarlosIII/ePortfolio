@@ -34,8 +34,8 @@ class ModuloFormativoResource extends JsonResource
             'resultados_aprendizajes_count' => $this->whenCounted('resultados_aprendizajes'),
             'matriculas' => MatriculaResource::collection($this->whenLoaded('matriculas')),
             'matriculas_count' => $this->whenCounted('matriculas'),
-            'planificacion_criterios' => PlanificacionCriteriosResource::collection($this->whenLoaded('planificacion_criterios')),
-            'planificacion_criterios_count' => $this->whenCounted('planificacion_criterios'),
+            'tareas' => TareaResource::collection($this->whenLoaded('tareas')),
+            'tareas_count' => $this->whenCounted('tareas'),
             'progreso_porcentaje' => $this->when(
                 $this->relationLoaded('evidencias') && $this->relationLoaded('criteriosEvaluacion'),
                 function() {

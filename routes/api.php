@@ -30,21 +30,16 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     ]);
     Route::apiResource('roles', App\Http\Controllers\Api\RolController::class)
         ->parameters(['roles' => 'rol']);
-
     // Nested API Resource routes
-    Route::apiResource('ciclos-formativos.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters([
-        'ciclos-formativos' => 'cicloFormativo',
-        'modulos-formativos' => 'moduloFormativo'
-    ]);
-    Route::apiResource('evidencias.asignaciones-revision', App\Http\Controllers\Api\AsignacionRevisionController::class)
-        ->parameters(['asignaciones-revision' => 'asignacionRevision']);
-    Route::apiResource('evidencias.evaluaciones-evidencias', App\Http\Controllers\Api\EvaluacionEvidenciaController::class)->parameters(['evaluaciones-evidencias' => 'evaluacionEvidencia']);
-    Route::apiResource('evidencias.comentarios', App\Http\Controllers\Api\ComentarioController::class);
+
     Route::apiResource('familias-profesionales.ciclos-formativos', App\Http\Controllers\Api\CicloFormativoController::class)->parameters([
         'familias-profesionales' => 'familiaProfesional',
         'ciclos-formativos' => 'cicloFormativo'
     ]);
-    Route::apiResource('users.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters(['users' => 'user']);
+    Route::apiResource('ciclos-formativos.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters([
+        'ciclos-formativos' => 'cicloFormativo',
+        'modulos-formativos' => 'moduloFormativo'
+    ]);
     Route::apiResource('modulos-formativos.resultados-aprendizaje', App\Http\Controllers\Api\ResultadoAprendizajeController::class)
         ->parameters([
             'modulos-formativos' => 'moduloFormativo',
@@ -54,12 +49,17 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         'resultados-aprendizaje' => 'resultadoAprendizaje',
         'criterios-evaluacion' => 'criterioEvaluacion'
     ]);
+    Route::apiResource('evidencias.asignaciones-revision', App\Http\Controllers\Api\AsignacionRevisionController::class)
+        ->parameters(['asignaciones-revision' => 'asignacionRevision']);
+    Route::apiResource('evidencias.evaluaciones-evidencias', App\Http\Controllers\Api\EvaluacionEvidenciaController::class)->parameters(['evaluaciones-evidencias' => 'evaluacionEvidencia']);
+    Route::apiResource('evidencias.comentarios', App\Http\Controllers\Api\ComentarioController::class);
+    Route::apiResource('users.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters(['users' => 'user']);
     Route::apiResource('modulos-formativos.matriculas', App\Http\Controllers\Api\MatriculaController::class)->parameters(['modulos-formativos' => 'moduloFormativo']);
-    Route::apiResource('criterios-evaluacion.planificacion-criterios', App\Http\Controllers\Api\PlanificacionCriteriosController::class)->parameters([
+    Route::apiResource('criterios-evaluacion.tareas', App\Http\Controllers\Api\TareaController::class)->parameters([
         'criterios-evaluacion' => 'criterioEvaluacion',
-        'planificacion-criterios' => 'planificacionCriterio'
+        'tareas' => 'tarea'
     ]);
-    Route::apiResource('criterios-evaluacion.evidencias', App\Http\Controllers\Api\EvidenciaController::class)->parameters(['criterios-evaluacion' => 'criterioEvaluacion']);
+    Route::apiResource('tareas.evidencias', App\Http\Controllers\Api\EvidenciaController::class);
 
     // User management routes (if needed)
     Route::apiResource('users', App\Http\Controllers\Api\UserController::class)

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     title="Update Evidencia Request",
  *     description="Datos para actualizar una Evidencia",
  *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
- *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
+ *     @OA\Property(property="tarea_id", type="integer", description="ID de la tarea"),
  *     @OA\Property(property="url", type="string", format="url", description="URL de la evidencia"),
  *     @OA\Property(property="descripcion", type="string", description="Descripción de la evidencia"),
  *     @OA\Property(property="estado_validacion", type="string", enum={"pendiente", "validada", "rechazada"}, description="Estado de validación"),

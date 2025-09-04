@@ -11,13 +11,13 @@ return new class extends Migration
         Schema::create('evidencias', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('estudiante_id');
-            $table->unsignedBigInteger('criterio_evaluacion_id');
+            $table->unsignedBigInteger('tarea_id');
             $table->string('url');
             $table->text('descripcion');
             $table->enum('estado_validacion', ['pendiente', 'validada', 'rechazada']);
             $table->timestamps();
             $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('criterio_evaluacion_id')->references('id')->on('criterios_evaluacion')->onDelete('cascade');
+            $table->foreign('tarea_id')->references('id')->on('tareas')->onDelete('cascade');
         });
     }
 

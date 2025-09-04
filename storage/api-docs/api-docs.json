@@ -1755,19 +1755,19 @@
                 ]
             }
         },
-        "/criterios-evaluacion/{parent_id}/evidencias": {
+        "/tareas/{parent_id}/evidencias": {
             "get": {
                 "tags": [
                     "Evidencia"
                 ],
                 "summary": "List all evidencias",
                 "description": "Retrieve a paginated list of evidencias",
-                "operationId": "e00a0401581376b46ddacfb37d6b11da",
+                "operationId": "6bae2ec17608317d79face458ef4a09d",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent CriteriosEvaluacion",
+                        "description": "ID of the parent Tarea",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1847,12 +1847,12 @@
                 ],
                 "summary": "Create a new evidencia",
                 "description": "Create a new evidencia resource",
-                "operationId": "1083e755a6b77bd73a7b9376e55ed8b1",
+                "operationId": "ad1dd79baf4fe8669b061839e49f7d89",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent CriteriosEvaluacion",
+                        "description": "ID of the parent Tarea",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1902,19 +1902,19 @@
                 ]
             }
         },
-        "/criterios-evaluacion/{parent_id}/evidencias/{id}": {
+        "/tareas/{parent_id}/evidencias/{id}": {
             "get": {
                 "tags": [
                     "Evidencia"
                 ],
                 "summary": "Show a specific evidencia",
                 "description": "Retrieve a specific evidencia by ID",
-                "operationId": "5ad10782818d5ca5dc80020697db11df",
+                "operationId": "0a74aa28f43a9c2696a154aaa1049231",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent CriteriosEvaluacion",
+                        "description": "ID of the parent Tarea",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1968,12 +1968,12 @@
                 ],
                 "summary": "Update a specific evidencia",
                 "description": "Update a specific evidencia by ID",
-                "operationId": "bdd86050a1c61fc4142ea2bf2c4dbd97",
+                "operationId": "ba66bdcb18e8b4a46cf53cdd35d4beb4",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent CriteriosEvaluacion",
+                        "description": "ID of the parent Tarea",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2040,12 +2040,12 @@
                 ],
                 "summary": "Delete a specific evidencia",
                 "description": "Delete a specific evidencia by ID",
-                "operationId": "bcb5bbe2db7496c4f145be4ada884f7a",
+                "operationId": "a09892c8f8e9bfbf6bf98ab9fe7b1b0f",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the criteria evaluación",
+                        "description": "ID of the tarea",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -3104,337 +3104,6 @@
                 ]
             }
         },
-        "/modulos-formativos/{parent_id}/planificacion-criterios": {
-            "get": {
-                "tags": [
-                    "PlanificacionCriterios"
-                ],
-                "summary": "List all planificacioncriterioss",
-                "description": "Retrieve a paginated list of planificacioncriterioss",
-                "operationId": "16de3645d3186e2bb8ca65cd80170a5b",
-                "parameters": [
-                    {
-                        "name": "parent_id",
-                        "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "Search term",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Items per page",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 15
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/PlanificacionCriterio"
-                                            }
-                                        },
-                                        "links": {
-                                            "type": "object"
-                                        },
-                                        "meta": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "PlanificacionCriterios"
-                ],
-                "summary": "Create a new planificacioncriterios",
-                "description": "Create a new planificacioncriterios resource",
-                "operationId": "27122933322a3bfe35d3076df3577be8",
-                "parameters": [
-                    {
-                        "name": "parent_id",
-                        "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/StorePlanificacionCriterioRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Resource created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/PlanificacionCriterio"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation errors"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/modulos-formativos/{parent_id}/planificacion-criterios/{id}": {
-            "get": {
-                "tags": [
-                    "PlanificacionCriterios"
-                ],
-                "summary": "Show a specific planificacioncriterios",
-                "description": "Retrieve a specific planificacioncriterios by ID",
-                "operationId": "e67c61a6b5cfc9a8f0bed25344d2877b",
-                "parameters": [
-                    {
-                        "name": "parent_id",
-                        "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the planificacioncriterios",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/PlanificacionCriterio"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": [
-                    "PlanificacionCriterios"
-                ],
-                "summary": "Update a specific planificacioncriterios",
-                "description": "Update a specific planificacioncriterios by ID",
-                "operationId": "a77a043c020050ac40c598bd244719cf",
-                "parameters": [
-                    {
-                        "name": "parent_id",
-                        "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the planificacioncriterios",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdatePlanificacionCriterioRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Resource updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/PlanificacionCriterio"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation errors"
-                    },
-                    "404": {
-                        "description": "Resource not found"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "PlanificacionCriterios"
-                ],
-                "summary": "Delete a specific planificacioncriterios",
-                "description": "Delete a specific planificacioncriterios by ID",
-                "operationId": "c87750e1deada06d59b03311095d934c",
-                "parameters": [
-                    {
-                        "name": "parent_id",
-                        "in": "path",
-                        "description": "ID of the criterio de evaluación",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Resource deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "PlanificacionCriterios eliminado correctamente"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found"
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
         "/modulos-formativos/{parent_id}/resultados-aprendizaje": {
             "get": {
                 "tags": [
@@ -4418,6 +4087,337 @@
                     }
                 ]
             }
+        },
+        "/modulos-formativos/{parent_id}/tareas": {
+            "get": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "List all planificacioncriterioss",
+                "description": "Retrieve a paginated list of planificacioncriterioss",
+                "operationId": "8b3e0db4bbdf26eea4e81f8be48d2e84",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Tarea"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Create a new tarea",
+                "description": "Create a new tarea resource",
+                "operationId": "b96f0ce659141dd1b021e39a4240171e",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StorePlanificacionCriterioRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Tarea"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/modulos-formativos/{parent_id}/tareas/{id}": {
+            "get": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Show a specific tarea",
+                "description": "Retrieve a specific tarea by ID",
+                "operationId": "f421e5f12efafb96fe04d5ff4077f336",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the tarea",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Tarea"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Update a specific tarea",
+                "description": "Update a specific tarea by ID",
+                "operationId": "d58a7ecdb77b7c7000c41c65cf8bed38",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the tarea",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePlanificacionCriterioRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resource updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Tarea"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Delete a specific tarea",
+                "description": "Delete a specific tarea by ID",
+                "operationId": "e729689e9d65bbbc2d5ed389fcc1338e",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the criterio de evaluación",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tareas eliminado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -4613,8 +4613,8 @@
                         "description": "ID del estudiante",
                         "type": "integer"
                     },
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio de evaluación",
+                    "tarea_id": {
+                        "description": "ID de la tarea",
                         "type": "integer"
                     },
                     "url": {
@@ -4729,44 +4729,6 @@
                 },
                 "type": "object"
             },
-            "StorePlanificacionCriterioRequest": {
-                "title": "Store Planificación Criterio Request",
-                "description": "Datos requeridos para crear una Planificación de Criterio",
-                "required": [
-                    "fecha_apertura",
-                    "fecha_cierre",
-                    "activo"
-                ],
-                "properties": {
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio de evaluación",
-                        "type": "integer"
-                    },
-                    "modulo_formativo_id": {
-                        "description": "ID del módulo formativo",
-                        "type": "integer"
-                    },
-                    "fecha_apertura": {
-                        "description": "Fecha de apertura",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "fecha_cierre": {
-                        "description": "Fecha de cierre",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "activo": {
-                        "description": "Estado activo",
-                        "type": "boolean"
-                    },
-                    "observaciones": {
-                        "description": "Observaciones",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
             "StoreResultadoAprendizajeRequest": {
                 "title": "Store Resultado Aprendizaje Request",
                 "description": "Datos requeridos para crear un Resultado de Aprendizaje",
@@ -4820,6 +4782,44 @@
                     },
                     "description": {
                         "description": "Descripción del rol",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "StorePlanificacionCriterioRequest": {
+                "title": "Store Planificación Criterio Request",
+                "description": "Datos requeridos para crear una Planificación de Criterio",
+                "required": [
+                    "fecha_apertura",
+                    "fecha_cierre",
+                    "activo"
+                ],
+                "properties": {
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_apertura": {
+                        "description": "Fecha de apertura",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_cierre": {
+                        "description": "Fecha de cierre",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "activo": {
+                        "description": "Estado activo",
+                        "type": "boolean"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones",
                         "type": "string"
                     }
                 },
@@ -4994,8 +4994,8 @@
                         "description": "ID del estudiante",
                         "type": "integer"
                     },
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio de evaluación",
+                    "tarea_id": {
+                        "description": "ID de la tarea",
                         "type": "integer"
                     },
                     "url": {
@@ -5108,39 +5108,6 @@
                 },
                 "type": "object"
             },
-            "UpdatePlanificacionCriterioRequest": {
-                "title": "Update Planificación Criterio Request",
-                "description": "Datos para actualizar una Planificación de Criterio",
-                "properties": {
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio de evaluación",
-                        "type": "integer"
-                    },
-                    "modulo_formativo_id": {
-                        "description": "ID del módulo formativo",
-                        "type": "integer"
-                    },
-                    "fecha_apertura": {
-                        "description": "Fecha de apertura",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "fecha_cierre": {
-                        "description": "Fecha de cierre",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "activo": {
-                        "description": "Estado activo",
-                        "type": "boolean"
-                    },
-                    "observaciones": {
-                        "description": "Observaciones",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
             "UpdateResultadoAprendizajeRequest": {
                 "title": "Update Resultado Aprendizaje Request",
                 "description": "Datos para actualizar un Resultado de Aprendizaje",
@@ -5184,6 +5151,39 @@
                     },
                     "description": {
                         "description": "Descripción del rol",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePlanificacionCriterioRequest": {
+                "title": "Update Planificación Criterio Request",
+                "description": "Datos para actualizar una Planificación de Criterio",
+                "properties": {
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio de evaluación",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_apertura": {
+                        "description": "Fecha de apertura",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_cierre": {
+                        "description": "Fecha de cierre",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "activo": {
+                        "description": "Estado activo",
+                        "type": "boolean"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones",
                         "type": "string"
                     }
                 },
@@ -5573,53 +5573,6 @@
                 },
                 "type": "object"
             },
-            "PlanificacionCriterio": {
-                "title": "Planificación de Criterio",
-                "description": "Modelo de Planificación de Criterio",
-                "properties": {
-                    "id": {
-                        "description": "ID único",
-                        "type": "integer"
-                    },
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio de evaluación",
-                        "type": "integer"
-                    },
-                    "modulo_formativo_id": {
-                        "description": "ID del módulo formativo",
-                        "type": "integer"
-                    },
-                    "fecha_apertura": {
-                        "description": "Fecha de apertura",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "fecha_cierre": {
-                        "description": "Fecha de cierre",
-                        "type": "string",
-                        "format": "date"
-                    },
-                    "activo": {
-                        "description": "Estado activo",
-                        "type": "boolean"
-                    },
-                    "observaciones": {
-                        "description": "Observaciones",
-                        "type": "string"
-                    },
-                    "created_at": {
-                        "description": "Fecha de creación",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Fecha de actualización",
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
             "ResultadoAprendizaje": {
                 "title": "Resultado de Aprendizaje",
                 "description": "Modelo de Resultado de Aprendizaje",
@@ -5676,6 +5629,49 @@
                     },
                     "description": {
                         "description": "Descripción del rol",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Tarea": {
+                "title": "Planificación de Criterio",
+                "description": "Modelo de Planificación de Criterio",
+                "properties": {
+                    "id": {
+                        "description": "ID único",
+                        "type": "integer"
+                    },
+                    "modulo_formativo_id": {
+                        "description": "ID del módulo formativo",
+                        "type": "integer"
+                    },
+                    "fecha_apertura": {
+                        "description": "Fecha de apertura",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "fecha_cierre": {
+                        "description": "Fecha de cierre",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "activo": {
+                        "description": "Estado activo",
+                        "type": "boolean"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones",
                         "type": "string"
                     },
                     "created_at": {
@@ -5778,10 +5774,6 @@
             "description": "Operations related to ModuloFormativo"
         },
         {
-            "name": "PlanificacionCriterios",
-            "description": "Operations related to PlanificacionCriterios"
-        },
-        {
             "name": "ResultadoAprendizaje",
             "description": "Operations related to ResultadoAprendizaje"
         },
@@ -5792,6 +5784,10 @@
         {
             "name": "Estadísticas",
             "description": "Endpoints para obtener estadísticas del sistema ePortfolio"
+        },
+        {
+            "name": "Tareas",
+            "description": "Operations related to Tareas"
         }
     ]
 }

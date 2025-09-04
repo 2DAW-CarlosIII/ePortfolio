@@ -30,7 +30,7 @@ class Evidencia extends Model
 
     protected $fillable = [
         'estudiante_id',
-        'criterio_evaluacion_id',
+        'tarea_id',
         'url',
         'descripcion',
         'estado_validacion'
@@ -41,9 +41,9 @@ class Evidencia extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function criterios_evaluacion()
+    public function tarea()
     {
-        return $this->belongsTo(CriterioEvaluacion::class, 'criterios_evaluacion_id');
+        return $this->belongsTo(Tarea::class, 'tarea_id');
     }
     public function evaluaciones()
     {

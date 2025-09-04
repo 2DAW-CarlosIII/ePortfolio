@@ -2,10 +2,10 @@
 
 /**
  * @OA\Schema(
- *     schema="UpdatePlanificacionCriteriosRequest",
+ *     schema="UpdateTareasRequest",
  *     type="object",
- *     title="Update PlanificacionCriterios Request",
- *     description="Request body for updating a PlanificacionCriterios",
+ *     title="Update Tareas Request",
+ *     description="Request body for updating a Tareas",
  *         @OA\Property(
  *             property="criterio_evaluacion_id",
  *             type="integer",
@@ -38,7 +38,7 @@
  *         ),
  * )
  */
-class UpdatePlanificacionCriteriosRequestSchema
+class UpdateTareasRequestSchema
 {
     // This class is used only for OpenAPI documentation
 }

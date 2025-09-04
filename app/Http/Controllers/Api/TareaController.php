@@ -3,28 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\PlanificacionCriterios;
-use App\Http\Requests\StorePlanificacionCriteriosRequest;
-use App\Http\Requests\UpdatePlanificacionCriteriosRequest;
-use App\Http\Resources\PlanificacionCriteriosResource;
+use App\Models\Tarea;
+use App\Http\Requests\StoreTareaRequest;
+use App\Http\Requests\UpdateTareaRequest;
+use App\Http\Resources\TareaResource;
 use App\Models\CriterioEvaluacion;
 use Illuminate\Http\Request;
 
 
 /**
  * @OA\Tag(
- *     name="PlanificacionCriterios",
- *     description="Operations related to PlanificacionCriterios"
+ *     name="Tareas",
+ *     description="Operations related to Tareas"
  * )
  */
 
-class PlanificacionCriteriosController extends Controller
+class TareaController extends Controller
 {
 
 /**
  * @OA\Get(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios",
- *     tags={"PlanificacionCriterios"},
+ *     path="/modulos-formativos/{parent_id}/tareas",
+ *     tags={"Tareas"},
  *     summary="List all planificacioncriterioss",
  *     description="Retrieve a paginated list of planificacioncriterioss",
  *     security={{"sanctum":{}}},
@@ -60,7 +60,7 @@ class PlanificacionCriteriosController extends Controller
  *         response=200,
  *         description="Successful operation",
  *         @OA\JsonContent(
- *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/PlanificacionCriterio")),
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Tarea")),
  *             @OA\Property(property="links", type="object"),
  *             @OA\Property(property="meta", type="object")
  *         )
@@ -72,7 +72,7 @@ class PlanificacionCriteriosController extends Controller
 
     public function index(Request $request, CriterioEvaluacion $criterioEvaluacion)
     {
-        $query = $criterioEvaluacion->planificacion_criterios()->newQuery();
+        $query = $criterioEvaluacion->tareas()->newQuery();
 
         // Filtros adicionales
         if ($request->has('estado') && $request->filled('estado')) {
@@ -93,17 +93,17 @@ class PlanificacionCriteriosController extends Controller
 
         // Paginación
         $perPage = $request->get('per_page', 15);
-        $planificacionCriterios = $query->paginate($perPage);
+        $tareas = $query->paginate($perPage);
 
-        return PlanificacionCriteriosResource::collection($planificacionCriterios);
+        return TareaResource::collection($tareas);
     }
 
 /**
  * @OA\Post(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios",
- *     tags={"PlanificacionCriterios"},
- *     summary="Create a new planificacioncriterios",
- *     description="Create a new planificacioncriterios resource",
+ *     path="/modulos-formativos/{parent_id}/tareas",
+ *     tags={"Tareas"},
+ *     summary="Create a new tarea",
+ *     description="Create a new tarea resource",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
@@ -120,7 +120,7 @@ class PlanificacionCriteriosController extends Controller
  *         response=201,
  *         description="Resource created successfully",
  *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterio")
+ *             @OA\Property(property="data", ref="#/components/schemas/Tarea")
  *         )
  *     ),
  *     @OA\Response(response=422, description="Validation errors"),
@@ -129,25 +129,25 @@ class PlanificacionCriteriosController extends Controller
  * )
  */
 
-    public function store(StorePlanificacionCriteriosRequest $request, CriterioEvaluacion $criterioEvaluacion)
+    public function store(StoreTareaRequest $request, CriterioEvaluacion $criterioEvaluacion)
     {
         $data = $request->validated();
         $data['criterio_evaluacion_id'] = $criterioEvaluacion->id;
 
-        $planificacionCriterio = PlanificacionCriterios::create($data);
+        $tarea = Tarea::create($data);
 
         // Cargar relaciones para la respuesta
-        $planificacionCriterio->load($this->getEagerLoadRelations());
+        $tarea->load($this->getEagerLoadRelations());
 
-        return new PlanificacionCriteriosResource($planificacionCriterio);
+        return new TareaResource($tarea);
     }
 
 /**
  * @OA\Get(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
- *     tags={"PlanificacionCriterios"},
- *     summary="Show a specific planificacioncriterios",
- *     description="Retrieve a specific planificacioncriterios by ID",
+ *     path="/modulos-formativos/{parent_id}/tareas/{id}",
+ *     tags={"Tareas"},
+ *     summary="Show a specific tarea",
+ *     description="Retrieve a specific tarea by ID",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
@@ -159,7 +159,7 @@ class PlanificacionCriteriosController extends Controller
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
- *         description="ID of the planificacioncriterios",
+ *         description="ID of the tarea",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -167,7 +167,7 @@ class PlanificacionCriteriosController extends Controller
  *         response=200,
  *         description="Successful operation",
  *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterio")
+ *             @OA\Property(property="data", ref="#/components/schemas/Tarea")
  *         )
  *     ),
  *     @OA\Response(response=404, description="Resource not found"),
@@ -176,24 +176,24 @@ class PlanificacionCriteriosController extends Controller
  * )
  */
 
-    public function show(CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
+    public function show(CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
     {
-        if($criterioEvaluacion->id !== $planificacionCriterio->criterio_evaluacion_id) {
+        if($criterioEvaluacion->id !== $tarea->criterio_evaluacion_id) {
             return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
         }
 
         // Cargar relaciones
-        $planificacionCriterio->load($this->getEagerLoadRelations());
+        $tarea->load($this->getEagerLoadRelations());
 
-        return new PlanificacionCriteriosResource($planificacionCriterio);
+        return new TareaResource($tarea);
     }
 
 /**
  * @OA\Put(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
- *     tags={"PlanificacionCriterios"},
- *     summary="Update a specific planificacioncriterios",
- *     description="Update a specific planificacioncriterios by ID",
+ *     path="/modulos-formativos/{parent_id}/tareas/{id}",
+ *     tags={"Tareas"},
+ *     summary="Update a specific tarea",
+ *     description="Update a specific tarea by ID",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
@@ -205,7 +205,7 @@ class PlanificacionCriteriosController extends Controller
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
- *         description="ID of the planificacioncriterios",
+ *         description="ID of the tarea",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -217,7 +217,7 @@ class PlanificacionCriteriosController extends Controller
  *         response=200,
  *         description="Resource updated successfully",
  *         @OA\JsonContent(
- *             @OA\Property(property="data", ref="#/components/schemas/PlanificacionCriterio")
+ *             @OA\Property(property="data", ref="#/components/schemas/Tarea")
  *         )
  *     ),
  *     @OA\Response(response=422, description="Validation errors"),
@@ -227,26 +227,26 @@ class PlanificacionCriteriosController extends Controller
  * )
  */
 
-    public function update(UpdatePlanificacionCriteriosRequest $request, CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
+    public function update(UpdateTareaRequest $request, CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
     {
-        if($criterioEvaluacion->id !== $planificacionCriterio->criterio_evaluacion_id) {
+        if($criterioEvaluacion->id !== $tarea->criterio_evaluacion_id) {
             return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
         }
 
-        $planificacionCriterio->update($request->validated());
+        $tarea->update($request->validated());
 
         // Cargar relaciones para la respuesta
-        $planificacionCriterio->load($this->getEagerLoadRelations());
+        $tarea->load($this->getEagerLoadRelations());
 
-        return new PlanificacionCriteriosResource($planificacionCriterio);
+        return new TareaResource($tarea);
     }
 
 /**
  * @OA\Delete(
- *     path="/modulos-formativos/{parent_id}/planificacion-criterios/{id}",
- *     tags={"PlanificacionCriterios"},
- *     summary="Delete a specific planificacioncriterios",
- *     description="Delete a specific planificacioncriterios by ID",
+ *     path="/modulos-formativos/{parent_id}/tareas/{id}",
+ *     tags={"Tareas"},
+ *     summary="Delete a specific tarea",
+ *     description="Delete a specific tarea by ID",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
@@ -259,7 +259,7 @@ class PlanificacionCriteriosController extends Controller
  *        response=204,
  *       description="Resource deleted successfully",
  *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string", example="PlanificacionCriterios eliminado correctamente")
+ *             @OA\Property(property="message", type="string", example="Tareas eliminado correctamente")
  *         )
  *     ),
  *     @OA\Response(response=404, description="Resource not found"),
@@ -268,16 +268,16 @@ class PlanificacionCriteriosController extends Controller
  * )
  */
 
-    public function destroy(CriterioEvaluacion $criterioEvaluacion, PlanificacionCriterios $planificacionCriterio)
+    public function destroy(CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
     {
-        if($criterioEvaluacion->id !== $planificacionCriterio->criterio_evaluacion_id) {
+        if($criterioEvaluacion->id !== $tarea->criterio_evaluacion_id) {
             return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
         }
 
-        $planificacionCriterio->delete();
+        $tarea->delete();
 
         return response()->json([
-            'message' => 'PlanificacionCriterios eliminado correctamente'
+            'message' => 'Tareas eliminado correctamente'
         ]);
     }
 
