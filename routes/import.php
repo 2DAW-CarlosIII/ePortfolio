@@ -23,7 +23,7 @@ Route::prefix('familias-profesionales')->group(function () {
 });
 
 // Importación de CicloFormativo (anidado en FamiliaProfesional)
-Route::prefix('familias-profesionales/{parent}/ciclos-formativos')->group(function () {
+Route::prefix('ciclos-formativos')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\CicloFormativoImportController::class, 'show'])
         ->name('api.familias-profesionales.ciclos-formativos.import.show');
     Route::post('import', [App\Http\Controllers\Import\CicloFormativoImportController::class, 'store'])
@@ -33,7 +33,7 @@ Route::prefix('familias-profesionales/{parent}/ciclos-formativos')->group(functi
 });
 
 // Importación de ModuloFormativo (anidado en CicloFormativo)
-Route::prefix('ciclos-formativos/{parent}/modulos-formativos')->group(function () {
+Route::prefix('modulos-formativos')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\ModuloFormativoImportController::class, 'show'])
         ->name('api.ciclos-formativos.modulos-formativos.import.show');
     Route::post('import', [App\Http\Controllers\Import\ModuloFormativoImportController::class, 'store'])
@@ -43,7 +43,7 @@ Route::prefix('ciclos-formativos/{parent}/modulos-formativos')->group(function (
 });
 
 // Importación de ResultadoAprendizaje (anidado en ModuloFormativo)
-Route::prefix('modulos-formativos/{parent}/resultados-aprendizaje')->group(function () {
+Route::prefix('resultados-aprendizaje')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'show'])
         ->name('api.modulos-formativos.resultados-aprendizaje.import.show');
     Route::post('import', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'store'])
@@ -53,7 +53,7 @@ Route::prefix('modulos-formativos/{parent}/resultados-aprendizaje')->group(funct
 });
 
 // Importación de CriteriosEvaluacion (anidado en ResultadoAprendizaje)
-Route::prefix('resultados-aprendizaje/{parent}/criterios-evaluacion')->group(function () {
+Route::prefix('criterios-evaluacion')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\CriteriosEvaluacionImportController::class, 'show'])
         ->name('api.resultados-aprendizaje.criterios-evaluacion.import.show');
     Route::post('import', [App\Http\Controllers\Import\CriteriosEvaluacionImportController::class, 'store'])
@@ -73,7 +73,7 @@ Route::prefix('users')->group(function () {
 });
 
 // Importación de Matricula (anidado en ModuloFormativo)
-Route::prefix('modulos-formativos/{parent}/matriculas')->group(function () {
+Route::prefix('matriculas')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\MatriculaImportController::class, 'show'])
         ->name('api.modulos-formativos.matriculas.import.show');
     Route::post('import', [App\Http\Controllers\Import\MatriculaImportController::class, 'store'])
@@ -93,11 +93,11 @@ Route::get('import/template/{resource}', function($resource) {
         'users' => App\Http\Controllers\Import\UserImportController::class,
         'matriculas' => App\Http\Controllers\Import\MatriculaImportController::class,
     ];
-    
+
     if (!isset($controllers[$resource])) {
         abort(404, 'Resource not found');
     }
-    
+
     $controller = new $controllers[$resource]();
     return $controller->template();
 })->name('api.import.template');

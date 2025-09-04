@@ -69,6 +69,7 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     Route::get('modulos-impartidos', [App\Http\Controllers\Api\ModuloFormativoController::class, 'modulosImpartidos'])
         ->name('api.modulos-formativos.modulos-impartidos');
 
+    require __DIR__.'/import.php';
 });
 
 // Public routes (no authentication required)
