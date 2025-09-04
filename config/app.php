@@ -152,4 +152,9 @@ return [
         'url' => env('DASHBOARD_URL'),
     ],
 
+    'domains' => [
+        'docentes' => env('DOMINIO_DOCENTES', 'murciaeduca.es'),
+        'estudiantes' => env('DOMINIO_ESTUDIANTES', 'alu.murciaeduca.es')
+    ],
+
 ];

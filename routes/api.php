@@ -68,6 +68,10 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         ->name('api.matriculas.modulos-matriculados');
     Route::get('modulos-impartidos', [App\Http\Controllers\Api\ModuloFormativoController::class, 'modulosImpartidos'])
         ->name('api.modulos-formativos.modulos-impartidos');
+    Route::get('docentes', [App\Http\Controllers\Api\UserController::class, 'getDocentes'])
+        ->name('api.users.getDocentes');
+    Route::get('estudiantes', [App\Http\Controllers\Api\UserController::class, 'getEstudiantes'])
+        ->name('api.users.estudiantes');
 
     require __DIR__.'/import.php';
 });
