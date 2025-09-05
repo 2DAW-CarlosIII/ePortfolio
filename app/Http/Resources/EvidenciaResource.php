@@ -27,12 +27,6 @@ class EvidenciaResource extends JsonResource
             'updated_at' => $this->updated_at?->toISOString(),
             'user' => new UserResource($this->whenLoaded('user')),
             'tarea' => new TareaResource($this->whenLoaded('tarea')),
-            'evaluaciones_evidencias' => EvaluacionEvidenciaResource::collection($this->whenLoaded('evaluaciones_evidencias')),
-            'evaluaciones_evidencias_count' => $this->whenCounted('evaluaciones_evidencias'),
-            'comentarios' => ComentarioResource::collection($this->whenLoaded('comentarios')),
-            'comentarios_count' => $this->whenCounted('comentarios'),
-            'asignaciones_revisions' => AsignacionRevisionResource::collection($this->whenLoaded('asignaciones_revisions')),
-            'asignaciones_revisions_count' => $this->whenCounted('asignaciones_revisions'),
             'estado_badge' => [
                 'text' => match($this->estado_validacion) {
                     'validada' => 'Validada',

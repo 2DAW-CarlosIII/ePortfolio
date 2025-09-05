@@ -15,7 +15,6 @@ class TareaFactory extends Factory
     public function definition(): array
     {
         return [
-            'criterio_evaluacion_id' => \App\Models\CriterioEvaluacion::factory(),
             'fecha_apertura' => fake()->date(),
             'fecha_cierre' => fake()->date(),
             'activo' => fake()->boolean(),

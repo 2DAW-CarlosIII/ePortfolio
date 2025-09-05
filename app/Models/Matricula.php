@@ -35,8 +35,8 @@ class Matricula extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function modulos_formativo()
+    public function modulo_formativo()
     {
-        return $this->belongsTo(ModuloFormativo::class, 'modulos_formativo_id');
+        return $this->belongsTo(ModuloFormativo::class, 'modulo_formativo_id');
     }
 }

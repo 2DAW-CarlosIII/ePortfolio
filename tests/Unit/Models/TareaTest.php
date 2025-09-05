@@ -2,20 +2,19 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Tareas;
+use App\Models\Tarea;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class TareasTest extends TestCase
+class TareaTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_it_has_fillable_attributes()
     {
-        $fillable = (new Tareas())->getFillable();
+        $fillable = (new Tarea())->getFillable();
 
         $expected = [
-            'criterio_evaluacion_id',
             'fecha_apertura',
             'fecha_cierre',
             'activo',
@@ -27,15 +26,15 @@ class TareasTest extends TestCase
 
     public function test_it_has_correct_table_name()
     {
-        $model = new Tareas();
+        $model = new Tarea();
         $this->assertEquals('tareas', $model->getTable());
     }
 
     public function test_it_can_be_created_with_factory()
     {
-        $tarea = Tareas::factory()->create();
+        $tarea = Tarea::factory()->create();
 
-        $this->assertInstanceOf(Tareas::class, $tarea);
+        $this->assertInstanceOf(Tarea::class, $tarea);
         $this->assertDatabaseHas('tareas', [
             'id' => $tarea->id
         ]);
@@ -44,8 +43,8 @@ class TareasTest extends TestCase
 
     public function test_it_uses_expected_factory()
     {
-        $tarea = Tareas::factory()->make();
-        $this->assertInstanceOf(Tareas::class, $tarea);
+        $tarea = Tarea::factory()->make();
+        $this->assertInstanceOf(Tarea::class, $tarea);
     }
 
 

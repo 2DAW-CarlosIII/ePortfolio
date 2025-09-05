@@ -38,7 +38,7 @@ class ResultadoAprendizaje extends Model
     protected $casts = [
         'peso_porcentaje' => 'decimal:2'
     ];
-    public function modulos_formativo()
+    public function modulo_formativo()
     {
         return $this->belongsTo(ModuloFormativo::class, 'modulo_formativo_id');
     }

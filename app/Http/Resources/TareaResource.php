@@ -21,8 +21,8 @@ class TareaResource extends JsonResource
             'observaciones' => $this->observaciones,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-            'criterios_evaluacion' => new CriteriosEvaluacionResource($this->whenLoaded('criterios_evaluacion')),
-            'modulos_formativo' => new ModuloFormativoResource($this->whenLoaded('modulos_formativo'))
+            'criterio_evaluacion' => new CriteriosEvaluacionResource($this->whenLoaded('criterio_evaluacion')),
+            'modulo_formativo' => new ModuloFormativoResource($this->whenLoaded('modulo_formativo'))
         ];
     }
 

@@ -29,7 +29,6 @@ class Tarea extends Model
     protected $table = 'tareas';
 
     protected $fillable = [
-        'criterio_evaluacion_id',
         'fecha_apertura',
         'fecha_cierre',
         'activo',
@@ -40,7 +39,7 @@ class Tarea extends Model
         'fecha_cierre' => 'date',
         'activo' => 'boolean'
     ];
-    public function criterios_evaluacion()
+    public function criterio_evaluacion()
     {
         return $this->belongsToMany(CriterioEvaluacion::class, 'criterios_tareas', 'tarea_id', 'criterio_evaluacion_id');
     }

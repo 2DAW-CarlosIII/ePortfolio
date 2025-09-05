@@ -3,14 +3,14 @@
 namespace Tests\Feature\Api;
 
 use App\Models\CriterioEvaluacion;
-use App\Models\Tareas;
+use App\Models\Tarea;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\FeatureTestCase;
 use Laravel\Sanctum\Sanctum;
 
-class TareasApiTest extends FeatureTestCase
+class TareaApiTest extends FeatureTestCase
 {
     use WithFaker;
 
@@ -32,7 +32,7 @@ class TareasApiTest extends FeatureTestCase
     public function test_can_list_planificacionCriterioss()
     {
         // Arrange
-        Tareas::factory()->count(3)->create([
+        Tarea::factory()->count(3)->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 
@@ -82,7 +82,7 @@ class TareasApiTest extends FeatureTestCase
     public function test_can_show_planificacionCriterios()
     {
         // Arrange
-        $tarea = Tareas::factory()->create([
+        $tarea = Tarea::factory()->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 
@@ -99,7 +99,7 @@ class TareasApiTest extends FeatureTestCase
     public function test_can_update_planificacionCriterios()
     {
         // Arrange
-        $tarea = Tareas::factory()->create([
+        $tarea = Tarea::factory()->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
         $updateData = [
@@ -128,7 +128,7 @@ class TareasApiTest extends FeatureTestCase
     public function test_can_delete_planificacionCriterios()
     {
         // Arrange
-        $tarea = Tareas::factory()->create([
+        $tarea = Tarea::factory()->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 
@@ -145,7 +145,7 @@ class TareasApiTest extends FeatureTestCase
     public function test_can_paginate_planificacionCriterioss()
     {
         // Arrange
-        Tareas::factory()->count(25)->create([
+        Tarea::factory()->count(25)->create([
             'criterio_evaluacion_id' => $this->criterioEvaluacion->id
         ]);
 

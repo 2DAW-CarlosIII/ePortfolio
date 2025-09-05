@@ -25,9 +25,7 @@ class ResultadoAprendizajeResource extends JsonResource
             'orden' => (int) $this->orden,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-            'modulos_formativo' => new ModuloFormativoResource($this->whenLoaded('modulo_formativo')),
-            'criterios_evaluacions' => CriteriosEvaluacionResource::collection($this->whenLoaded('criterios_evaluacions')),
-            'criterios_evaluacions_count' => $this->whenCounted('criterios_evaluacions')
+            'modulo_formativo' => new ModuloFormativoResource($this->whenLoaded('modulo_formativo'))
         ];
     }
 
@@ -38,7 +36,7 @@ class ResultadoAprendizajeResource extends JsonResource
     {
         return [
             'meta' => [
-                'resource_type' => 'resultados_aprendizaje',
+                'resource_type' => 'resultado_aprendizaje',
                 'generated_at' => now()->toISOString(),
             ],
         ];

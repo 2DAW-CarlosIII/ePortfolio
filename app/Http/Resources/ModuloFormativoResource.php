@@ -28,8 +28,9 @@ class ModuloFormativoResource extends JsonResource
             ),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-            'ciclos_formativo' => new CicloFormativoResource($this->whenLoaded('ciclos_formativo')),
+            'ciclo_formativo' => new CicloFormativoResource($this->whenLoaded('ciclo_formativo')),
             'user' => new UserResource($this->whenLoaded('user')),
+            /*
             'resultados_aprendizajes' => ResultadoAprendizajeResource::collection($this->whenLoaded('resultados_aprendizajes')),
             'resultados_aprendizajes_count' => $this->whenCounted('resultados_aprendizajes'),
             'matriculas' => MatriculaResource::collection($this->whenLoaded('matriculas')),
@@ -50,7 +51,7 @@ class ModuloFormativoResource extends JsonResource
                     $activas = $this->matriculas->where('estado', 'activa')->count();
                     return $activas > 0 ? 'activo' : 'inactivo';
                 },
-            )
+            ) */
         ];
     }
 

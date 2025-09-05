@@ -10,13 +10,11 @@ return new class extends Migration
     {
         Schema::create('tareas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('criterio_evaluacion_id');
             $table->date('fecha_apertura');
             $table->date('fecha_cierre');
             $table->boolean('activo')->default(false);
             $table->text('observaciones')->nullable();
             $table->timestamps();
-            $table->foreign('criterio_evaluacion_id')->references('id')->on('criterios_evaluacion')->onDelete('cascade');
         });
     }
 

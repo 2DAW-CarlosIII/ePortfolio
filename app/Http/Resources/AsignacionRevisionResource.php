@@ -22,8 +22,7 @@ class AsignacionRevisionResource extends JsonResource
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'evidencia' => new EvidenciaResource($this->whenLoaded('evidencia')),
-            'user' => new UserResource($this->whenLoaded('user')),
-            'user' => new UserResource($this->whenLoaded('user')),
+            'user' => new UserResource($this->whenLoaded('revisor')),
         ];
     }
 

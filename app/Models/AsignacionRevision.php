@@ -50,8 +50,8 @@ class AsignacionRevision extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function comentarios_pares()
+    public function comentarios()
     {
-        return $this->hasMany(ComentarioPar::class, 'asignaciones_revision_id');
+        return $this->hasMany(Comentario::class, 'asignaciones_revision_id');
     }
 }

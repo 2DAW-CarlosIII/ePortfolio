@@ -38,7 +38,7 @@ class CriterioEvaluacion extends Model
     protected $casts = [
         'peso_porcentaje' => 'decimal:2'
     ];
-    public function resultados_aprendizaje()
+    public function resultado_aprendizaje()
     {
         return $this->belongsTo(ResultadoAprendizaje::class, 'resultado_aprendizaje_id');
     }

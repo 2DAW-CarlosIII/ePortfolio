@@ -22,9 +22,7 @@ class FamiliaProfesionalResource extends JsonResource
                 substr($this->descripcion ?? '', 0, 100) . '...'
             ),
             'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
-            'ciclos_formativos' => CicloFormativoResource::collection($this->whenLoaded('ciclos_formativos')),
-            'ciclos_formativos_count' => $this->whenCounted('ciclos_formativos')
+            'updated_at' => $this->updated_at?->toISOString()
         ];
     }
 

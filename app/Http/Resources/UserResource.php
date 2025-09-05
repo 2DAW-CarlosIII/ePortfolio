@@ -19,16 +19,6 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at?->toISOString(),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-
-            // Relaciones
-            'modulos_impartidos' => ModuloFormativoResource::collection($this->whenLoaded('modulosImpartidos')),
-            'matriculas' => MatriculaResource::collection($this->whenLoaded('matriculas')),
-            'evidencias' => EvidenciaResource::collection($this->whenLoaded('evidencias')),
-
-            // Contadores
-            'matriculas_count' => $this->whenCounted('matriculas'),
-            'evidencias_count' => $this->whenCounted('evidencias'),
-            'modulos_impartidos_count' => $this->whenCounted('modulosImpartidos'),
             'ultimo_acceso' => $this->last_login_at?->diffForHumans(),
             'avatar_url' => 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=random',
         ];

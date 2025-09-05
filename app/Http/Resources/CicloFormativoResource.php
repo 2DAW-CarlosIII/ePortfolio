@@ -25,9 +25,7 @@ class CicloFormativoResource extends JsonResource
             ),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-            'familias_profesionale' => new FamiliaProfesionalResource($this->whenLoaded('familias_profesionale')),
-            'modulos_formativos' => ModuloFormativoResource::collection($this->whenLoaded('modulos_formativos')),
-            'modulos_formativos_count' => $this->whenCounted('modulos_formativos')
+            'familia_profesional' => new FamiliaProfesionalResource($this->whenLoaded('familia_profesional')),
         ];
     }
 

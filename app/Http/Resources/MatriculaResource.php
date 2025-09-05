@@ -19,7 +19,7 @@ class MatriculaResource extends JsonResource
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
             'user' => new UserResource($this->whenLoaded('user')),
-            'modulos_formativo' => new ModuloFormativoResource($this->whenLoaded('modulos_formativo')),
+            'modulo_formativo' => new ModuloFormativoResource($this->whenLoaded('modulo_formativo')),
             'estado_badge' => [
                 'text' => match($this->estado) {
                     'activa' => 'Activa',

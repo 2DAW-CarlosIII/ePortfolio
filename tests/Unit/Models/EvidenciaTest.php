@@ -16,7 +16,7 @@ class EvidenciaTest extends TestCase
 
         $expected = [
             'estudiante_id',
-            'criterio_evaluacion_id',
+            'tarea_id',
             'url',
             'descripcion',
             'estado_validacion'

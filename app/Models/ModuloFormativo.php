@@ -41,9 +41,9 @@ class ModuloFormativo extends Model
         'docente_id',
         'descripcion'
     ];
-    public function ciclos_formativo()
+    public function ciclo_formativo()
     {
-        return $this->belongsTo(CicloFormativo::class, 'ciclos_formativo_id');
+        return $this->belongsTo(CicloFormativo::class, 'ciclo_formativo_id');
     }
     public function user()
     {
