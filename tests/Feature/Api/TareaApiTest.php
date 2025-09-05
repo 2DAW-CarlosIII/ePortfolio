@@ -29,12 +29,12 @@ class TareaApiTest extends FeatureTestCase
 
     }
 
-    public function test_can_list_planificacionCriterioss()
+    public function test_can_list_tareas()
     {
         // Arrange
-        Tarea::factory()->count(3)->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
-        ]);
+        $tareas = Tarea::factory()->count(3)->create();
+        $tareasId = $tareas->pluck('id')->toArray();
+        $this->criterioEvaluacion->tareas()->sync($tareasId);
 
         // Act
         $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas");
@@ -52,7 +52,7 @@ class TareaApiTest extends FeatureTestCase
         $this->assertCount(3, $response->json('data'));
     }
 
-    public function test_can_create_planificacionCriterios()
+    public function test_can_create_tarea()
     {
         // Arrange
         $data = [
@@ -79,12 +79,11 @@ class TareaApiTest extends FeatureTestCase
         ]);
     }
 
-    public function test_can_show_planificacionCriterios()
+    public function test_can_show_tarea()
     {
         // Arrange
-        $tarea = Tarea::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
-        ]);
+        $tarea = Tarea::factory()->create();
+        $this->criterioEvaluacion->tareas()->attach($tarea->id);
 
         // Act
         $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas/{$tarea->id}");
@@ -92,16 +91,16 @@ class TareaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'criterio_evaluacion_id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
+                     'data' => ['id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
                  ]);
     }
 
-    public function test_can_update_planificacionCriterios()
+    public function test_can_update_tarea()
     {
         // Arrange
-        $tarea = Tarea::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
-        ]);
+        $tarea = Tarea::factory()->create();
+        $this->criterioEvaluacion->tareas()->attach($tarea->id);
+
         $updateData = [
             'fecha_apertura' => now()->format('Y-m-d'),
             'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
@@ -115,7 +114,7 @@ class TareaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'criterio_evaluacion_id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
+                     'data' => ['id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
                  ]);
 
         $tarea->refresh();
@@ -125,12 +124,11 @@ class TareaApiTest extends FeatureTestCase
         $this->assertEquals($updateData['observaciones'], $tarea->observaciones);
     }
 
-    public function test_can_delete_planificacionCriterios()
+    public function test_can_delete_tarea()
     {
         // Arrange
-        $tarea = Tarea::factory()->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
-        ]);
+        $tarea = Tarea::factory()->create();
+        $this->criterioEvaluacion->tareas()->attach($tarea->id);
 
         // Act
         $response = $this->deleteJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas/{$tarea->id}");
@@ -142,12 +140,13 @@ class TareaApiTest extends FeatureTestCase
                  ]);
     }
 
-    public function test_can_paginate_planificacionCriterioss()
+    public function test_can_paginate_tareas()
     {
         // Arrange
-        Tarea::factory()->count(25)->create([
-            'criterio_evaluacion_id' => $this->criterioEvaluacion->id
-        ]);
+        $tareas = Tarea::factory()->count(25)->create();
+        $tareasId = $tareas->pluck('id')->toArray();
+        $this->criterioEvaluacion->tareas()->sync($tareasId);
+
 
         // Act
         $response = $this->getJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas?per_page=10");

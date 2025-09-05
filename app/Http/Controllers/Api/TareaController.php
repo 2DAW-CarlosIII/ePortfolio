@@ -8,6 +8,7 @@ use App\Http\Requests\StoreTareaRequest;
 use App\Http\Requests\UpdateTareaRequest;
 use App\Http\Resources\TareaResource;
 use App\Models\CriterioEvaluacion;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 
@@ -192,7 +193,11 @@ class TareaController extends Controller
 
     public function show(CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
     {
-        if($criterioEvaluacion->id !== $tarea->criterio_evaluacion_id) {
+        $tareaShow = $criterioEvaluacion->whereHas('tareas', function (Builder $query) use ($tarea) {
+            $query->where('id', $tarea->id);
+        })->first();
+
+        if(!$tareaShow) {
             return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
         }
 
@@ -243,7 +248,10 @@ class TareaController extends Controller
 
     public function update(UpdateTareaRequest $request, CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
     {
-        if($criterioEvaluacion->id !== $tarea->criterio_evaluacion_id) {
+        $tareaUpdate = $criterioEvaluacion->whereHas('tareas', function (Builder $query) use ($tarea) {
+            $query->where('id', $tarea->id);
+        })->first();
+        if(!$tareaUpdate) {
             return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
         }
 
@@ -284,7 +292,10 @@ class TareaController extends Controller
 
     public function destroy(CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
     {
-        if($criterioEvaluacion->id !== $tarea->criterio_evaluacion_id) {
+        $tareaDestroy = $criterioEvaluacion->whereHas('tareas', function (Builder $query) use ($tarea) {
+            $query->where('id', $tarea->id);
+        })->first();
+        if(!$tareaDestroy) {
             return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
         }
 
