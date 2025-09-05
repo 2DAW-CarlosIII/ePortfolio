@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Import\ModuloFormativoImportable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +28,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModuloFormativo extends Model
 {
-    use HasFactory;
+    use HasFactory, ModuloFormativoImportable;
 
     protected $table = 'modulos_formativos';
 

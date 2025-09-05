@@ -15,7 +15,7 @@ trait CriteriosEvaluacionImportable
                 'type' => 'bigint',
                 'required' => false,
                 'foreign_key' => true,
-                'validation' => ['required', 'integer', 'exists:table,id']
+                'validation' => ['required', 'integer', 'exists:resultados_aprendizaje,id']
             ],
             [
                 'name' => 'codigo',

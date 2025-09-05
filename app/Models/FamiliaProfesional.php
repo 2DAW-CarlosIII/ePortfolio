@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Import\FamiliaProfesionalImportable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FamiliaProfesional extends Model
 {
-    use HasFactory;
+    use HasFactory, FamiliaProfesionalImportable;
 
     protected $table = 'familias_profesionales';
 

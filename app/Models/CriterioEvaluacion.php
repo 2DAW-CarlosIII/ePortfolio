@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Import\CriteriosEvaluacionImportable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CriterioEvaluacion extends Model
 {
-    use HasFactory;
+    use HasFactory, CriteriosEvaluacionImportable;
 
     protected $table = 'criterios_evaluacion';
 

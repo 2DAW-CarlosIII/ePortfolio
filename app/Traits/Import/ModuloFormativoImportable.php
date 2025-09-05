@@ -15,7 +15,7 @@ trait ModuloFormativoImportable
                 'type' => 'bigint',
                 'required' => false,
                 'foreign_key' => true,
-                'validation' => ['required', 'integer', 'exists:table,id']
+                'validation' => ['required', 'integer', 'exists:ciclos_formativos,id']
             ],
             [
                 'name' => 'nombre',
@@ -57,7 +57,7 @@ trait ModuloFormativoImportable
                 'type' => 'bigint',
                 'required' => false,
                 'foreign_key' => true,
-                'validation' => ['required', 'integer', 'exists:table,id']
+                'validation' => ['required', 'integer', 'exists:users,id']
             ],
             [
                 'name' => 'descripcion',

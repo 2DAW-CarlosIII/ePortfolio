@@ -8,5 +8,5 @@ use App\Http\Requests\Import\UserImportRequest;
 class UserImportController extends BaseImportController
 {
     protected string $modelClass = User::class;
-    protected string $resourceName = 'User';
+    protected string $resourceName = 'users';
 }
