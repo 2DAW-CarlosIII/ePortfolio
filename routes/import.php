@@ -42,14 +42,14 @@ Route::prefix('modulos-formativos')->group(function () {
         ->name('api.ciclos-formativos.modulos-formativos.import.template');
 });
 
-// Importación de ResultadoAprendizaje (anidado en ModuloFormativo)
+// Importación de ResultadoAprendizaje
 Route::prefix('resultados-aprendizaje')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'show'])
-        ->name('api.modulos-formativos.resultados-aprendizaje.import.show');
+        ->name('api.resultados-aprendizaje.import.show');
     Route::post('import', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'store'])
-        ->name('api.modulos-formativos.resultados-aprendizaje.import.store');
+        ->name('api.resultados-aprendizaje.import.store');
     Route::get('import/template', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'template'])
-        ->name('api.modulos-formativos.resultados-aprendizaje.import.template');
+        ->name('api.resultados-aprendizaje.import.template');
 });
 
 // Importación de CriteriosEvaluacion (anidado en ResultadoAprendizaje)

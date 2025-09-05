@@ -15,7 +15,7 @@ trait ResultadoAprendizajeImportable
                 'type' => 'bigint',
                 'required' => false,
                 'foreign_key' => true,
-                'validation' => ['required', 'integer', 'exists:table,id']
+                'validation' => ['required', 'integer', 'exists:modulos_formativos,id']
             ],
             [
                 'name' => 'codigo',
