@@ -45,6 +45,7 @@ return [
                  */
                 'annotations' => [
                     base_path('app/Http/Controllers/Api'),
+                    base_path('app/Http/Controllers/Import'),
                     base_path('app/Models'),
                     base_path('app/Http/Requests'),
                 ],

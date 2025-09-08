@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Validator;
 use App\Exceptions\Import\CsvValidationException;
 use App\Exceptions\Import\CsvImportException;
 
+/**
+ * @OA\Tag(
+ *     name="Import",
+ *     description="Endpoints para importación masiva de datos mediante archivos CSV"
+ * )
+ */
+
 abstract class BaseImportController extends Controller
 {
     protected string $modelClass;
@@ -235,9 +242,44 @@ abstract class BaseImportController extends Controller
         return $this->modelClass::create($data);
     }
 
-    /**
-     * Descarga template CSV generado dinámicamente
-     */
+/**
+ * @OA\Get(
+ *     path="/import/template/{resource}",
+ *     summary="Descargar template CSV para el resource",
+ *     description="Descarga un archivo CSV de ejemplo con la estructura correcta para importar el recurso enviado",
+ *     security={{"sanctum":{}}},
+ *     tags={"Import"},
+ *     @OA\Parameter(
+ *         name="resource",
+ *         in="path",
+ *         description="recurso sobre el que se quiere el template",
+ *         required=true,
+ *         @OA\Schema(type="string",
+ *             enum={"familias_profesionales","ciclos_formativos","modulos_formativos","resultados_aprendizaje","criterios_evaluacion","users","matriculas"})
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Template CSV descargado correctamente",
+ *         @OA\MediaType(
+ *             mediaType="text/csv",
+ *             @OA\Schema(
+ *                 type="string",
+ *                 format="binary"
+ *             )
+ *         ),
+ *         @OA\Header(
+ *             header="Content-Disposition",
+ *             description="Indica el nombre del archivo",
+ *             @OA\Schema(type="string", example="attachment; filename='resultados_aprendizaje_template.csv'")
+ *         ),
+ *         @OA\Header(
+ *             header="Content-Type",
+ *             description="Tipo de contenido del archivo",
+ *             @OA\Schema(type="string", example="text/csv; charset=UTF-8")
+ *         )
+ *     )
+ * )
+ */
     public function template(): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         $fields = $this->modelClass::getImportableFields();

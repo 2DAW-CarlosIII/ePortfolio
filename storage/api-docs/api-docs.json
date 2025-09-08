@@ -5012,6 +5012,1662 @@
                     }
                 ]
             }
+        },
+        "/import/template/{resource}": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para el resource",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar el recurso enviado",
+                "operationId": "ea66fa2ce8ee78f0622bb1b530b31d91",
+                "parameters": [
+                    {
+                        "name": "resource",
+                        "in": "path",
+                        "description": "recurso sobre el que se quiere el template",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "familias_profesionales",
+                                "ciclos_formativos",
+                                "modulos_formativos",
+                                "resultados_aprendizaje",
+                                "criterios_evaluacion",
+                                "users",
+                                "matriculas"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='resultados_aprendizaje_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/ciclos_formativos/import": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Obtener información para importar Ciclos Formativos",
+                "description": "Devuelve los campos importables y la URL del template para Ciclos Formativos",
+                "operationId": "4ec2c746016d203692cf59e0ee5ca674",
+                "responses": {
+                    "200": {
+                        "description": "Información de importación obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "resource": {
+                                            "type": "string",
+                                            "example": "CicloFormativo"
+                                        },
+                                        "template_url": {
+                                            "type": "string",
+                                            "example": "http://eportfolio.test/api/v1/import/template/ciclos_formativos"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importar Ciclos Formativos desde CSV",
+                "description": "Procesa un archivo CSV e importa los Ciclos Formativos contenidos en él",
+                "operationId": "7d6f70b07c6d0018ea2fcfe2207e1023",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "Archivo CSV con los datos a importar (máximo 50MB)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Importación procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Importación completada"
+                                        },
+                                        "results": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "errors": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "skipped": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "details": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "row": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "example": "El campo código es requerido"
+                                                            },
+                                                            "data": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en el archivo o datos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Faltan columnas requeridas: codigo, descripcion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el archivo enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El archivo debe ser CSV"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "file": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El archivo debe ser de tipo CSV"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/ciclos_formativos/import/template": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para Ciclos Formativos",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar Ciclos Formativos",
+                "operationId": "9329267f651dff229bb4ac697a437d2d",
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='ciclos_formativos_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/criterios_evaluacion/import": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Obtener información para importar Criterios de Evaluación",
+                "description": "Devuelve los campos importables y la URL del template para Criterios de Evaluación",
+                "operationId": "60fcadc5f8731653eb1f5c4bdb0ecdd8",
+                "responses": {
+                    "200": {
+                        "description": "Información de importación obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "resource": {
+                                            "type": "string",
+                                            "example": "CriterioEvaluacion"
+                                        },
+                                        "template_url": {
+                                            "type": "string",
+                                            "example": "http://eportfolio.test/api/v1/import/template/criterios_evaluacion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importar Criterios de Evaluación desde CSV",
+                "description": "Procesa un archivo CSV e importa los Criterios de Evaluación contenidos en él",
+                "operationId": "b8d4e36a11e6c7197e2b03c700dc7f98",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "Archivo CSV con los datos a importar (máximo 50MB)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Importación procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Importación completada"
+                                        },
+                                        "results": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "errors": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "skipped": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "details": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "row": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "example": "El campo código es requerido"
+                                                            },
+                                                            "data": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en el archivo o datos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Faltan columnas requeridas: codigo, descripcion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el archivo enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El archivo debe ser CSV"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "file": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El archivo debe ser de tipo CSV"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/criterios_evaluacion/import/template": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para Criterios de Evaluación",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar Criterios de Evaluación",
+                "operationId": "96ce1e4b3f0876868e4ce036dd27a572",
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='criterios_evaluacion_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/familias_profesionales/import": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Obtener información para importar Familias Profesionales",
+                "description": "Devuelve los campos importables y la URL del template para Familias Profesionales",
+                "operationId": "1cdb147fef25afd6101c3f7150e949a1",
+                "responses": {
+                    "200": {
+                        "description": "Información de importación obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "resource": {
+                                            "type": "string",
+                                            "example": "FamiliaProfesional"
+                                        },
+                                        "template_url": {
+                                            "type": "string",
+                                            "example": "http://eportfolio.test/api/v1/import/template/familias_profesionales"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importar Familias Profesionales desde CSV",
+                "description": "Procesa un archivo CSV e importa los Familias Profesionales contenidos en él",
+                "operationId": "b34100c9be3992d4c3d9ad0f7774df47",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "Archivo CSV con los datos a importar (máximo 50MB)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Importación procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Importación completada"
+                                        },
+                                        "results": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "errors": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "skipped": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "details": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "row": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "example": "El campo código es requerido"
+                                                            },
+                                                            "data": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en el archivo o datos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Faltan columnas requeridas: codigo, descripcion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el archivo enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El archivo debe ser CSV"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "file": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El archivo debe ser de tipo CSV"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/familias_profesionales/import/template": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para Familias Profesionales",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar Familias Profesionales",
+                "operationId": "a633f2d1a1d682a9260d129450da56fb",
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='familias_profesionales_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/matriculas/import": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Obtener información para importar Matriculas",
+                "description": "Devuelve los campos importables y la URL del template para Matriculas",
+                "operationId": "290346df8478562bac6024ad98eaaefa",
+                "responses": {
+                    "200": {
+                        "description": "Información de importación obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "resource": {
+                                            "type": "string",
+                                            "example": "Matricula"
+                                        },
+                                        "template_url": {
+                                            "type": "string",
+                                            "example": "http://eportfolio.test/api/v1/import/template/matriculas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importar Matrículas desde CSV",
+                "description": "Procesa un archivo CSV e importa los Matrículas contenidos en él",
+                "operationId": "8be39696b3ed8ca8c8000f6efdefdc86",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "Archivo CSV con los datos a importar (máximo 50MB)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Importación procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Importación completada"
+                                        },
+                                        "results": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "errors": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "skipped": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "details": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "row": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "example": "El campo código es requerido"
+                                                            },
+                                                            "data": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en el archivo o datos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Faltan columnas requeridas: codigo, descripcion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el archivo enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El archivo debe ser CSV"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "file": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El archivo debe ser de tipo CSV"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/matriculas/import/template": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para Matrículas",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar Matrículas",
+                "operationId": "5b3f53a047241b87e6016fb65f76ae8f",
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='matriculas_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/modulos_formativos/import": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Obtener información para importar Módulos Formativos",
+                "description": "Devuelve los campos importables y la URL del template para Módulos Formativos",
+                "operationId": "3977682ba998aa2c2f418cd54cd65665",
+                "responses": {
+                    "200": {
+                        "description": "Información de importación obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "resource": {
+                                            "type": "string",
+                                            "example": "ModuloFormativo"
+                                        },
+                                        "template_url": {
+                                            "type": "string",
+                                            "example": "http://eportfolio.test/api/v1/import/template/modulos_formativos"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importar Módulos Formativos desde CSV",
+                "description": "Procesa un archivo CSV e importa los Módulos Formativos contenidos en él",
+                "operationId": "554261451875f24a94036ef69dcc2a65",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "Archivo CSV con los datos a importar (máximo 50MB)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Importación procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Importación completada"
+                                        },
+                                        "results": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "errors": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "skipped": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "details": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "row": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "example": "El campo código es requerido"
+                                                            },
+                                                            "data": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en el archivo o datos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Faltan columnas requeridas: codigo, descripcion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el archivo enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El archivo debe ser CSV"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "file": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El archivo debe ser de tipo CSV"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/modulos_formativos/import/template": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para Módulos Formativos",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar Módulos Formativos",
+                "operationId": "ba212e17a1e03bf21a9caecce45c405e",
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='modulos_formativos_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/resultados_aprendizaje/import": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Obtener información para importar Resultados de Aprendizaje",
+                "description": "Devuelve los campos importables y la URL del template para Resultados de Aprendizaje",
+                "operationId": "fdce80fbf032e8771a2721ee751d9ddf",
+                "responses": {
+                    "200": {
+                        "description": "Información de importación obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "resource": {
+                                            "type": "string",
+                                            "example": "ResultadoAprendizaje"
+                                        },
+                                        "template_url": {
+                                            "type": "string",
+                                            "example": "http://eportfolio.test/api/v1/import/template/resultados_aprendizaje"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importar Resultados de Aprendizaje desde CSV",
+                "description": "Procesa un archivo CSV e importa los Resultados de Aprendizaje contenidos en él",
+                "operationId": "e9ffad1dfc4534f4d2855caac937db67",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "Archivo CSV con los datos a importar (máximo 50MB)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Importación procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Importación completada"
+                                        },
+                                        "results": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "errors": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "skipped": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "details": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "row": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "example": "El campo código es requerido"
+                                                            },
+                                                            "data": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en el archivo o datos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Faltan columnas requeridas: codigo, descripcion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el archivo enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El archivo debe ser CSV"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "file": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El archivo debe ser de tipo CSV"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/resultados_aprendizaje/import/template": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para Resultados de Aprendizaje",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar Resultados de Aprendizaje",
+                "operationId": "99825c97f8e1c719c0116a6faa32023b",
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='resultados_aprendizaje_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/users/import": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Obtener información para importar Usuarios",
+                "description": "Devuelve los campos importables y la URL del template para Usuarios",
+                "operationId": "adfe22441cd4de11b4c9f4db37775b4a",
+                "responses": {
+                    "200": {
+                        "description": "Información de importación obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "resource": {
+                                            "type": "string",
+                                            "example": "User"
+                                        },
+                                        "fields": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "codigo"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "example": "varchar"
+                                                    },
+                                                    "required": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "foreign_key": {
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    },
+                                                    "validation": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string",
+                                                            "example": "required"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "template_url": {
+                                            "type": "string",
+                                            "example": "http://eportfolio.test/api/v1/import/template/users"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importar Usuarios desde CSV",
+                "description": "Procesa un archivo CSV e importa los Usuarios contenidos en él",
+                "operationId": "596857eb70825e8fe2d782ce0734941a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "Archivo CSV con los datos a importar (máximo 50MB)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Importación procesada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Importación completada"
+                                        },
+                                        "results": {
+                                            "properties": {
+                                                "success": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "errors": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "skipped": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "details": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "row": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "example": "El campo código es requerido"
+                                                            },
+                                                            "data": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación en el archivo o datos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Faltan columnas requeridas: codigo, descripcion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error en el archivo enviado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "El archivo debe ser CSV"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "file": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "El archivo debe ser de tipo CSV"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/users/import/template": {
+            "get": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Descargar template CSV para Usuarios",
+                "description": "Descarga un archivo CSV de ejemplo con la estructura correcta para importar Usuarios",
+                "operationId": "ab144157819fc73d86daba5d9bd880ef",
+                "responses": {
+                    "200": {
+                        "description": "Template CSV descargado correctamente",
+                        "headers": {
+                            "Content-Disposition": {
+                                "description": "Indica el nombre del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "attachment; filename='users_template.csv'"
+                                }
+                            },
+                            "Content-Type": {
+                                "description": "Tipo de contenido del archivo",
+                                "schema": {
+                                    "type": "string",
+                                    "example": "text/csv; charset=UTF-8"
+                                }
+                            }
+                        },
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -6382,6 +8038,10 @@
         {
             "name": "Tareas",
             "description": "Operations related to Tareas"
+        },
+        {
+            "name": "Import",
+            "description": "Endpoints para importación masiva de datos mediante archivos CSV"
         },
         {
             "name": "User",

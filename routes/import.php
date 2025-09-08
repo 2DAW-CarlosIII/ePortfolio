@@ -13,53 +13,53 @@ use Illuminate\Support\Facades\Route;
 
 
 // Importación de FamiliaProfesional
-Route::prefix('familias-profesionales')->group(function () {
+Route::prefix('familias_profesionales')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\FamiliaProfesionalImportController::class, 'show'])
-        ->name('api.familias-profesionales.import.show');
+        ->name('api.familias_profesionales.import.show');
     Route::post('import', [App\Http\Controllers\Import\FamiliaProfesionalImportController::class, 'store'])
-        ->name('api.familias-profesionales.import.store');
+        ->name('api.familias_profesionales.import.store');
     Route::get('import/template', [App\Http\Controllers\Import\FamiliaProfesionalImportController::class, 'template'])
-        ->name('api.familias-profesionales.import.template');
+        ->name('api.familias_profesionales.import.template');
 });
 
 // Importación de CicloFormativo
-Route::prefix('ciclos-formativos')->group(function () {
+Route::prefix('ciclos_formativos')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\CicloFormativoImportController::class, 'show'])
-        ->name('api.ciclos-formativos.import.show');
+        ->name('api.ciclos_formativos.import.show');
     Route::post('import', [App\Http\Controllers\Import\CicloFormativoImportController::class, 'store'])
-        ->name('api.ciclos-formativos.import.store');
+        ->name('api.ciclos_formativos.import.store');
     Route::get('import/template', [App\Http\Controllers\Import\CicloFormativoImportController::class, 'template'])
-        ->name('api.ciclos-formativos.import.template');
+        ->name('api.ciclos_formativos.import.template');
 });
 
 // Importación de ModuloFormativo
-Route::prefix('modulos-formativos')->group(function () {
+Route::prefix('modulos_formativos')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\ModuloFormativoImportController::class, 'show'])
-        ->name('api.modulos-formativos.import.show');
+        ->name('api.modulos_formativos.import.show');
     Route::post('import', [App\Http\Controllers\Import\ModuloFormativoImportController::class, 'store'])
-        ->name('api.modulos-formativos.import.store');
+        ->name('api.modulos_formativos.import.store');
     Route::get('import/template', [App\Http\Controllers\Import\ModuloFormativoImportController::class, 'template'])
-        ->name('api.modulos-formativos.import.template');
+        ->name('api.modulos_formativos.import.template');
 });
 
 // Importación de ResultadoAprendizaje
-Route::prefix('resultados-aprendizaje')->group(function () {
+Route::prefix('resultados_aprendizaje')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'show'])
-        ->name('api.resultados-aprendizaje.import.show');
+        ->name('api.resultados_aprendizaje.import.show');
     Route::post('import', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'store'])
-        ->name('api.resultados-aprendizaje.import.store');
+        ->name('api.resultados_aprendizaje.import.store');
     Route::get('import/template', [App\Http\Controllers\Import\ResultadoAprendizajeImportController::class, 'template'])
-        ->name('api.resultados-aprendizaje.import.template');
+        ->name('api.resultados_aprendizaje.import.template');
 });
 
 // Importación de CriteriosEvaluacion
-Route::prefix('criterios-evaluacion')->group(function () {
+Route::prefix('criterios_evaluacion')->group(function () {
     Route::get('import', [App\Http\Controllers\Import\CriteriosEvaluacionImportController::class, 'show'])
-        ->name('api.criterios-evaluacion.import.show');
+        ->name('api.criterios_evaluacion.import.show');
     Route::post('import', [App\Http\Controllers\Import\CriteriosEvaluacionImportController::class, 'store'])
-        ->name('api.criterios-evaluacion.import.store');
+        ->name('api.criterios_evaluacion.import.store');
     Route::get('import/template', [App\Http\Controllers\Import\CriteriosEvaluacionImportController::class, 'template'])
-        ->name('api.criterios-evaluacion.import.template');
+        ->name('api.criterios_evaluacion.import.template');
 });
 
 // Importación de User
