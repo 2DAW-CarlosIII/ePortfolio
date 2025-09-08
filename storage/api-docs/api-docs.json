@@ -4286,19 +4286,19 @@
                 ]
             }
         },
-        "/modulos-formativos/{parent_id}/tareas": {
+        "/criterios-evaluacion/{parent_id}/tareas": {
             "get": {
                 "tags": [
                     "Tareas"
                 ],
-                "summary": "List all planificacioncriterioss",
-                "description": "Retrieve a paginated list of planificacioncriterioss",
-                "operationId": "8b3e0db4bbdf26eea4e81f8be48d2e84",
+                "summary": "List todas las tareas",
+                "description": "Retrieve a paginated list of tareas",
+                "operationId": "d12bb292a8d6c886b6dd44a34a595f02",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
+                        "description": "ID of the parent CriterioEvaluacion",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4396,12 +4396,12 @@
                 ],
                 "summary": "Create a new tarea",
                 "description": "Create a new tarea resource",
-                "operationId": "b96f0ce659141dd1b021e39a4240171e",
+                "operationId": "56172d296f962fc526049670f56b98f9",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
+                        "description": "ID of the parent CriterioEvaluacion",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4413,7 +4413,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/StorePlanificacionCriterioRequest"
+                                "$ref": "#/components/schemas/StoreTareaRequest"
                             }
                         }
                     }
@@ -4451,19 +4451,19 @@
                 ]
             }
         },
-        "/modulos-formativos/{parent_id}/tareas/{id}": {
+        "/criterios-evaluacion/{parent_id}/tareas/{id}": {
             "get": {
                 "tags": [
                     "Tareas"
                 ],
                 "summary": "Show a specific tarea",
                 "description": "Retrieve a specific tarea by ID",
-                "operationId": "f421e5f12efafb96fe04d5ff4077f336",
+                "operationId": "ce8ba4086783753bc56dd45f35badfb0",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
+                        "description": "ID of the parent CriterioEvaluacion",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4517,12 +4517,12 @@
                 ],
                 "summary": "Update a specific tarea",
                 "description": "Update a specific tarea by ID",
-                "operationId": "d58a7ecdb77b7c7000c41c65cf8bed38",
+                "operationId": "c22c002a6c46927a154e7899550221d3",
                 "parameters": [
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
+                        "description": "ID of the parent CriterioEvaluacion",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -4543,7 +4543,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdatePlanificacionCriterioRequest"
+                                "$ref": "#/components/schemas/UpdateTareaRequest"
                             }
                         }
                     }
@@ -4589,7 +4589,7 @@
                 ],
                 "summary": "Delete a specific tarea",
                 "description": "Delete a specific tarea by ID",
-                "operationId": "e729689e9d65bbbc2d5ed389fcc1338e",
+                "operationId": "32b9a2e03dacff845a1540391be9db86",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -7037,9 +7037,9 @@
                 },
                 "type": "object"
             },
-            "StorePlanificacionCriterioRequest": {
-                "title": "Store Planificación Criterio Request",
-                "description": "Datos requeridos para crear una Planificación de Criterio",
+            "StoreTareaRequest": {
+                "title": "Store Tarea Request",
+                "description": "Datos requeridos para crear una Tarea de un CriterioEvaluacion",
                 "required": [
                     "fecha_apertura",
                     "fecha_cierre",
@@ -7048,10 +7048,6 @@
                 "properties": {
                     "criterio_evaluacion_id": {
                         "description": "ID del criterio de evaluación",
-                        "type": "integer"
-                    },
-                    "modulo_formativo_id": {
-                        "description": "ID del módulo formativo",
                         "type": "integer"
                     },
                     "fecha_apertura": {
@@ -7406,16 +7402,12 @@
                 },
                 "type": "object"
             },
-            "UpdatePlanificacionCriterioRequest": {
-                "title": "Update Planificación Criterio Request",
-                "description": "Datos para actualizar una Planificación de Criterio",
+            "UpdateTareaRequest": {
+                "title": "Update Tarea Request",
+                "description": "Datos para actualizar una Tarea",
                 "properties": {
                     "criterio_evaluacion_id": {
                         "description": "ID del criterio de evaluación",
-                        "type": "integer"
-                    },
-                    "modulo_formativo_id": {
-                        "description": "ID del módulo formativo",
                         "type": "integer"
                     },
                     "fecha_apertura": {

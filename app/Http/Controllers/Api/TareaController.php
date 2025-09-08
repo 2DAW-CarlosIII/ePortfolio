@@ -24,15 +24,15 @@ class TareaController extends Controller
 
 /**
  * @OA\Get(
- *     path="/modulos-formativos/{parent_id}/tareas",
+ *     path="/criterios-evaluacion/{parent_id}/tareas",
  *     tags={"Tareas"},
- *     summary="List all planificacioncriterioss",
- *     description="Retrieve a paginated list of planificacioncriterioss",
+ *     summary="List todas las tareas",
+ *     description="Retrieve a paginated list of tareas",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent ModuloFormativo",
+ *         description="ID of the parent CriterioEvaluacion",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -115,7 +115,7 @@ class TareaController extends Controller
 
 /**
  * @OA\Post(
- *     path="/modulos-formativos/{parent_id}/tareas",
+ *     path="/criterios-evaluacion/{parent_id}/tareas",
  *     tags={"Tareas"},
  *     summary="Create a new tarea",
  *     description="Create a new tarea resource",
@@ -123,13 +123,13 @@ class TareaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent ModuloFormativo",
+ *         description="ID of the parent CriterioEvaluacion",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/StorePlanificacionCriterioRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/StoreTareaRequest")
  *     ),
  *     @OA\Response(
  *         response=201,
@@ -159,7 +159,7 @@ class TareaController extends Controller
 
 /**
  * @OA\Get(
- *     path="/modulos-formativos/{parent_id}/tareas/{id}",
+ *     path="/criterios-evaluacion/{parent_id}/tareas/{id}",
  *     tags={"Tareas"},
  *     summary="Show a specific tarea",
  *     description="Retrieve a specific tarea by ID",
@@ -167,7 +167,7 @@ class TareaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent ModuloFormativo",
+ *         description="ID of the parent CriterioEvaluacion",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -209,7 +209,7 @@ class TareaController extends Controller
 
 /**
  * @OA\Put(
- *     path="/modulos-formativos/{parent_id}/tareas/{id}",
+ *     path="/criterios-evaluacion/{parent_id}/tareas/{id}",
  *     tags={"Tareas"},
  *     summary="Update a specific tarea",
  *     description="Update a specific tarea by ID",
@@ -217,7 +217,7 @@ class TareaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent ModuloFormativo",
+ *         description="ID of the parent CriterioEvaluacion",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -230,7 +230,7 @@ class TareaController extends Controller
  *     ),
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/UpdatePlanificacionCriterioRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/UpdateTareaRequest")
  *     ),
  *     @OA\Response(
  *         response=200,
@@ -265,7 +265,7 @@ class TareaController extends Controller
 
 /**
  * @OA\Delete(
- *     path="/modulos-formativos/{parent_id}/tareas/{id}",
+ *     path="/criterios-evaluacion/{parent_id}/tareas/{id}",
  *     tags={"Tareas"},
  *     summary="Delete a specific tarea",
  *     description="Delete a specific tarea by ID",

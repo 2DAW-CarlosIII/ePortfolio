@@ -6,12 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @OA\Schema(
- *     schema="UpdatePlanificacionCriterioRequest",
+ *     schema="UpdateTareaRequest",
  *     type="object",
- *     title="Update Planificación Criterio Request",
- *     description="Datos para actualizar una Planificación de Criterio",
+ *     title="Update Tarea Request",
+ *     description="Datos para actualizar una Tarea",
  *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
- *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
  *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
  *     @OA\Property(property="fecha_cierre", type="string", format="date", description="Fecha de cierre"),
  *     @OA\Property(property="activo", type="boolean", description="Estado activo"),
