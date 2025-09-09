@@ -7887,15 +7887,15 @@
                 "type": "object"
             },
             "Tarea": {
-                "title": "Planificación de Criterio",
-                "description": "Modelo de Planificación de Criterio",
+                "title": "Tarea",
+                "description": "Modelo de Tarea",
                 "properties": {
                     "id": {
                         "description": "ID único",
                         "type": "integer"
                     },
-                    "modulo_formativo_id": {
-                        "description": "ID del módulo formativo",
+                    "criterio_evaluacion_id": {
+                        "description": "ID del criterio_evaluacion",
                         "type": "integer"
                     },
                     "fecha_apertura": {
