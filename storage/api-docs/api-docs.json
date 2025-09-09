@@ -4291,8 +4291,8 @@
                 "tags": [
                     "Tareas"
                 ],
-                "summary": "List todas las tareas",
-                "description": "Retrieve a paginated list of tareas",
+                "summary": "List todas las tareas correspondientes a un criterio de evaluación",
+                "description": "Retrieve a paginated list of tareas for a specific criterio de evaluación",
                 "operationId": "d12bb292a8d6c886b6dd44a34a595f02",
                 "parameters": [
                     {
@@ -4436,6 +4436,111 @@
                     },
                     "422": {
                         "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/resultados-aprendizaje/{parent_id}/tareas": {
+            "get": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "List todas las tareas correspondientes a un resultado de aprendizaje",
+                "description": "Retrieve a paginated list of tareas for a specific resultado de aprendizaje",
+                "operationId": "5f3d7f2ed2ff3b3183b43e6d68dc31bb",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ResultadoAprendizaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "description": "Field to sort by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "direction of sorting (asc or desc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Tarea"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -7046,10 +7151,6 @@
                     "activo"
                 ],
                 "properties": {
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio de evaluación",
-                        "type": "integer"
-                    },
                     "fecha_apertura": {
                         "description": "Fecha de apertura",
                         "type": "string",
@@ -7406,10 +7507,6 @@
                 "title": "Update Tarea Request",
                 "description": "Datos para actualizar una Tarea",
                 "properties": {
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio de evaluación",
-                        "type": "integer"
-                    },
                     "fecha_apertura": {
                         "description": "Fecha de apertura",
                         "type": "string",
@@ -7894,9 +7991,12 @@
                         "description": "ID único",
                         "type": "integer"
                     },
-                    "criterio_evaluacion_id": {
-                        "description": "ID del criterio_evaluacion",
-                        "type": "integer"
+                    "criterios_evaluacion_id": {
+                        "description": "ID de los criterios_evaluacion",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
                     },
                     "fecha_apertura": {
                         "description": "Fecha de apertura",

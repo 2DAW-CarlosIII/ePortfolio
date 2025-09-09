@@ -59,6 +59,8 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         'criterios-evaluacion' => 'criterioEvaluacion',
         'tareas' => 'tarea'
     ]);
+    Route::get('resultados-aprendizaje/{parent_id}/tareas', [App\Http\Controllers\Api\TareaController::class, 'tareasPorResultadoAprendizaje'])
+        ->name('api.resultados-aprendizaje.tareas');
     Route::apiResource('tareas.evidencias', App\Http\Controllers\Api\EvidenciaController::class);
 
     // User management routes (if needed)

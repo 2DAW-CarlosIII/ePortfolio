@@ -26,8 +26,8 @@ class TareaController extends Controller
  * @OA\Get(
  *     path="/criterios-evaluacion/{parent_id}/tareas",
  *     tags={"Tareas"},
- *     summary="List todas las tareas",
- *     description="Retrieve a paginated list of tareas",
+ *     summary="List todas las tareas correspondientes a un criterio de evaluación",
+ *     description="Retrieve a paginated list of tareas for a specific criterio de evaluación",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
  *         name="parent_id",
@@ -114,6 +114,98 @@ class TareaController extends Controller
     }
 
 /**
+ * @OA\Get(
+ *     path="/resultados-aprendizaje/{parent_id}/tareas",
+ *     tags={"Tareas"},
+ *     summary="List todas las tareas correspondientes a un resultado de aprendizaje",
+ *     description="Retrieve a paginated list of tareas for a specific resultado de aprendizaje",
+ *     security={{"sanctum":{}}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ResultadoAprendizaje",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         description="Search term",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=15)
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_by",
+ *         in="query",
+ *         description="Field to sort by",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_direction",
+ *         in="query",
+ *         description="direction of sorting (asc or desc)",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Tarea")),
+ *             @OA\Property(property="links", type="object"),
+ *             @OA\Property(property="meta", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+    public function tareasPorResultadoAprendizaje(Request $request, $parent_id)
+    {
+        $query = Tarea::whereHas('criterios_evaluacion', function (Builder $query) use ($parent_id) {
+            $query->where('resultado_aprendizaje_id', $parent_id);
+        });
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $tareas = $query->paginate($perPage);
+
+        return TareaResource::collection($tareas);
+    }
+
+/**
  * @OA\Post(
  *     path="/criterios-evaluacion/{parent_id}/tareas",
  *     tags={"Tareas"},
@@ -149,7 +241,7 @@ class TareaController extends Controller
         $data = $request->validated();
         $data['criterio_evaluacion_id'] = $criterioEvaluacion->id;
 
-        $tarea = Tarea::create($data);
+        $tarea = $criterioEvaluacion->tareas()->create($data);
 
         // Cargar relaciones para la respuesta
         $tarea->load($this->getEagerLoadRelations());

@@ -11,7 +11,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *     title="Store Tarea Request",
  *     description="Datos requeridos para crear una Tarea de un CriterioEvaluacion",
  *     required={"fecha_apertura", "fecha_cierre", "activo"},
- *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio de evaluación"),
  *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
  *     @OA\Property(property="fecha_cierre", type="string", format="date", description="Fecha de cierre"),
  *     @OA\Property(property="activo", type="boolean", description="Estado activo"),

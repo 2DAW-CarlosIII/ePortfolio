@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  *     title="Tarea",
  *     description="Modelo de Tarea",
  *     @OA\Property(property="id", type="integer", description="ID único"),
- *     @OA\Property(property="criterio_evaluacion_id", type="integer", description="ID del criterio_evaluacion"),
+ *     @OA\Property(property="criterios_evaluacion_id", type="array", @OA\Items(type="integer"), description="ID de los criterios_evaluacion"),
  *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
  *     @OA\Property(property="fecha_cierre", type="string", format="date", description="Fecha de cierre"),
  *     @OA\Property(property="activo", type="boolean", description="Estado activo"),
@@ -39,7 +39,7 @@ class Tarea extends Model
         'fecha_cierre' => 'date',
         'activo' => 'boolean'
     ];
-    public function criterio_evaluacion()
+    public function criterios_evaluacion()
     {
         return $this->belongsToMany(CriterioEvaluacion::class, 'criterios_tareas', 'tarea_id', 'criterio_evaluacion_id');
     }

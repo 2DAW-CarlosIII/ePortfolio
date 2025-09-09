@@ -14,15 +14,13 @@ class TareaResource extends JsonResource
     {
         return [
             'id' => (int) $this->id,
-            'criterio_evaluacion_id' => $this->criterio_evaluacion_id,
+            'criterios_evaluacion_id' => $this->criterios_evaluacion->pluck('id'),
             'fecha_apertura' => $this->fecha_apertura?->format('Y-m-d'),
             'fecha_cierre' => $this->fecha_cierre?->format('Y-m-d'),
             'activo' => (bool) $this->activo,
             'observaciones' => $this->observaciones,
             'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
-            'criterio_evaluacion' => new CriteriosEvaluacionResource($this->whenLoaded('criterio_evaluacion')),
-            'modulo_formativo' => new ModuloFormativoResource($this->whenLoaded('modulo_formativo'))
+            'updated_at' => $this->updated_at?->toISOString()
         ];
     }
 
