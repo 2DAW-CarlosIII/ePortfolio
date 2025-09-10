@@ -43,7 +43,7 @@ class TareaApiTest extends FeatureTestCase
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'criterios_evaluacion_id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
+                         '*' => ['id', 'criterios_evaluacion', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -68,7 +68,7 @@ class TareaApiTest extends FeatureTestCase
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'criterios_evaluacion_id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
+                     'data' => ['id', 'criterios_evaluacion', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones', 'created_at', 'updated_at']
                  ]);
 
         $this->assertDatabaseHas('tareas', [

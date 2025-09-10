@@ -7991,11 +7991,12 @@
                         "description": "ID único",
                         "type": "integer"
                     },
-                    "criterios_evaluacion_id": {
+                    "criterios_evaluacion": {
                         "description": "ID de los criterios_evaluacion",
                         "type": "array",
                         "items": {
-                            "type": "integer"
+                            "schema": "CriterioEvaluacion",
+                            "type": "object"
                         }
                     },
                     "fecha_apertura": {
