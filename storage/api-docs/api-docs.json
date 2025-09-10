@@ -7507,6 +7507,13 @@
                 "title": "Update Tarea Request",
                 "description": "Datos para actualizar una Tarea",
                 "properties": {
+                    "criterios_evaluacion_id": {
+                        "description": "ID de los criterios_evaluacion",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
                     "fecha_apertura": {
                         "description": "Fecha de apertura",
                         "type": "string",

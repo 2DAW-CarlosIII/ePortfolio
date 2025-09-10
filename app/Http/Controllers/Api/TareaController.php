@@ -349,6 +349,14 @@ class TareaController extends Controller
 
         $tarea->update($request->validated());
 
+        // Eliminar todas las asociaciones existentes con criterios de evaluación
+        $tarea->criterios_evaluacion()->detach();
+
+        // Asociar nuevamente con los criterios de evaluación proporcionados en el array criterios_evaluacion_id de la solicitud
+        if ($request->has('criterios_evaluacion_id')) {
+            $tarea->criterios_evaluacion()->attach($request->input('criterios_evaluacion_id'));
+        }
+
         // Cargar relaciones para la respuesta
         $tarea->load($this->getEagerLoadRelations());
 
