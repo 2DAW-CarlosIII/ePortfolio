@@ -36,7 +36,7 @@ class UpdateTareaRequest extends FormRequest
     {
         return [
             'fecha_apertura' => ['sometimes', 'required', 'date'],
-            'fecha_cierre' => ['sometimes', 'required', 'date', 'after:today'],
+            'fecha_cierre' => ['sometimes', 'required', 'date', 'after_or_equal:today'],
             'activo' => ['sometimes', 'required', 'boolean'],
             'observaciones' => ['sometimes', 'required', 'string', 'max:65535']
         ];

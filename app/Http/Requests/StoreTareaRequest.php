@@ -35,7 +35,7 @@ class StoreTareaRequest extends FormRequest
     {
         return [
             'fecha_apertura' => ['required', 'date'],
-            'fecha_cierre' => ['required', 'date', 'after:today'],
+            'fecha_cierre' => ['required', 'date', 'after_or_equal:fecha_apertura'],
             'activo' => ['required', 'boolean'],
             'observaciones' => ['string', 'max:65535']
         ];

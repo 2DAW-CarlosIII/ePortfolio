@@ -38,7 +38,7 @@ class StoreAsignacionRevisionRequest extends FormRequest
             // 'evidencia_id' => ['required', 'integer', 'exists:evidencias,id'],
             'revisor_id' => ['required', 'integer', 'exists:users,id'],
             // 'asignado_por_id' => ['required', 'integer', 'exists:users,id'],
-            'fecha_limite' => ['required', 'date', 'after:today'],
+            'fecha_limite' => ['required', 'date', 'after_or_equal:today'],
             'estado' => ['required', 'in:pendiente,completada,expirada']
         ];
     }

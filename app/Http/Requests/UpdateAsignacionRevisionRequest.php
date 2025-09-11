@@ -37,7 +37,7 @@ class UpdateAsignacionRevisionRequest extends FormRequest
             'evidencia_id' => ['sometimes', 'required', 'integer', 'exists:evidencias,id'],
             'revisor_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
             'asignado_por_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
-            'fecha_limite' => ['sometimes', 'required', 'date', 'after:today'],
+            'fecha_limite' => ['sometimes', 'required', 'date', 'after_or_equal:today'],
             'estado' => ['sometimes', 'required', 'in:pendiente,completada,expirada']
         ];
     }
