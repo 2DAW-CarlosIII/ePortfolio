@@ -56,6 +56,7 @@ class TareaApiTest extends FeatureTestCase
     {
         // Arrange
         $data = [
+            'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
             'fecha_apertura' => now()->format('Y-m-d H:i:s'),
             'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s'),
             'activo' => $this->faker->boolean(),
@@ -63,7 +64,7 @@ class TareaApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
+        $response = $this->postJson("/api/v1/tareas", $data);
 
         // Assert
         $response->assertCreated()
@@ -102,6 +103,7 @@ class TareaApiTest extends FeatureTestCase
         $this->criterioEvaluacion->tareas()->attach($tarea->id);
 
         $updateData = [
+            'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
             'fecha_apertura' => now()->format('Y-m-d'),
             'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'activo' => $this->faker->boolean(),
@@ -109,7 +111,7 @@ class TareaApiTest extends FeatureTestCase
         ];
 
         // Act
-        $response = $this->putJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas/{$tarea->id}", $updateData);
+        $response = $this->putJson("/api/v1/tareas/{$tarea->id}", $updateData);
 
         // Assert
         $response->assertOk()
@@ -167,6 +169,7 @@ class TareaApiTest extends FeatureTestCase
     {
         // Arrange
         $data = [
+            'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
             'fecha_apertura' => now()->format('Y-m-d'),
             'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'activo' => $this->faker->boolean(),
@@ -175,7 +178,7 @@ class TareaApiTest extends FeatureTestCase
         unset($data['fecha_apertura']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
+        $response = $this->postJson("/api/v1/tareas", $data);
 
         // Assert
         $response->assertUnprocessable()
@@ -185,6 +188,7 @@ class TareaApiTest extends FeatureTestCase
     {
         // Arrange
         $data = [
+            'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
             'fecha_apertura' => now()->format('Y-m-d'),
             'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'activo' => $this->faker->boolean(),
@@ -193,7 +197,7 @@ class TareaApiTest extends FeatureTestCase
         unset($data['fecha_cierre']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
+        $response = $this->postJson("/api/v1/tareas", $data);
 
         // Assert
         $response->assertUnprocessable()
@@ -203,6 +207,7 @@ class TareaApiTest extends FeatureTestCase
     {
         // Arrange
         $data = [
+            'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
             'fecha_apertura' => now()->format('Y-m-d'),
             'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
             'activo' => $this->faker->boolean(),
@@ -211,7 +216,7 @@ class TareaApiTest extends FeatureTestCase
         unset($data['activo']);
 
         // Act
-        $response = $this->postJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas", $data);
+        $response = $this->postJson("/api/v1/tareas", $data);
 
         // Assert
         $response->assertUnprocessable()

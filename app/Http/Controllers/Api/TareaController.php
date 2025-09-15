@@ -207,18 +207,11 @@ class TareaController extends Controller
 
 /**
  * @OA\Post(
- *     path="/criterios-evaluacion/{parent_id}/tareas",
+ *     path="/tareas",
  *     tags={"Tareas"},
  *     summary="Create a new tarea",
  *     description="Create a new tarea resource",
  *     security={{"sanctum":{}}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent CriterioEvaluacion",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(ref="#/components/schemas/StoreTareaRequest")
@@ -236,12 +229,15 @@ class TareaController extends Controller
  * )
  */
 
-    public function store(StoreTareaRequest $request, CriterioEvaluacion $criterioEvaluacion)
+    public function store(StoreTareaRequest $request)
     {
         $data = $request->validated();
-        $data['criterio_evaluacion_id'] = $criterioEvaluacion->id;
 
-        $tarea = $criterioEvaluacion->tareas()->create($data);
+        $tarea = Tarea::create($data);
+        // Asociar con los criterios de evaluación proporcionados en el array criterios_evaluacion_id de la solicitud
+        if ($request->has('criterios_evaluacion_id')) {
+            $tarea->criterios_evaluacion()->attach($request->input('criterios_evaluacion_id'));
+        }
 
         // Cargar relaciones para la respuesta
         $tarea->load($this->getEagerLoadRelations());
@@ -301,18 +297,11 @@ class TareaController extends Controller
 
 /**
  * @OA\Put(
- *     path="/criterios-evaluacion/{parent_id}/tareas/{id}",
+ *     path="/tareas/{id}",
  *     tags={"Tareas"},
  *     summary="Update a specific tarea",
  *     description="Update a specific tarea by ID",
  *     security={{"sanctum":{}}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent CriterioEvaluacion",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -338,15 +327,8 @@ class TareaController extends Controller
  * )
  */
 
-    public function update(UpdateTareaRequest $request, CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
+    public function update(UpdateTareaRequest $request, Tarea $tarea)
     {
-        $tareaUpdate = $criterioEvaluacion->whereHas('tareas', function (Builder $query) use ($tarea) {
-            $query->where('id', $tarea->id);
-        })->first();
-        if(!$tareaUpdate) {
-            return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
-        }
-
         $tarea->update($request->validated());
 
         // Eliminar todas las asociaciones existentes con criterios de evaluación
@@ -381,7 +363,7 @@ class TareaController extends Controller
  *        response=204,
  *       description="Resource deleted successfully",
  *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string", example="Tareas eliminado correctamente")
+ *             @OA\Property(property="message", type="string", example="Tarea eliminada correctamente")
  *         )
  *     ),
  *     @OA\Response(response=404, description="Resource not found"),

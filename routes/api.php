@@ -55,10 +55,16 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('evidencias.comentarios', App\Http\Controllers\Api\ComentarioController::class);
     Route::apiResource('users.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters(['users' => 'user']);
     Route::apiResource('modulos-formativos.matriculas', App\Http\Controllers\Api\MatriculaController::class)->parameters(['modulos-formativos' => 'moduloFormativo']);
-    Route::apiResource('criterios-evaluacion.tareas', App\Http\Controllers\Api\TareaController::class)->parameters([
-        'criterios-evaluacion' => 'criterioEvaluacion',
-        'tareas' => 'tarea'
-    ]);
+    Route::apiResource('criterios-evaluacion.tareas', App\Http\Controllers\Api\TareaController::class)
+        ->except(['store', 'update'])
+        ->parameters([
+            'criterios-evaluacion' => 'criterioEvaluacion',
+            'tareas' => 'tarea'
+        ]);
+    Route::post('tareas', [App\Http\Controllers\Api\TareaController::class, 'store'])
+        ->name('api.tareas.store');
+    Route::put('tareas/{tarea}', [App\Http\Controllers\Api\TareaController::class, 'update'])
+        ->name('api.tareas.update');
     Route::get('resultados-aprendizaje/{parent_id}/tareas', [App\Http\Controllers\Api\TareaController::class, 'tareasPorResultadoAprendizaje'])
         ->name('api.resultados-aprendizaje.tareas');
     Route::apiResource('tareas.evidencias', App\Http\Controllers\Api\EvidenciaController::class);
