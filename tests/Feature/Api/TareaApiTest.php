@@ -120,7 +120,6 @@ class TareaApiTest extends FeatureTestCase
                  ]);
 
         $tarea->refresh();
-dd($updateData['fecha_apertura'], $tarea->fecha_apertura->format('Y-m-d H:i:s'));
         $this->assertEquals($updateData['fecha_apertura'], $tarea->fecha_apertura->format('Y-m-d H:i:s'));
         $this->assertEquals($updateData['fecha_cierre'], $tarea->fecha_cierre->format('Y-m-d H:i:s'));
         $this->assertEquals($updateData['activo'], $tarea->activo);
@@ -131,16 +130,13 @@ dd($updateData['fecha_apertura'], $tarea->fecha_apertura->format('Y-m-d H:i:s'))
     {
         // Arrange
         $tarea = Tarea::factory()->create();
-        $this->criterioEvaluacion->tareas()->attach($tarea->id);
 
         // Act
-        $response = $this->deleteJson("/api/v1/criterios-evaluacion/{$this->criterioEvaluacion->id}/tareas/{$tarea->id}");
+        $response = $this->deleteJson("/api/v1/tareas/{$tarea->id}");
 
         // Assert
-        $response->assertOk()
-                 ->assertJson([
-                     'message' => 'Tareas eliminado correctamente'
-                 ]);
+        $response->assertOk();
+        $this->assertDatabaseMissing('tareas', ['id' => $tarea->id]);
     }
 
     public function test_can_paginate_tareas()

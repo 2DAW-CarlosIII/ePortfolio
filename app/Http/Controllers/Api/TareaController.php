@@ -347,18 +347,18 @@ class TareaController extends Controller
 
 /**
  * @OA\Delete(
- *     path="/criterios-evaluacion/{parent_id}/tareas/{id}",
+ *     path="/tareas/{id}",
  *     tags={"Tareas"},
  *     summary="Delete a specific tarea",
  *     description="Delete a specific tarea by ID",
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
- *         name="parent_id",
+ *         name="id",
  *         in="path",
- *         description="ID of the criterio de evaluación",
- *      required=true,
- *      @OA\Schema(type="integer")
- *   ),
+ *         description="ID of the tarea",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
  *    @OA\Response(
  *        response=204,
  *       description="Resource deleted successfully",
@@ -372,15 +372,8 @@ class TareaController extends Controller
  * )
  */
 
-    public function destroy(CriterioEvaluacion $criterioEvaluacion, Tarea $tarea)
+    public function destroy(Tarea $tarea)
     {
-        $tareaDestroy = $criterioEvaluacion->whereHas('tareas', function (Builder $query) use ($tarea) {
-            $query->where('id', $tarea->id);
-        })->first();
-        if(!$tareaDestroy) {
-            return response()->json(['message' => 'El criterio de evaluación no coincide con el planificacion criterio'], 404);
-        }
-
         $tarea->delete();
 
         return response()->json([
