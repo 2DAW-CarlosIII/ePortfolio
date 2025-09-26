@@ -100,7 +100,7 @@ class MatriculaController extends Controller
         }
 
         // Eager loading de relaciones comunes
-        $query->with($this->getEagerLoadRelations());
+        $query->with('user', 'modulo_formativo');
 
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
@@ -188,7 +188,7 @@ class MatriculaController extends Controller
         $matricula = Matricula::create($data);
 
         // Cargar relaciones para la respuesta
-        $matricula->load($this->getEagerLoadRelations());
+        $matricula->load('user', 'modulo_formativo');
 
         return new MatriculaResource($matricula);
     }
@@ -235,7 +235,7 @@ class MatriculaController extends Controller
         }
 
         // Cargar relaciones
-        $matricula->load($this->getEagerLoadRelations());
+        $matricula->load('user', 'modulo_formativo');
 
         return new MatriculaResource($matricula);
     }

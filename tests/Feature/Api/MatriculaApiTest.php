@@ -56,7 +56,7 @@ class MatriculaApiTest extends FeatureTestCase
         $response->assertOk()
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'estudiante_id', 'modulo_formativo_id', 'created_at', 'updated_at']
+                         '*' => ['id', 'estudiante', 'modulo_formativo', 'created_at', 'updated_at']
                      ],
                      'links',
                      'meta'
@@ -112,7 +112,7 @@ class MatriculaApiTest extends FeatureTestCase
         // Assert
         $response->assertCreated()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'modulo_formativo_id', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante', 'modulo_formativo', 'created_at', 'updated_at']
                  ]);
     }
 
@@ -129,7 +129,7 @@ class MatriculaApiTest extends FeatureTestCase
         // Assert
         $response->assertOk()
                  ->assertJsonStructure([
-                     'data' => ['id', 'estudiante_id', 'modulo_formativo_id', 'created_at', 'updated_at']
+                     'data' => ['id', 'estudiante', 'modulo_formativo', 'created_at', 'updated_at']
                  ]);
     }
 

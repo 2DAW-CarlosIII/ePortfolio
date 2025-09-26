@@ -7837,13 +7837,15 @@
                         "description": "ID único",
                         "type": "integer"
                     },
-                    "estudiante_id": {
+                    "estudiante": {
+                        "schema": "User",
                         "description": "ID del estudiante",
-                        "type": "integer"
+                        "type": "object"
                     },
-                    "modulo_formativo_id": {
+                    "modulo_formativo": {
+                        "schema": "ModuloFormativo",
                         "description": "ID del módulo formativo",
-                        "type": "integer"
+                        "type": "object"
                     },
                     "created_at": {
                         "description": "Fecha de creación",

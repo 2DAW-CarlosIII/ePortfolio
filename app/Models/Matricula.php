@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  *     title="Matrícula",
  *     description="Modelo de Matrícula",
  *     @OA\Property(property="id", type="integer", description="ID único"),
- *     @OA\Property(property="estudiante_id", type="integer", description="ID del estudiante"),
- *     @OA\Property(property="modulo_formativo_id", type="integer", description="ID del módulo formativo"),
+ *     @OA\Property(property="estudiante", type="object", schema="User", description="ID del estudiante"),
+ *     @OA\Property(property="modulo_formativo", type="object", schema="ModuloFormativo", description="ID del módulo formativo"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Fecha de actualización"),
  * )
@@ -34,7 +34,7 @@ class Matricula extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'estudiante_id');
     }
     public function modulo_formativo()
     {

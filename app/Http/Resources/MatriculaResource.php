@@ -14,12 +14,10 @@ class MatriculaResource extends JsonResource
     {
         return [
             'id' => (int) $this->id,
-            'estudiante_id' => $this->estudiante_id,
-            'modulo_formativo_id' => $this->modulo_formativo_id,
+            'estudiante' => new UserResource($this->whenLoaded('user')),
+            'modulo_formativo' => new ModuloFormativoResource($this->whenLoaded('modulo_formativo')),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
-            'user' => new UserResource($this->whenLoaded('user')),
-            'modulo_formativo' => new ModuloFormativoResource($this->whenLoaded('modulo_formativo')),
             'estado_badge' => [
                 'text' => match($this->estado) {
                     'activa' => 'Activa',
