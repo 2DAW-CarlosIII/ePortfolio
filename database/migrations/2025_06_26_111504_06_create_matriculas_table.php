@@ -15,6 +15,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('modulo_formativo_id')->references('id')->on('modulos_formativos')->onDelete('cascade');
+            $table->unique(['estudiante_id', 'modulo_formativo_id']);
         });
     }
 
