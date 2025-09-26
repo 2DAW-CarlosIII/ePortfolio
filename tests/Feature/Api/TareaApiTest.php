@@ -104,8 +104,8 @@ class TareaApiTest extends FeatureTestCase
 
         $updateData = [
             'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
-            'fecha_apertura' => now()->format('Y-m-d'),
-            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
+            'fecha_apertura' => now()->format('Y-m-d H:i:s'),
+            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s'),
             'activo' => $this->faker->boolean(),
             'observaciones' => $this->faker->paragraph()
         ];
@@ -120,8 +120,9 @@ class TareaApiTest extends FeatureTestCase
                  ]);
 
         $tarea->refresh();
-        $this->assertEquals($updateData['fecha_apertura'], $tarea->fecha_apertura->format('Y-m-d'));
-        $this->assertEquals($updateData['fecha_cierre'], $tarea->fecha_cierre->format('Y-m-d'));
+dd($updateData['fecha_apertura'], $tarea->fecha_apertura->format('Y-m-d H:i:s'));
+        $this->assertEquals($updateData['fecha_apertura'], $tarea->fecha_apertura->format('Y-m-d H:i:s'));
+        $this->assertEquals($updateData['fecha_cierre'], $tarea->fecha_cierre->format('Y-m-d H:i:s'));
         $this->assertEquals($updateData['activo'], $tarea->activo);
         $this->assertEquals($updateData['observaciones'], $tarea->observaciones);
     }
@@ -170,8 +171,8 @@ class TareaApiTest extends FeatureTestCase
         // Arrange
         $data = [
             'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
-            'fecha_apertura' => now()->format('Y-m-d'),
-            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
+            'fecha_apertura' => now()->format('Y-m-d H:i:s'),
+            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s'),
             'activo' => $this->faker->boolean(),
             'observaciones' => $this->faker->paragraph()
         ];
@@ -189,8 +190,8 @@ class TareaApiTest extends FeatureTestCase
         // Arrange
         $data = [
             'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
-            'fecha_apertura' => now()->format('Y-m-d'),
-            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
+            'fecha_apertura' => now()->format('Y-m-d H:i:s'),
+            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s'),
             'activo' => $this->faker->boolean(),
             'observaciones' => $this->faker->paragraph()
         ];
@@ -208,8 +209,8 @@ class TareaApiTest extends FeatureTestCase
         // Arrange
         $data = [
             'criterios_evaluacion_id' => [$this->criterioEvaluacion->id],
-            'fecha_apertura' => now()->format('Y-m-d'),
-            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
+            'fecha_apertura' => now()->format('Y-m-d H:i:s'),
+            'fecha_cierre' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s'),
             'activo' => $this->faker->boolean(),
             'observaciones' => $this->faker->paragraph()
         ];

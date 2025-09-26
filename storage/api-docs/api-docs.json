@@ -8001,12 +8001,12 @@
                     "fecha_apertura": {
                         "description": "Fecha de apertura",
                         "type": "string",
-                        "format": "date"
+                        "format": "date-time"
                     },
                     "fecha_cierre": {
                         "description": "Fecha de cierre",
                         "type": "string",
-                        "format": "date"
+                        "format": "date-time"
                     },
                     "activo": {
                         "description": "Estado activo",

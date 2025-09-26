@@ -15,8 +15,8 @@ class TareaFactory extends Factory
     public function definition(): array
     {
         return [
-            'fecha_apertura' => fake()->date(),
-            'fecha_cierre' => fake()->date(),
+            'fecha_apertura' => fake()->date('Y-m-d H:i:s'),
+            'fecha_cierre' => fake()->date('Y-m-d H:i:s', '+1 month'),
             'activo' => fake()->boolean(),
             'observaciones' => fake()->paragraph()
         ];

@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('tareas', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_apertura');
-            $table->date('fecha_cierre');
+            $table->datetime('fecha_apertura');
+            $table->datetime('fecha_cierre');
             $table->boolean('activo')->default(false);
             $table->text('observaciones')->nullable();
             $table->timestamps();

@@ -15,8 +15,8 @@ class TareaResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'criterios_evaluacion' => $this->criterios_evaluacion,
-            'fecha_apertura' => $this->fecha_apertura?->format('Y-m-d'),
-            'fecha_cierre' => $this->fecha_cierre?->format('Y-m-d'),
+            'fecha_apertura' => $this->fecha_apertura?->format('Y-m-d H:i:s'),
+            'fecha_cierre' => $this->fecha_cierre?->format('Y-m-d H:i:s'),
             'activo' => (bool) $this->activo,
             'observaciones' => $this->observaciones,
             'created_at' => $this->created_at?->toISOString(),

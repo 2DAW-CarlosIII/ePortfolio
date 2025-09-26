@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  *          @OA\Items(type="object", schema="CriterioEvaluacion"),
  *          description="ID de los criterios_evaluacion"
  *     ),
- *     @OA\Property(property="fecha_apertura", type="string", format="date", description="Fecha de apertura"),
- *     @OA\Property(property="fecha_cierre", type="string", format="date", description="Fecha de cierre"),
+ *     @OA\Property(property="fecha_apertura", type="string", format="date-time", description="Fecha de apertura"),
+ *     @OA\Property(property="fecha_cierre", type="string", format="date-time", description="Fecha de cierre"),
  *     @OA\Property(property="activo", type="boolean", description="Estado activo"),
  *     @OA\Property(property="observaciones", type="string", description="Observaciones"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
@@ -38,8 +38,8 @@ class Tarea extends Model
         'observaciones'
     ];
     protected $casts = [
-        'fecha_apertura' => 'date',
-        'fecha_cierre' => 'date',
+        'fecha_apertura' => 'datetime',
+        'fecha_cierre' => 'datetime',
         'activo' => 'boolean'
     ];
     public function criterios_evaluacion()
