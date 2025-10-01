@@ -97,6 +97,31 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
+     *     path="/user",
+     *     tags={"User"},
+     *     summary="Show authenticated user",
+     *     description="Retrieve the details of the authenticated user.",
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", ref="#/components/schemas/User")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Resource not found"),
+     *     @OA\Response(response=401, description="Unauthenticated"),
+     *     @OA\Response(response=403, description="Forbidden")
+     * )
+     */
+
+    public function profile()
+    {
+        return auth()->user();
+    }
+
+    /**
+     * @OA\Get(
      *     path="/users/{id}",
      *     tags={"User"},
      *     summary="Show a specific user",
