@@ -12,9 +12,10 @@ use Illuminate\Foundation\Http\FormRequest;
  *     description="Datos requeridos para crear una Evaluación de Evidencia",
  *     required={"puntuacion", "estado"},
  *     @OA\Property(property="evidencia_id", type="integer", description="ID de la evidencia"),
- *     @OA\Property(property="user_id", type="integer", description="ID del usuario que comenta"),
- *     @OA\Property(property="contenido", type="string", description="Contenido del comentario"),
- *     @OA\Property(property="tipo", type="string", enum={"feedback", "pregunta", "sugerencia"}, description="Tipo de comentario"),
+ *     @OA\Property(property="user_id", type="integer", description="ID del usuario que comenta")
+ *    @OA\Property(property="puntuacion", type="number", format="decimal", description="Puntuación asignada a la evidencia", example=8.5),
+ *    @OA\Property(property="estado", type="string", enum={"pendiente", "aprobada", "rechazada"}, description="Estado de la evaluación", example="aprobada"),
+ *   @OA\Property(property="observaciones", type="string", description="Observaciones adicionales sobre la evaluación", example="Buen trabajo, pero se pueden mejorar algunos aspectos.")
  * )
  */
 
