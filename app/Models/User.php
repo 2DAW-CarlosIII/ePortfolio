@@ -63,4 +63,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class, 'estudiante_id');
+    }
 }

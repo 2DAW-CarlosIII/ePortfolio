@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEvidenciaRequest;
 use App\Http\Requests\UpdateEvidenciaRequest;
 use App\Http\Resources\EvidenciaResource;
 use App\Models\Tarea;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -87,6 +88,111 @@ class EvidenciaController extends Controller
     public function index(Request $request, Tarea $tarea)
     {
         $query = $tarea->evidencias()->newQuery();
+
+        // Filtro de búsqueda
+        if ($request->has('search') && $request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('descripcion', 'like', "%$search%");
+            });
+        }
+
+        // Filtros adicionales
+        if ($request->has('estado') && $request->filled('estado')) {
+            $query->where('estado', $request->get('estado'));
+        }
+
+        if ($request->has('activo') && $request->filled('activo')) {
+            $query->where('activo', $request->boolean('activo'));
+        }
+
+        // Eager loading de relaciones comunes
+        $query->with($this->getEagerLoadRelations());
+
+        // Ordenamiento
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $query->orderBy($sortBy, $sortDirection);
+
+        // Paginación
+        $perPage = $request->get('per_page', 15);
+        $evidencias = $query->paginate($perPage);
+
+        return EvidenciaResource::collection($evidencias);
+    }
+
+
+
+/**
+ * @OA\Get(
+ *     path="/users/{parent_id}/evidencias",
+ *     tags={"Evidencia"},
+ *     summary="List all evidencias from a user",
+ *     description="Retrieve a paginated list of evidencias",
+ *     security={{"sanctum":{}}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent User",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         description="Search term",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         description="Items per page",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=15)
+ *     ),
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="query",
+ *         description="Page number",
+ *         required=false,
+ *         @OA\Schema(type="integer", default=1)
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_by",
+ *         in="query",
+ *         description="Field to sort by",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_direction",
+ *         in="query",
+ *         description="direction of sorting (asc or desc)",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Evidencia")),
+ *             @OA\Property(property="links", type="object"),
+ *             @OA\Property(property="meta", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+    public function userEvidencias(Request $request, $estudiante_id)
+    {
+        $estudiante = User::find($estudiante_id);
+        if (!$estudiante) {
+            return response()->json(['message' => 'Estudiante no encontrado'], 404);
+        }
+        $query = $estudiante->evidencias()->newQuery();
 
         // Filtro de búsqueda
         if ($request->has('search') && $request->filled('search')) {

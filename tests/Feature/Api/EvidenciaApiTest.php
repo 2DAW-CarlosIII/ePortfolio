@@ -49,6 +49,37 @@ class EvidenciaApiTest extends FeatureTestCase
         $this->assertCount(3, $response->json('data'));
     }
 
+    public function test_can_list_evidencias_of_user()
+    {
+        $estudiante = User::factory()->create();
+        $otroEstudiante = User::factory()->create();
+        // Arrange
+        Evidencia::factory()->count(3)->create([
+                'tarea_id' => $this->tarea->id,
+                'estudiante_id' => $estudiante->id
+            ]);
+        // Arrange
+        Evidencia::factory()->count(3)->create([
+                'tarea_id' => $this->tarea->id,
+                'estudiante_id' => $otroEstudiante->id
+            ]);
+
+        // Act
+        $response = $this->getJson("/api/v1/users/{$estudiante->id}/evidencias");
+
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data' => [
+                         '*' => ['id', 'estudiante_id', 'tarea_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
+                     ],
+                     'links',
+                     'meta'
+                 ]);
+
+        $this->assertCount(3, $response->json('data'));
+    }
+
     public function test_can_create_evidencia()
     {
         // Arrange

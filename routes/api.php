@@ -86,6 +86,8 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         ->name('api.users.estudiantes');
     Route::get('user', [App\Http\Controllers\Api\UserController::class, 'profile'])
         ->name('api.users.profile');
+    Route::get('users/{user}/evidencias', [App\Http\Controllers\Api\EvidenciaController::class, 'userEvidencias'])
+        ->name('api.users.evidencias');
 
     require __DIR__.'/import.php';
 });
