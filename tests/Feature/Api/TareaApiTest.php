@@ -126,6 +126,44 @@ class TareaApiTest extends FeatureTestCase
         $this->assertEquals($updateData['observaciones'], $tarea->observaciones);
     }
 
+    public function test_asignacion_aleatoria_generates_balanced_assignments()
+    {
+        // Arrange
+        $tarea = Tarea::factory()->create();
+        $this->criterioEvaluacion->tareas()->attach($tarea->id);
+
+        // Crear 20 usuarios
+        $estudiantes = User::factory()->count(20)->create();
+
+        // Crear 15 evidencias, cada una entregada por un estudiante distinto
+        $evidencias = [];
+        foreach ($estudiantes->take(15) as $estudiante) {
+            $evidencias[] = $tarea->evidencias()->create([
+                'estudiante_id' => $estudiante->id,
+                'url' => $this->faker->url(),
+                'descripcion' => $this->faker->sentence(),
+                'estado_validacion' => 'pendiente'
+            ]);
+        }
+
+        // Act: realizar la petición POST al endpoint de asignación aleatoria
+        $response = $this->postJson("/api/v1/tareas/{$tarea->id}/asignacion-aleatoria");
+
+        // Assert: la respuesta es exitosa
+        $response->assertOk();
+
+        // Comprobar que se han generado al menos 40 asignaciones
+        $this->assertGreaterThanOrEqual(40, \App\Models\AsignacionRevision::whereIn('evidencia_id', collect($evidencias)->pluck('id'))->count());
+
+        // Comprobar que cada estudiante que entregó evidencia tiene al menos 3 asignaciones como revisor
+        foreach ($estudiantes->take(15) as $estudiante) {
+            $asignacionesComoRevisor = \App\Models\AsignacionRevision::where('revisor_id', $estudiante->id)
+                ->whereIn('evidencia_id', collect($evidencias)->pluck('id'))
+                ->count();
+            $this->assertGreaterThanOrEqual(3, $asignacionesComoRevisor, "El estudiante {$estudiante->id} tiene menos de 3 asignaciones.");
+        }
+    }
+
     public function test_can_delete_tarea()
     {
         // Arrange

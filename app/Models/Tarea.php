@@ -51,4 +51,53 @@ class Tarea extends Model
     {
         return $this->hasMany(Evidencia::class, 'tarea_id');
     }
+
+    public function asignacionAleatoria($numEstudiantes = 4, $fechaLimite = null)
+    {
+        $now = now();
+        if (!$fechaLimite) {
+            $fechaLimite = $now->addDays(5);
+        }
+        if ($this->fecha_apertura && $now->lt($this->fecha_apertura)) {
+            throw new \Exception("La tarea aún no ha abierto.");
+        }
+
+        // Obtener todas las evidencias asociadas a esta tarea
+        $evidencias = $this->evidencias()->get();
+
+        // Obtener IDs de estudiantes que han entregado evidencias para esta tarea
+        $estudiantes = $evidencias->pluck('estudiante_id')->unique()->values()->all();
+
+        if (empty($estudiantes)) {
+            return; // No hay estudiantes para asignar
+        }
+
+        // Inicializar contador de revisiones por estudiante
+        $revisionesPorEstudiante = array_fill_keys($estudiantes, 0);
+
+        foreach ($evidencias as $evidencia) {
+            // Mezclar estudiantes para aleatoriedad
+            $estudiantesShuffle = $estudiantes;
+            shuffle($estudiantesShuffle);
+
+            // Seleccionar hasta 4 estudiantes con menos revisiones asignadas
+            usort($estudiantesShuffle, function($a, $b) use ($revisionesPorEstudiante) {
+                return $revisionesPorEstudiante[$a] <=> $revisionesPorEstudiante[$b];
+            });
+
+            $asignados = array_slice($estudiantesShuffle, 0, 4);
+
+            foreach ($asignados as $estudianteId) {
+                // Crear la asignación de revisión
+                $evidencia->asignacionRevision()->create([
+                    'evidencia_id' => $evidencia->id,
+                    'revisor_id' => $estudianteId,
+                    'asignado_por_id' => auth()->id(),
+                    'estado' => 'pendiente',
+                    'fecha_limite' => $fechaLimite->format('Y-m-d H:i:s')
+                ]);
+                $revisionesPorEstudiante[$estudianteId]++;
+            }
+        }
+    }
 }

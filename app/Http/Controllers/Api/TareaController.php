@@ -381,6 +381,64 @@ class TareaController extends Controller
         ]);
     }
 
+/**
+ * @OA\Post(
+ *     path="/tareas/{id}/asignacion-aleatoria",
+ *     tags={"Tareas"},
+ *     summary="Asigna aleatoriamente la corrección de evidencias a estudiantes",
+ *     description="Asigna aleatoriamente la corrección de evidencias a estudiantes",
+ *     security={{"sanctum":{}}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID of the tarea",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *        required=false,
+ *        @OA\JsonContent(
+ *            @OA\Property(property="num_estudiantes", type="integer", description="Número de estudiantes a asignar por evidencia (default: 4)"),
+ *           @OA\Property(property="fecha_limite", type="string", format="date-time", description="Fecha límite para completar la revisión (default: 5 días desde hoy)")
+ *       )
+ *    ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Asignación realizada correctamente",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Asignación aleatoria realizada correctamente")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=404, description="Resource not found"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+    public function asignacionAleatoria(Request $request, Tarea $tarea)
+    {
+        if($request->has('num_estudiantes')) {
+            $numEstudiantes = (int) $request->get('num_estudiantes', 4);
+        } else {
+            $numEstudiantes = 4;
+        }
+        if($request->has('fecha_limite')) {
+            $fechaLimite = \Carbon\Carbon::parse($request->get('fecha_limite'));
+            if(!$fechaLimite) {
+                return response()->json(['message' => 'La fecha límite proporcionada no es válida.'], 422);
+            }
+        } else {
+            $fechaLimite = now()->addDays(5);
+        }
+        // Lógica para la asignación aleatoria
+        $tarea->asignacionAleatoria($numEstudiantes, $fechaLimite);
+
+        return response()->json([
+            'message' => 'Asignación aleatoria realizada correctamente'
+        ]);
+    }
+
     /**
      * Obtiene las relaciones a cargar con eager loading
      */

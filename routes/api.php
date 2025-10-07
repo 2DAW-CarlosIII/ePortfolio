@@ -67,6 +67,8 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         ->name('api.tareas.update');
     Route::delete('tareas/{tarea}', [App\Http\Controllers\Api\TareaController::class, 'destroy'])
         ->name('api.tareas.destroy');
+    Route::post('tareas/{tarea}/asignacion-aleatoria', [App\Http\Controllers\Api\TareaController::class, 'asignacionAleatoria'])
+        ->name('api.tareas.asignacion-aleatoria');
     Route::get('resultados-aprendizaje/{parent_id}/tareas', [App\Http\Controllers\Api\TareaController::class, 'tareasPorResultadoAprendizaje'])
         ->name('api.resultados-aprendizaje.tareas');
     Route::apiResource('tareas.evidencias', App\Http\Controllers\Api\EvidenciaController::class);

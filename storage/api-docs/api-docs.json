@@ -4724,6 +4724,83 @@
                 ]
             }
         },
+        "/tareas/{id}/asignacion-aleatoria": {
+            "post": {
+                "tags": [
+                    "Tareas"
+                ],
+                "summary": "Asigna aleatoriamente la corrección de evidencias a estudiantes",
+                "description": "Asigna aleatoriamente la corrección de evidencias a estudiantes",
+                "operationId": "5930ebbf9bc8c2c7e5bb4c42db6418cd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the tarea",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "num_estudiantes": {
+                                        "description": "Número de estudiantes a asignar por evidencia (default: 4)",
+                                        "type": "integer"
+                                    },
+                                    "fecha_limite": {
+                                        "description": "Fecha límite para completar la revisión (default: 5 días desde hoy)",
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Asignación realizada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Asignación aleatoria realizada correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/users": {
             "get": {
                 "tags": [
