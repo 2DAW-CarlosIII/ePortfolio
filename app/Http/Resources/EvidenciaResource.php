@@ -15,7 +15,7 @@ class EvidenciaResource extends JsonResource
         return [
             'id' => (int) $this->id,
             'estudiante_id' => $this->estudiante_id,
-            'tarea_id' => $this->criterio_evaluacion_id,
+            'tarea_id' => $this->tarea_id,
             'url' => $this->url,
             'descripcion' => $this->descripcion,
             'descripcion_excerpt' => $this->when(
