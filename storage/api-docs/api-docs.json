@@ -7146,18 +7146,26 @@
                         "description": "ID del usuario que comenta",
                         "type": "integer"
                     },
-                    "contenido": {
-                        "description": "Contenido del comentario",
-                        "type": "string"
+                    "puntuacion": {
+                        "description": "Puntuación asignada a la evidencia",
+                        "type": "number",
+                        "format": "decimal",
+                        "example": 8.5
                     },
-                    "tipo": {
-                        "description": "Tipo de comentario",
+                    "estado": {
+                        "description": "Estado de la evaluación",
                         "type": "string",
                         "enum": [
-                            "feedback",
-                            "pregunta",
-                            "sugerencia"
-                        ]
+                            "pendiente",
+                            "aprobada",
+                            "rechazada"
+                        ],
+                        "example": "aprobada"
+                    },
+                    "observaciones": {
+                        "description": "Observaciones adicionales sobre la evaluación",
+                        "type": "string",
+                        "example": "Buen trabajo, pero se pueden mejorar algunos aspectos."
                     }
                 },
                 "type": "object"
