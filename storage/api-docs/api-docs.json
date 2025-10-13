@@ -1496,14 +1496,14 @@
                 ]
             }
         },
-        "/users/{parent_id}/evaluaciones-evidencias": {
+        "/evidencias/{parent_id}/evaluaciones-evidencias": {
             "get": {
                 "tags": [
                     "EvaluacionEvidencia"
                 ],
                 "summary": "List all evaluacionevidencias",
                 "description": "Retrieve a paginated list of evaluacionevidencias",
-                "operationId": "d22fb9d05b198b43acb376fd96c87d2b",
+                "operationId": "b7b0888738ff40d212305aada5bcd856",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -1606,7 +1606,7 @@
                 ],
                 "summary": "Create a new evaluacionevidencia",
                 "description": "Create a new evaluacionevidencia resource",
-                "operationId": "f308afa34023341a9f2ae4e5d3a32d36",
+                "operationId": "153e580c4c9e55e952c38cc7c43601a6",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -1661,14 +1661,14 @@
                 ]
             }
         },
-        "/users/{parent_id}/evaluaciones-evidencias/{id}": {
+        "/evidencias/{parent_id}/evaluaciones-evidencias/{id}": {
             "get": {
                 "tags": [
                     "EvaluacionEvidencia"
                 ],
                 "summary": "Show a specific evaluacionevidencia",
                 "description": "Retrieve a specific evaluacionevidencia by ID",
-                "operationId": "999e63ae2c044145ac7145aa894aca0d",
+                "operationId": "b3619b81c64e3d79dfde21dfbc1f1243",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -1727,7 +1727,7 @@
                 ],
                 "summary": "Update a specific evaluacionevidencia",
                 "description": "Update a specific evaluacionevidencia by ID",
-                "operationId": "1938a5dc293f8dab150a122112a5eb28",
+                "operationId": "876936b783b67f69da453c9ee85ef2b2",
                 "parameters": [
                     {
                         "name": "parent_id",
@@ -1799,7 +1799,7 @@
                 ],
                 "summary": "Delete a specific evaluacionevidencia",
                 "description": "Delete a specific evaluacionevidencia by ID",
-                "operationId": "3a7988699ea666905942635270f71b2e",
+                "operationId": "5e5d94746abcaa9a6550ef1284bbb66c",
                 "parameters": [
                     {
                         "name": "parent_id",

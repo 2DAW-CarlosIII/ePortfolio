@@ -23,7 +23,7 @@ class EvaluacionEvidenciaController extends Controller
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/evaluaciones-evidencias",
+ *     path="/evidencias/{parent_id}/evaluaciones-evidencias",
  *     tags={"EvaluacionEvidencia"},
  *     summary="List all evaluacionevidencias",
  *     description="Retrieve a paginated list of evaluacionevidencias",
@@ -125,7 +125,7 @@ class EvaluacionEvidenciaController extends Controller
 
 /**
  * @OA\Post(
- *     path="/users/{parent_id}/evaluaciones-evidencias",
+ *     path="/evidencias/{parent_id}/evaluaciones-evidencias",
  *     tags={"EvaluacionEvidencia"},
  *     summary="Create a new evaluacionevidencia",
  *     description="Create a new evaluacionevidencia resource",
@@ -170,7 +170,7 @@ class EvaluacionEvidenciaController extends Controller
 
 /**
  * @OA\Get(
- *     path="/users/{parent_id}/evaluaciones-evidencias/{id}",
+ *     path="/evidencias/{parent_id}/evaluaciones-evidencias/{id}",
  *     tags={"EvaluacionEvidencia"},
  *     summary="Show a specific evaluacionevidencia",
  *     description="Retrieve a specific evaluacionevidencia by ID",
@@ -217,7 +217,7 @@ class EvaluacionEvidenciaController extends Controller
 
 /**
  * @OA\Put(
- *     path="/users/{parent_id}/evaluaciones-evidencias/{id}",
+ *     path="/evidencias/{parent_id}/evaluaciones-evidencias/{id}",
  *     tags={"EvaluacionEvidencia"},
  *     summary="Update a specific evaluacionevidencia",
  *     description="Update a specific evaluacionevidencia by ID",
@@ -271,7 +271,7 @@ class EvaluacionEvidenciaController extends Controller
 
 /**
  * @OA\Delete(
- *     path="/users/{parent_id}/evaluaciones-evidencias/{id}",
+ *     path="/evidencias/{parent_id}/evaluaciones-evidencias/{id}",
  *     tags={"EvaluacionEvidencia"},
  *     summary="Delete a specific evaluacionevidencia",
  *     description="Delete a specific evaluacionevidencia by ID",
