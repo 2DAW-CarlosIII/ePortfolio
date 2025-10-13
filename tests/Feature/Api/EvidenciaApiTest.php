@@ -49,6 +49,31 @@ class EvidenciaApiTest extends FeatureTestCase
         $this->assertCount(3, $response->json('data'));
     }
 
+    public function test_can_list_evidencias_filtered_by_estado_validacion()
+    {
+        // Arrange
+        Evidencia::factory()->create(['tarea_id' => $this->tarea->id, 'estado_validacion' => 'pendiente']);
+        Evidencia::factory()->create(['tarea_id' => $this->tarea->id, 'estado_validacion' => 'validada']);
+        Evidencia::factory()->create(['tarea_id' => $this->tarea->id, 'estado_validacion' => 'rechazada']);
+
+        // Act
+        $response = $this->getJson("/api/v1/tareas/{$this->tarea->id}/evidencias?estado_evidencia=validada");
+
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data' => [
+                         '*' => ['id', 'estudiante_id', 'tarea_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
+                     ],
+                     'links',
+                     'meta'
+                 ]);
+
+        $data = $response->json('data');
+        $this->assertCount(1, $data);
+        $this->assertEquals('validada', $data[0]['estado_validacion']);
+    }
+
     public function test_can_list_evidencias_of_user()
     {
         $estudiante = User::factory()->create();
