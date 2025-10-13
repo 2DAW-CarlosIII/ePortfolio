@@ -189,9 +189,7 @@ class EvidenciaController extends Controller
     public function userEvidencias(Request $request, $estudiante_id)
     {
         $estudiante = User::find($estudiante_id);
-        if (!$estudiante) {
-            return response()->json(['message' => 'Estudiante no encontrado'], 404);
-        }
+        abort_if(!$estudiante, 404, 'Estudiante no encontrado');
         $query = $estudiante->evidencias()->newQuery();
 
         // Filtro de búsqueda
