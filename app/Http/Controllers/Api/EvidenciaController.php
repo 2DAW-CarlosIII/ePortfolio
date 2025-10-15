@@ -179,6 +179,13 @@ class EvidenciaController extends Controller
  *         required=false,
  *         @OA\Schema(type="string")
  *     ),
+ *     @OA\Parameter(
+ *         name="estado_evidencia",
+ *         in="query",
+ *         description="mostrar únicamente evidencias con este estado",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Successful operation",
@@ -208,12 +215,8 @@ class EvidenciaController extends Controller
         }
 
         // Filtros adicionales
-        if ($request->has('estado') && $request->filled('estado')) {
-            $query->where('estado', $request->get('estado'));
-        }
-
-        if ($request->has('activo') && $request->filled('activo')) {
-            $query->where('activo', $request->boolean('activo'));
+        if ($request->has('estado_evidencia') && $request->filled('estado_evidencia')) {
+            $query->where('estado_validacion', $request->get('estado_evidencia'));
         }
 
         // Eager loading de relaciones comunes

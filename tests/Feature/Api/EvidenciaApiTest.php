@@ -74,6 +74,30 @@ class EvidenciaApiTest extends FeatureTestCase
         $this->assertEquals('validada', $data[0]['estado_validacion']);
     }
 
+    public function test_can_list_evidencias_user_filtered_by_estado_validacion()
+    {
+        // Arrange
+        Evidencia::factory()->create(['tarea_id' => $this->tarea->id, 'estado_validacion' => 'pendiente', 'estudiante_id' => $this->user->id]);
+        Evidencia::factory()->create(['tarea_id' => $this->tarea->id, 'estado_validacion' => 'validada', 'estudiante_id' => $this->user->id]);
+        Evidencia::factory()->create(['tarea_id' => $this->tarea->id, 'estado_validacion' => 'rechazada', 'estudiante_id' => $this->user->id]);
+
+        // Act
+        $response = $this->getJson("/api/v1/users/{$this->user->id}/evidencias?estado_evidencia=validada");
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data' => [
+                         '*' => ['id', 'estudiante_id', 'tarea_id', 'url', 'descripcion', 'estado_validacion', 'created_at', 'updated_at']
+                     ],
+                     'links',
+                     'meta'
+                 ]);
+        $data = $response->json('data');
+        $this->assertCount(1, $data);
+        $this->assertEquals('validada', $data[0]['estado_validacion']);
+        $this->assertEquals($this->user->id, $data[0]['estudiante_id']);
+    }
+
     public function test_can_list_evidencias_of_user()
     {
         $estudiante = User::factory()->create();

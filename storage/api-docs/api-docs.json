@@ -2083,6 +2083,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "estado_evidencia",
+                        "in": "query",
+                        "description": "mostrar únicamente evidencias con este estado",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
