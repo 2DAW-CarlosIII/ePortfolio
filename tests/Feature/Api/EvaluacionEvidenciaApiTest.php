@@ -2,9 +2,12 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\CriterioEvaluacion;
 use App\Models\EvaluacionEvidencia;
 use App\Models\User;
 use App\Models\Evidencia;
+use App\Models\Tarea;
+use Database\Factories\ModuloFormativoFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\FeatureTestCase;
@@ -30,7 +33,7 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
     public function test_can_list_evaluacionEvidencias()
     {
         // Arrange
-        EvaluacionEvidencia::factory()->count(3)->create(['evidencia_id' => $this->evidencia->id]);
+        EvaluacionEvidencia::factory()->count(3)->create(['evidencia_id' => $this->evidencia->id, 'estado' => 'pendiente']);
 
         // Act
         $response = $this->getJson("/api/v1/evidencias/{$this->evidencia->id}/evaluaciones-evidencias");
@@ -71,6 +74,86 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
             'estado' => $data['estado'],
             'observaciones' => $data['observaciones']
         ]);
+    }
+    public function test_docente_change_evidencia_estado_when_creating_evaluacion()
+    {
+        // Arrange
+        $data = [
+            'puntuacion' => $this->faker->randomFloat(2, 0, 10),
+            'estado' => $this->faker->randomElement(['aprobada', 'rechazada']),
+            'observaciones' => $this->faker->paragraph()
+        ];
+
+        $modulo = ModuloFormativoFactory::new()->create(['docente_id' => $this->user->id]);
+        $resultado = $modulo->resultados_aprendizaje()->create(['codigo' => 'RA1', 'descripcion' => 'Descripción del RA1', 'peso_porcentaje' => 100, 'orden' => 1]);
+        $criterio = $resultado->criterios_evaluacion()->create(['codigo' => 'CE1', 'descripcion' => 'Descripción del CE1', 'peso_porcentaje' => 50, 'orden' => 1]);
+        $tarea = $criterio->tareas()->create(['titulo' => 'Tarea 1', 'descripcion' => 'Descripción de la tarea 1', 'tipo' => 'individual', 'fecha_cierre' => now()->addDays(7), 'fecha_apertura' => now()]);
+        $this->evidencia->tarea()->associate($tarea);
+        $this->evidencia->save();
+        // Act
+        $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/evaluaciones-evidencias", $data);
+
+        // Assert
+        $response->assertCreated()
+                 ->assertJsonStructure([
+                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'created_at', 'updated_at']
+                 ]);
+
+        $this->assertDatabaseHas('evaluaciones_evidencias', [
+            'puntuacion' => $data['puntuacion'],
+            'estado' => $data['estado'],
+            'observaciones' => $data['observaciones']
+        ]);
+
+        $this->evidencia->refresh();
+        if($data['estado'] === 'aprobada') {
+            $this->assertEquals('validada', $this->evidencia->estado_validacion);
+        } elseif($data['estado'] === 'rechazada') {
+            $this->assertEquals('rechazada', $this->evidencia->estado_validacion);
+        } else {
+            $this->assertEquals('pendiente', $this->evidencia->estado_validacion);
+        }
+    }
+
+    public function test_estudiante_dont_change_evidencia_estado_when_creating_evaluacion()
+    {
+        // Arrange
+        $this->user = User::factory()->asEstudiante()->create();
+        Sanctum::actingAs($this->user);
+
+        $data = [
+            'puntuacion' => $this->faker->randomFloat(2, 0, 10),
+            'estado' => $this->faker->randomElement(['aprobada', 'rechazada']),
+            'observaciones' => $this->faker->paragraph()
+        ];
+        $estudiante = User::factory()->asEstudiante()->create();
+        $this->actingAs($estudiante);
+
+        $modulo = ModuloFormativoFactory::new()->create(['docente_id' => $this->user->id]);
+        $resultado = $modulo->resultados_aprendizaje()->create(['codigo' => 'RA1', 'descripcion' => 'Descripción del RA1', 'peso_porcentaje' => 100, 'orden' => 1]);
+        $criterio = $resultado->criterios_evaluacion()->create(['codigo' => 'CE1', 'descripcion' => 'Descripción del CE1', 'peso_porcentaje' => 50, 'orden' => 1]);
+        $tarea = $criterio->tareas()->create(['titulo' => 'Tarea 1', 'descripcion' => 'Descripción de la tarea 1', 'tipo' => 'individual', 'fecha_cierre' => now()->addDays(7), 'fecha_apertura' => now()]);
+        $this->evidencia->tarea()->associate($tarea);
+        $this->evidencia->estado_validacion = 'pendiente';
+        $this->evidencia->save();
+
+        // Act
+        $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/evaluaciones-evidencias", $data);
+
+        // Assert
+        $response->assertCreated()
+                 ->assertJsonStructure([
+                     'data' => ['id', 'evidencia_id', 'user_id', 'puntuacion', 'estado', 'observaciones', 'created_at', 'updated_at']
+                 ]);
+
+        $this->assertDatabaseHas('evaluaciones_evidencias', [
+            'puntuacion' => $data['puntuacion'],
+            'estado' => $data['estado'],
+            'observaciones' => $data['observaciones']
+        ]);
+
+        $this->evidencia->refresh();
+        $this->assertEquals('pendiente', $this->evidencia->estado_validacion);
     }
 
     public function test_can_show_evaluacionEvidencia()

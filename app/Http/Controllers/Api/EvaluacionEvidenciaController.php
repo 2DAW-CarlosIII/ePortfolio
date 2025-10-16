@@ -162,6 +162,16 @@ class EvaluacionEvidenciaController extends Controller
 
         $evaluacionEvidencia = EvaluacionEvidencia::create($data);
 
+        $modulo = $evidencia->getModuloFormativo();
+        if ($modulo && auth()->user()->esDocenteModulo($modulo)) {
+            if($data['estado'] == 'aprobada') {
+                $evidencia->estado_validacion = 'validada';
+            } elseif($data['estado'] == 'rechazada') {
+                $evidencia->estado_validacion = 'rechazada';
+            }
+            $evidencia->save();
+        }
+
         // Cargar relaciones para la respuesta
         $evaluacionEvidencia->load($this->getEagerLoadRelations());
 

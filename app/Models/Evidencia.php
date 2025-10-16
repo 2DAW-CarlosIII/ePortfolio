@@ -57,4 +57,9 @@ class Evidencia extends Model
     {
         return $this->hasMany(AsignacionRevision::class, 'evidencia_id');
     }
+    public function getModuloFormativo()
+    {
+        $criterioEvaluacion = $this->tarea->criterios_evaluacion()->first();
+        return $criterioEvaluacion ? $criterioEvaluacion->resultado_aprendizaje->modulo_formativo : null;
+    }
 }

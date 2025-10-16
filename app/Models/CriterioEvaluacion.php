@@ -51,4 +51,8 @@ class CriterioEvaluacion extends Model
     {
         return $this->hasMany(Evidencia::class, 'criterio_evaluacion_id');
     }
+    public function moduloFormativo()
+    {
+        return $this->resultado_aprendizaje ? $this->resultado_aprendizaje->moduloFormativo() : null;
+    }
 }

@@ -41,4 +41,15 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the model is an estudiante.
+     */
+    public function asEstudiante(): static
+    {
+        $emailDomain = config('app.domains.estudiantes');
+        return $this->state(fn (array $attributes) => [
+            'email' => fake()->unique()->userName() . '@' . $emailDomain,
+        ]);
+    }
 }

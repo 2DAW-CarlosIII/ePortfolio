@@ -68,4 +68,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Evidencia::class, 'estudiante_id');
     }
+
+    public function modulosImpartidos()
+    {
+        return $this->hasMany(ModuloFormativo::class, 'docente_id');
+    }
+
+    public function esDocenteModulo(ModuloFormativo $modulo): bool
+    {
+        return $this->modulosImpartidos()->where('id', $modulo->id)->exists();
+    }
 }
