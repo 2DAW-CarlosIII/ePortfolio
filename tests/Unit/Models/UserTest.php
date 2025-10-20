@@ -69,6 +69,36 @@ class UserTest extends TestCase
         $this->assertFalse($user->esDocenteModulo($modulo));
     }
 
+    public function test_es_estudiante_returns_true_if_user_is_enrolled_in_modulo()
+    {
+        $user = User::factory()->create();
+        $modulo = ModuloFormativo::factory()->create();
+        $user->modulosMatriculados()->attach($modulo->id);
+        $this->assertTrue($user->modulosMatriculados->contains($modulo));
+    }
+
+    public function test_es_estudiante_returns_false_if_user_is_not_enrolled_in_modulo()
+    {
+        $user = User::factory()->create();
+        $this->assertFalse($user->esEstudiante(null));
+    }
+
+    public function test_es_estudiante_modulo_returns_true_if_user_is_enrolled_in_specific_modulo()
+    {
+        $user = User::factory()->create();
+        $modulo = ModuloFormativo::factory()->create();
+        $user->modulosMatriculados()->attach($modulo->id);
+        $this->assertTrue($user->esEstudianteModulo($modulo));
+    }
+
+    public function test_es_estudiante_modulo_returns_false_if_user_is_not_enrolled_in_specific_modulo()
+    {
+        $user = User::factory()->create();
+        $modulos = ModuloFormativo::factory()->count(2)->create();
+        $user->modulosMatriculados()->attach($modulos[0]->id);
+        $this->assertFalse($user->esEstudianteModulo($modulos[1]));
+    }
+
     public function test_es_administrador_returns_false_if_user_is_not_administrador()
     {
         $user = User::factory()->create();

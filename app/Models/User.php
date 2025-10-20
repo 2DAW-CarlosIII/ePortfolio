@@ -74,6 +74,11 @@ class User extends Authenticatable
         return $this->hasMany(ModuloFormativo::class, 'docente_id');
     }
 
+    public function modulosMatriculados()
+    {
+        return $this->belongsToMany(ModuloFormativo::class, 'matriculas', 'estudiante_id', 'modulo_formativo_id');
+    }
+
     public function esDocente(?ModuloFormativo $modulo): bool
     {
         $esDocente = $modulo
@@ -85,6 +90,19 @@ class User extends Authenticatable
     public function esDocenteModulo(ModuloFormativo $modulo): bool
     {
         return $this->modulosImpartidos()->where('id', $modulo->id)->exists();
+    }
+
+    public function esEstudiante(?ModuloFormativo $modulo): bool
+    {
+        $esEstudiante = $modulo
+            ? $this->esEstudianteModulo($modulo)
+            : $this->modulosMatriculados()->count() > 0;
+        return $esEstudiante;
+    }
+
+    public function esEstudianteModulo(ModuloFormativo $modulo): bool
+    {
+        return $this->modulosMatriculados()->where('modulos_formativos.id', $modulo->id)->exists();
     }
 
     public function esAdministrador(): bool
