@@ -22,7 +22,9 @@ class CicloFormativoApiTest extends FeatureTestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create([
+            'email' => config('app.admin.email'),
+        ]);
         Sanctum::actingAs($this->user);
 
         $this->familia = FamiliaProfesional::factory()->create();
@@ -79,6 +81,33 @@ class CicloFormativoApiTest extends FeatureTestCase
         ]);
     }
 
+    public function test_no_administrator_cannot_create_cicloFormativo()
+    {
+        // Arrange
+        $nonAdminUser = User::factory()->create();
+        Sanctum::actingAs($nonAdminUser);
+
+        $data = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => $this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => $this->faker->paragraph()
+        ];
+
+        // Act
+        $response = $this->postJson("/api/v1/familias-profesionales/{$this->familia->id}/ciclos-formativos", $data);
+
+        // Assert
+        $response->assertForbidden();
+
+        $this->assertDatabaseMissing('ciclos_formativos', [
+            'nombre' => $data['nombre'],
+            'codigo' => $data['codigo'],
+            'grado' => $data['grado'],
+            'descripcion' => $data['descripcion']
+        ]);
+    }
+
     public function test_can_show_cicloFormativo()
     {
         // Arrange
@@ -125,6 +154,36 @@ class CicloFormativoApiTest extends FeatureTestCase
         $this->assertEquals($updateData['descripcion'], $cicloFormativo->descripcion);
     }
 
+    public function test_no_administrator_cannot_update_cicloFormativo()
+    {
+        // Arrange
+        $nonAdminUser = User::factory()->create();
+        Sanctum::actingAs($nonAdminUser);
+
+        $cicloFormativo = CicloFormativo::factory()->create(
+            ['familia_profesional_id' => $this->familia->id]
+        );
+        $originalData = $cicloFormativo->toArray();
+        $updateData = [
+            'nombre' => $this->faker->words(3, true),
+            'codigo' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'grado' => $this->faker->randomElement(['basico', 'medio', 'superior']),
+            'descripcion' => $this->faker->paragraph()
+        ];
+
+        // Act
+        $response = $this->putJson("/api/v1/familias-profesionales/{$this->familia->id}/ciclos-formativos/{$cicloFormativo->id}", $updateData);
+
+        // Assert
+        $response->assertForbidden();
+
+        $cicloFormativo->refresh();
+        $this->assertEquals($originalData['nombre'], $cicloFormativo->nombre);
+        $this->assertEquals($originalData['codigo'], $cicloFormativo->codigo);
+        $this->assertEquals($originalData['grado'], $cicloFormativo->grado);
+        $this->assertEquals($originalData['descripcion'], $cicloFormativo->descripcion);
+    }
+
     public function test_can_delete_cicloFormativo()
     {
         // Arrange
@@ -140,6 +199,23 @@ class CicloFormativoApiTest extends FeatureTestCase
                  ->assertJson([
                      'message' => 'CicloFormativo eliminado correctamente'
                  ]);
+    }
+
+    public function test_no_administrator_cannot_delete_cicloFormativo()
+    {
+        // Arrange
+        $nonAdminUser = User::factory()->create();
+        Sanctum::actingAs($nonAdminUser);
+
+        $cicloFormativo = CicloFormativo::factory()->create([
+            'familia_profesional_id' => $this->familia->id
+        ]);
+
+        // Act
+        $response = $this->deleteJson("/api/v1/familias-profesionales/{$this->familia->id}/ciclos-formativos/{$cicloFormativo->id}");
+
+        // Assert
+        $response->assertForbidden();
     }
 
     public function test_can_search_cicloFormativos()

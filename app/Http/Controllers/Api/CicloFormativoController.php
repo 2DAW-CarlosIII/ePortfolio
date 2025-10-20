@@ -8,6 +8,7 @@ use App\Http\Requests\StoreCicloFormativoRequest;
 use App\Http\Requests\UpdateCicloFormativoRequest;
 use App\Http\Resources\CicloFormativoResource;
 use App\Models\FamiliaProfesional;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 
@@ -20,6 +21,14 @@ use Illuminate\Http\Request;
 
 class CicloFormativoController extends Controller
 {
+    /**
+     * Create the controller instance.
+     */
+
+    public function __construct()
+    {
+        $this->authorizeResource(CicloFormativo::class, 'cicloFormativo');
+    }
 
 /**
  * @OA\Get(
