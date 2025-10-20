@@ -86,4 +86,9 @@ class User extends Authenticatable
     {
         return $this->modulosImpartidos()->where('id', $modulo->id)->exists();
     }
+
+    public function esAdministrador(): bool
+    {
+        return $this->email === config('app.admin.email');
+    }
 }

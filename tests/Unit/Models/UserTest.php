@@ -68,4 +68,17 @@ class UserTest extends TestCase
         $modulo = ModuloFormativo::factory()->create(['docente_id' => $otherUser->id]);
         $this->assertFalse($user->esDocenteModulo($modulo));
     }
+
+    public function test_es_administrador_returns_false_if_user_is_not_administrador()
+    {
+        $user = User::factory()->create();
+        $this->assertFalse($user->esAdministrador());
+    }
+
+    public function test_es_administrador_returns_true_if_user_is_administrador()
+    {
+        $adminEmail = config('app.admin.email');
+        $user = User::factory()->create(['email' => $adminEmail]);
+        $this->assertTrue($user->esAdministrador());
+    }
 }
