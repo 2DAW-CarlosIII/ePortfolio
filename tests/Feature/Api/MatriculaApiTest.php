@@ -7,6 +7,7 @@ use App\Models\CicloFormativo;
 use App\Models\Matricula;
 use App\Models\ModuloFormativo;
 use App\Models\User;
+use GuzzleHttp\Promise\Each;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\FeatureTestCase;
@@ -114,6 +115,75 @@ class MatriculaApiTest extends FeatureTestCase
                  ->assertJsonStructure([
                      'data' => ['id', 'estudiante', 'modulo_formativo', 'created_at', 'updated_at']
                  ]);
+    }
+
+    public function test_batchStore_admin_and_docentes_behaviour()
+    {
+        // Arrange
+        $students = User::factory()->count(3)->create();
+
+        $teacher1 = User::factory()->create();
+        $teacher2 = User::factory()->create();
+
+        // Crear dos módulos, cada uno impartido por uno de los docentes
+        $mod1 = ModuloFormativo::factory()->create([
+            'ciclo_formativo_id' => $this->cicloFormativo->id,
+            'docente_id' => $teacher1->id,
+        ]);
+        $mod2 = ModuloFormativo::factory()->create([
+            'ciclo_formativo_id' => $this->cicloFormativo->id,
+            'docente_id' => $teacher2->id,
+        ]);
+
+        $modulos = [$mod1, $mod2];
+
+        $payload = [
+            'estudiantes_id' => $students->pluck('id')->toArray(),
+            'modulos_formativos_id' => array_map(fn($m) => $m->id, $modulos),
+        ];
+
+        $admin = User::factory()->create(
+            ['email' => config('app.admin.email')]
+        );
+
+        Sanctum::actingAs($admin);
+        $response = $this->postJson('/api/v1/matriculas', $payload);
+        $response->assertOk();
+        $this->assertCount(count($students) * count($modulos), $response->json('data'));
+        $this->assertDatabaseCount('matriculas', count($students) * count($modulos));
+
+        // 2) Petición con el primer docente: como las combinaciones ya existen, no se deben crear nuevas
+        Sanctum::actingAs($teacher1);
+        $response2 = $this->postJson('/api/v1/matriculas', $payload);
+        $response2->assertOk();
+        // Esperamos que no se creen nuevas matrículas
+        // No se crean nuevas matrículas, pero la respuesta debe incluie las ya existentes
+        $this->assertCount(3, $response2->json('data'));
+        $this->assertDatabaseCount('matriculas', count($students) * count($modulos));
+
+        // 3) Eliminar las matrículas y volver a lanzar petición con el primer docente
+        Matricula::query()->delete();
+        $this->assertDatabaseCount('matriculas', 0);
+
+        Sanctum::actingAs($teacher1);
+        $response3 = $this->postJson('/api/v1/matriculas', $payload);
+        $response3->assertOk();
+        // Debe crear sólo las matrículas correspondientes al módulo en el que es docente (3)
+        $this->assertCount(count($students), $response3->json('data'));
+        $this->assertDatabaseCount('matriculas', count($students));
+        // Comprobar que las matrículas existentes pertenecen al módulo del teacher1
+        $this->assertDatabaseHas('matriculas', [
+            'modulo_formativo_id' => $mod1->id,
+            'estudiante_id' => $students->first()->id,
+        ]);
+
+        // 4) Petición con el segundo docente: debe crear las matrículas para su módulo (3)
+        Sanctum::actingAs($teacher2);
+        $response4 = $this->postJson('/api/v1/matriculas', $payload);
+        $response4->assertOk();
+        $this->assertCount(3, $response4->json('data'));
+        $this->assertDatabaseCount('matriculas', count($students) * count($modulos));
+
     }
 
     public function test_can_show_matricula()

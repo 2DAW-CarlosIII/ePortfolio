@@ -1508,7 +1508,7 @@
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent Evidencia",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1611,7 +1611,7 @@
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent Evidencia",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1673,7 +1673,7 @@
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent Evidencia",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1732,7 +1732,7 @@
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID of the parent Evidencia",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2809,6 +2809,68 @@
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/matriculas": {
+            "post": {
+                "tags": [
+                    "Matricula"
+                ],
+                "summary": "Crea matriculas en lote",
+                "description": "Crea múltiples matrículas para varios estudiantes en varios módulos formativos en una sola petición.",
+                "operationId": "482be62e5a1280a40838cb21dc5cae34",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent ModuloFormativo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMatriculaRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Matricula"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -7002,6 +7064,27 @@
     },
     "components": {
         "schemas": {
+            "BatchStoreMatriculaRequest": {
+                "title": "Batch Store Matrícula Request",
+                "description": "Datos requeridos para crear Matrículas en masa de usuarios en módulos formativos",
+                "properties": {
+                    "estudiantes_id": {
+                        "description": "Array de IDs de estudiantes",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "modulos_formativos_id": {
+                        "description": "Array de IDs de módulos formativos",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "StoreAsignacionRevisionRequest": {
                 "title": "Store Asignación Revisión Request",
                 "description": "Datos requeridos para crear una Asignación de Revisión",

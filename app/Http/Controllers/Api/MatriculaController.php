@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BatchStoreMatriculaRequest;
 use App\Models\Matricula;
 use App\Http\Requests\StoreMatriculaRequest;
 use App\Http\Requests\UpdateMatriculaRequest;
@@ -191,6 +192,101 @@ class MatriculaController extends Controller
         $matricula->load('user', 'modulo_formativo');
 
         return new MatriculaResource($matricula);
+    }
+
+
+/**
+ * @OA\Post(
+ *     path="/matriculas",
+ *     tags={"Matricula"},
+ *     summary="Crea matriculas en lote",
+ *     description="Crea múltiples matrículas para varios estudiantes en varios módulos formativos en una sola petición.",
+ *     security={{"sanctum":{}}},
+ *     @OA\Parameter(
+ *         name="parent_id",
+ *         in="path",
+ *         description="ID of the parent ModuloFormativo",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/StoreMatriculaRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Resource created successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", ref="#/components/schemas/Matricula")
+ *         )
+ *     ),
+ *     @OA\Response(response=422, description="Validation errors"),
+ *     @OA\Response(response=401, description="Unauthenticated"),
+ *     @OA\Response(response=403, description="Forbidden")
+ * )
+ */
+
+    public function batchStore(BatchStoreMatriculaRequest $request)
+    {
+        $data = $request->validated();
+
+        $now = now();
+        $estudiantes = $data['estudiantes_id'] ?? [];
+        $modulos = $data['modulos_formativos_id'] ?? [];
+        $user = auth()->user();
+        if (!$user->esAdministrador()) {
+            $modulosFiltrados = \App\Models\ModuloFormativo::whereIn('id', $modulos)
+                ->get()
+                ->filter(fn($modulo) => $user->esDocenteModulo($modulo))
+                ->pluck('id')
+                ->values()
+                ->all();
+
+            // Reemplazar $modulos por los ids filtrados
+            $modulos = $modulosFiltrados;
+        }
+
+        $rows = [];
+        foreach ($estudiantes as $estudianteId) {
+            foreach ($modulos as $moduloId) {
+                $rows[] = [
+                    'estudiante_id' => $estudianteId,
+                    'modulo_formativo_id' => $moduloId,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+        }
+
+        if (empty($rows)) {
+            return MatriculaResource::collection(collect([]));
+        }
+
+        // Evitar duplicados: obtener combinaciones ya existentes
+        $existing = Matricula::whereIn('estudiante_id', $estudiantes)
+            ->whereIn('modulo_formativo_id', $modulos)
+            ->get()
+            ->map(function ($m) {
+                return $m->estudiante_id . '-' . $m->modulo_formativo_id;
+            })
+            ->toArray();
+
+        // Filtrar solo las filas nuevas
+        $toInsert = array_filter($rows, function ($r) use ($existing) {
+            return !in_array($r['estudiante_id'] . '-' . $r['modulo_formativo_id'], $existing);
+        });
+
+        // Insert masivo
+        if (!empty($toInsert)) {
+            Matricula::insert(array_values($toInsert));
+        }
+
+        // Recuperar las matrículas creadas en este batch
+        $created = Matricula::whereIn('estudiante_id', $estudiantes)
+            ->whereIn('modulo_formativo_id', $modulos)
+            ->get();
+
+        return MatriculaResource::collection($created);
     }
 
 /**

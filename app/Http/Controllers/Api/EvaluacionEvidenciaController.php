@@ -31,7 +31,7 @@ class EvaluacionEvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent Evidencia",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -133,7 +133,7 @@ class EvaluacionEvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent Evidencia",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -188,7 +188,7 @@ class EvaluacionEvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent Evidencia",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -235,7 +235,7 @@ class EvaluacionEvidenciaController extends Controller
  *     @OA\Parameter(
  *         name="parent_id",
  *         in="path",
- *         description="ID of the parent User",
+ *         description="ID of the parent Evidencia",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),

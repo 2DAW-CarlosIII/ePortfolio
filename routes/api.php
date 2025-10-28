@@ -55,6 +55,8 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('evidencias.comentarios', App\Http\Controllers\Api\ComentarioController::class);
     Route::apiResource('users.modulos-formativos', App\Http\Controllers\Api\ModuloFormativoController::class)->parameters(['users' => 'user']);
     Route::apiResource('modulos-formativos.matriculas', App\Http\Controllers\Api\MatriculaController::class)->parameters(['modulos-formativos' => 'moduloFormativo']);
+    Route::post('matriculas', [App\Http\Controllers\Api\MatriculaController::class, 'batchStore'])
+        ->name('api.matriculas.batchStore');
     Route::apiResource('criterios-evaluacion.tareas', App\Http\Controllers\Api\TareaController::class)
         ->except(['store', 'update', 'destroy'])
         ->parameters([

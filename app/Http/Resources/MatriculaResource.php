@@ -23,7 +23,7 @@ class MatriculaResource extends JsonResource
                     'activa' => 'Activa',
                     'suspendida' => 'Suspendida',
                     'finalizada' => 'Finalizada',
-                    default => 'Desconocido',
+                    default => 'Activa',
                 },
                 'color' => match($this->estado) {
                     'activa' => 'green',
