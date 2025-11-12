@@ -202,16 +202,9 @@ class MatriculaController extends Controller
  *     summary="Crea matriculas en lote",
  *     description="Crea múltiples matrículas para varios estudiantes en varios módulos formativos en una sola petición.",
  *     security={{"sanctum":{}}},
- *     @OA\Parameter(
- *         name="parent_id",
- *         in="path",
- *         description="ID of the parent ModuloFormativo",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
  *     @OA\RequestBody(
  *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/StoreMatriculaRequest")
+ *         @OA\JsonContent(ref="#/components/schemas/BatchStoreMatriculaRequest")
  *     ),
  *     @OA\Response(
  *         response=201,
@@ -244,9 +237,20 @@ class MatriculaController extends Controller
 
             // Reemplazar $modulos por los ids filtrados
             $modulos = $modulosFiltrados;
+            // Si no hay módulos válidos, no se puede crear ninguna matrícula
+            if (empty($modulos)) {
+                return MatriculaResource::collection(collect([]));
+            }
         }
 
         $rows = [];
+
+        if(!$user->esAdministrador()) {
+            // Eliminar los módulos en los que los estudiantes estaban matriculados previamente
+            Matricula::whereIn('estudiante_id', $estudiantes)
+            ->whereIn('modulo_formativo_id', $modulos)
+            ->delete();
+        }
         foreach ($estudiantes as $estudianteId) {
             foreach ($modulos as $moduloId) {
                 $rows[] = [

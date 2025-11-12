@@ -2826,23 +2826,12 @@
                 "summary": "Crea matriculas en lote",
                 "description": "Crea múltiples matrículas para varios estudiantes en varios módulos formativos en una sola petición.",
                 "operationId": "482be62e5a1280a40838cb21dc5cae34",
-                "parameters": [
-                    {
-                        "name": "parent_id",
-                        "in": "path",
-                        "description": "ID of the parent ModuloFormativo",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/StoreMatriculaRequest"
+                                "$ref": "#/components/schemas/BatchStoreMatriculaRequest"
                             }
                         }
                     }

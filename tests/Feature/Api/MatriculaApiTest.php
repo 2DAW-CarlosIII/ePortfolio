@@ -157,7 +157,7 @@ class MatriculaApiTest extends FeatureTestCase
         $response2 = $this->postJson('/api/v1/matriculas', $payload);
         $response2->assertOk();
         // Esperamos que no se creen nuevas matrículas
-        // No se crean nuevas matrículas, pero la respuesta debe incluie las ya existentes
+        // No se crean nuevas matrículas, pero la respuesta debe incluir las ya existentes
         $this->assertCount(3, $response2->json('data'));
         $this->assertDatabaseCount('matriculas', count($students) * count($modulos));
 
