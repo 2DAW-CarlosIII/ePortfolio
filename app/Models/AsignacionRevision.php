@@ -16,9 +16,11 @@ use Illuminate\Database\Eloquent\Model;
  *     @OA\Property(property="revisor_id", type="integer", description="ID del revisor"),
  *     @OA\Property(property="asignado_por_id", type="integer", description="ID del usuario que asigna"),
  *     @OA\Property(property="fecha_limite", type="string", format="date", description="Fecha límite"),
- *     @OA\Property(property="estado", type="string", enum={"pendiente", "en_revision", "completada"}, description="Estado de la revisión"),
+ *     @OA\Property(property="estado", type="string", enum={"pendiente", "expirada", "completada"}, description="Estado de la revisión"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Fecha de creación"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Fecha de actualización"),
+ *     @OA\Property(property="evidencia", ref="#/components/schemas/Evidencia"),
+ *     @OA\Property(property="revisor", ref="#/components/schemas/User"),
  * )
  */
 
@@ -44,11 +46,11 @@ class AsignacionRevision extends Model
     }
     public function revisor()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'revisor_id');
     }
     public function asignador()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'asignador_id');
     }
     public function comentarios()
     {

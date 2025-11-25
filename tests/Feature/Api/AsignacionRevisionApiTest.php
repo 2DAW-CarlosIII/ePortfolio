@@ -48,6 +48,68 @@ class AsignacionRevisionApiTest extends FeatureTestCase
         $this->assertCount(3, $response->json('data'));
     }
 
+    public function test_can_list_asignaciones_user_filtered_by_estado_asignacion()
+    { // 'pendiente', 'completada', 'expirada'
+        // Arrange
+        AsignacionRevision::factory()->create([
+            'revisor_id' => $this->user->id,
+            'estado' => 'completada',
+            'evidencia_id' => $this->evidencia->id
+        ]);
+        AsignacionRevision::factory()->create([
+            'revisor_id' => $this->user->id,
+            'estado' => 'pendiente',
+            'evidencia_id' => $this->evidencia->id
+        ]);
+        AsignacionRevision::factory()->create([
+            'revisor_id' => User::factory()->create()->id,
+            'estado' => 'completada',
+            'evidencia_id' => $this->evidencia->id
+        ]);
+
+        // Act
+        $response = $this->getJson("/api/v1/users/{$this->user->id}/asignaciones-revision?estado_asignacion=" . urlencode('completada'));
+
+        // Assert
+        $response->assertOk();
+        $data = $response->json('data');
+
+        $this->assertCount(1, $data);
+        $this->assertEquals('completada', $data[0]['estado']);
+        $this->assertEquals($this->user->id, $data[0]['revisor_id']);
+    }
+
+    public function test_can_list_asignaciones_of_user()
+    {
+        // Arrange
+        $otherUser = User::factory()->create();
+
+        // Crear 3 asignaciones para el usuario y 3 para otro usuario
+        AsignacionRevision::factory()->count(3)->create([
+            'revisor_id' => $this->user->id,
+            'evidencia_id' => $this->evidencia->id
+        ]);
+        AsignacionRevision::factory()->count(3)->create([
+            'revisor_id' => $otherUser->id,
+            'evidencia_id' => $this->evidencia->id
+        ]);
+
+        // Act
+        $response = $this->getJson("/api/v1/users/{$this->user->id}/asignaciones-revision");
+
+        // Assert
+        $response->assertOk()
+                 ->assertJsonStructure([
+                     'data' => [
+                         '*' => ['id', 'evidencia_id', 'revisor_id', 'asignado_por_id', 'fecha_limite', 'estado', 'created_at', 'updated_at']
+                     ],
+                     'links',
+                     'meta'
+                 ]);
+
+        $this->assertCount(3, $response->json('data'));
+    }
+
     public function test_can_create_asignacionRevision()
     {
         // Arrange

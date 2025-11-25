@@ -44,7 +44,7 @@
                     {
                         "name": "parent_id",
                         "in": "path",
-                        "description": "ID of the parent User",
+                        "description": "ID de la evidencia correspondientes a las asignaciones",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -182,6 +182,120 @@
                     },
                     "422": {
                         "description": "Validation errors"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/users/{parent_id}/asignaciones-revision": {
+            "get": {
+                "tags": [
+                    "AsignacionRevision"
+                ],
+                "summary": "List all asignaciones from a user",
+                "description": "Retrieve a paginated list of asignaciones for a specific user",
+                "operationId": "a0c334db0658d6e9e59ae522d96e21bb",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "path",
+                        "description": "ID of the parent User",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search term",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "description": "Field to sort by",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_direction",
+                        "in": "query",
+                        "description": "direction of sorting (asc or desc)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "estado_asignacion",
+                        "in": "query",
+                        "description": "mostrar únicamente asignaciones con este estado",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/AsignacionRevision"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -7105,7 +7219,7 @@
                         "type": "string",
                         "enum": [
                             "pendiente",
-                            "en_revision",
+                            "expirada",
                             "completada"
                         ]
                     }
@@ -7511,7 +7625,7 @@
                         "type": "string",
                         "enum": [
                             "pendiente",
-                            "en_revision",
+                            "expirada",
                             "completada"
                         ]
                     }
@@ -7878,7 +7992,7 @@
                         "type": "string",
                         "enum": [
                             "pendiente",
-                            "en_revision",
+                            "expirada",
                             "completada"
                         ]
                     },
@@ -7891,6 +8005,12 @@
                         "description": "Fecha de actualización",
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "evidencia": {
+                        "$ref": "#/components/schemas/Evidencia"
+                    },
+                    "revisor": {
+                        "$ref": "#/components/schemas/User"
                     }
                 },
                 "type": "object"

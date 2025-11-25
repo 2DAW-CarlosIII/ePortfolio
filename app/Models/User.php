@@ -69,6 +69,11 @@ class User extends Authenticatable
         return $this->hasMany(Evidencia::class, 'estudiante_id');
     }
 
+    public function asignacionesRevision()
+    {
+        return $this->hasMany(AsignacionRevision::class, 'revisor_id');
+    }
+
     public function modulosImpartidos()
     {
         return $this->hasMany(ModuloFormativo::class, 'docente_id');

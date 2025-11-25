@@ -90,6 +90,8 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         ->name('api.users.profile');
     Route::get('users/{user}/evidencias', [App\Http\Controllers\Api\EvidenciaController::class, 'userEvidencias'])
         ->name('api.users.evidencias');
+    Route::get('users/{user}/asignaciones-revision', [App\Http\Controllers\Api\AsignacionRevisionController::class, 'userAsignacionesRevision'])
+        ->name('api.users.asignaciones-revision');
 
     require __DIR__.'/import.php';
 });

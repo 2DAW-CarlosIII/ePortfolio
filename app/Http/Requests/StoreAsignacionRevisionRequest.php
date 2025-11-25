@@ -15,7 +15,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     @OA\Property(property="revisor_id", type="integer", description="ID del revisor"),
  *     @OA\Property(property="asignado_por_id", type="integer", description="ID del usuario que asigna"),
  *     @OA\Property(property="fecha_limite", type="string", format="date", description="Fecha límite para la revisión"),
- *     @OA\Property(property="estado", type="string", enum={"pendiente", "en_revision", "completada"}, description="Estado de la revisión"),
+ *     @OA\Property(property="estado", type="string", enum={"pendiente", "expirada", "completada"}, description="Estado de la revisión"),
  * )
  */
 
