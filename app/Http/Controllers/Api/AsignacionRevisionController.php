@@ -205,7 +205,7 @@ class AsignacionRevisionController extends Controller
         }
 
         // Eager loading de relaciones comunes
-        $query->with('evidencia', 'revisor');
+        $query->with($this->getEagerLoadRelations());
 
         // Ordenamiento
         $sortBy = $request->get('sort_by', 'id');
@@ -418,6 +418,6 @@ class AsignacionRevisionController extends Controller
      */
     private function getEagerLoadRelations(): array
     {
-        return []; // TODO: Definir relaciones específicas según el modelo
+        return ['evidencia', 'revisor']; // TODO: Definir relaciones específicas según el modelo
     }
 }
