@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 /**
  * @OA\Schema(
@@ -101,7 +102,9 @@ class User extends Authenticatable
     {
         $esEstudiante = $modulo
             ? $this->esEstudianteModulo($modulo)
-            : $this->modulosMatriculados()->count() > 0;
+            : ($this->modulosMatriculados()->count() > 0)
+                ||
+              (Str::endsWith($this->email, '@' . config('app.domains.estudiantes')));
         return $esEstudiante;
     }
 

@@ -157,4 +157,6 @@ return [
         'estudiantes' => env('DOMINIO_ESTUDIANTES', 'alu.murciaeduca.es')
     ],
 
+    'max_modulos_matricula' => env('MAX_MODULOS_MATRICULA', 10),
+
 ];

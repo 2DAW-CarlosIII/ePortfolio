@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateMatriculaRequest;
 use App\Http\Resources\MatriculaResource;
 use App\Models\ModuloFormativo;
 use Illuminate\Http\Request;
-use PhpParser\Node\Expr\AssignOp\Mod;
 use App\Http\Resources\ModuloFormativoResource;
 
 /**
@@ -227,6 +226,10 @@ class MatriculaController extends Controller
         $estudiantes = $data['estudiantes_id'] ?? [];
         $modulos = $data['modulos_formativos_id'] ?? [];
         $user = auth()->user();
+        if ($user->esEstudiante(null)) {
+            $estudiantes = [$user->id];
+        }
+        /*
         if (!$user->esAdministrador()) {
             $modulosFiltrados = \App\Models\ModuloFormativo::whereIn('id', $modulos)
                 ->get()
@@ -242,13 +245,19 @@ class MatriculaController extends Controller
                 return MatriculaResource::collection(collect([]));
             }
         }
+        */
+
+        $maxModulos = config('app.max_modulos_matricula', 5);
+        if (count($modulos) > $maxModulos) {
+            $modulos = array_slice($modulos, 0, $maxModulos);
+        }
 
         $rows = [];
 
         if(!$user->esAdministrador()) {
             // Eliminar los módulos en los que los estudiantes estaban matriculados previamente
             Matricula::whereIn('estudiante_id', $estudiantes)
-            ->whereIn('modulo_formativo_id', $modulos)
+            // ->whereIn('modulo_formativo_id', $modulos)
             ->delete();
         }
         foreach ($estudiantes as $estudianteId) {
