@@ -117,7 +117,19 @@ class UserController extends Controller
 
     public function profile()
     {
-        return auth()->user();
+        $user = auth()->user();
+        $roles = array();
+        if ($user->esDocente(null)) {
+            array_push($roles, 'docente');
+        }
+        if ($user->esEstudiante(null)) {
+            array_push($roles, 'estudiante');
+        }
+        if ($user->esAdministrador()) {
+            array_push($roles, 'administrador');
+        }
+        $user->roles = $roles;
+        return $user;
     }
 
     /**
