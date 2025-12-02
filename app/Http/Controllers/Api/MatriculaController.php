@@ -87,8 +87,7 @@ class MatriculaController extends Controller
 
     public function index(Request $request, ModuloFormativo $moduloFormativo)
     {
-        $query = Matricula::query();
-
+        $query = $moduloFormativo->matriculas();
 
         // Filtros adicionales
         if ($request->has('estado') && $request->filled('estado')) {

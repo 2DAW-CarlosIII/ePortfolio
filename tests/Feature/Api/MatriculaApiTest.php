@@ -50,6 +50,12 @@ class MatriculaApiTest extends FeatureTestCase
             'modulo_formativo_id' => $this->moduloFormativo->id,
         ]);
 
+        $otroModulo = ModuloFormativo::factory()->create(['ciclo_formativo_id' => $this->cicloFormativo->id]);
+
+        Matricula::factory()->create([
+            'modulo_formativo_id' => $otroModulo->id,
+        ]);
+
         // Act
         $response = $this->getJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas");
 
@@ -63,6 +69,7 @@ class MatriculaApiTest extends FeatureTestCase
                      'meta'
                  ]);
 
+        // Sólo debe devolver las matrículas del módulo específico
         $this->assertCount(3, $response->json('data'));
     }
 
