@@ -132,6 +132,11 @@ class AsignacionRevisionApiTest extends FeatureTestCase
             'fecha_limite' => $data['fecha_limite'],
             'estado' => $data['estado']
         ]);
+
+        $this->assertDatabaseHas('evidencias', [
+            'id' => $this->evidencia->id,
+            'estado_validacion' => 'asignada'
+        ]);
     }
 
     public function test_can_show_asignacionRevision()

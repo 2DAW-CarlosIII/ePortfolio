@@ -98,6 +98,8 @@ class Tarea extends Model
                 ]);
                 $revisionesPorEstudiante[$estudianteId]++;
             }
+            $evidencia->estado_validacion = 'asignada';
+            $evidencia->save();
         }
     }
 }

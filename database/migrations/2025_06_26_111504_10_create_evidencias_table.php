@@ -14,7 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tarea_id');
             $table->string('url');
             $table->text('descripcion');
-            $table->enum('estado_validacion', ['pendiente', 'validada', 'rechazada']);
+            $table->enum('estado_validacion', ['pendiente', 'validada', 'rechazada', 'asignada']);
             $table->timestamps();
             $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('tarea_id')->references('id')->on('tareas')->onDelete('cascade');

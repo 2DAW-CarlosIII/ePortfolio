@@ -161,6 +161,10 @@ class TareaApiTest extends FeatureTestCase
                 ->whereIn('evidencia_id', collect($evidencias)->pluck('id'))
                 ->count();
             $this->assertGreaterThanOrEqual(3, $asignacionesComoRevisor, "El estudiante {$estudiante->id} tiene menos de 3 asignaciones.");
+            $algunaEvidenciaNoAsignada = \App\Models\Evidencia::where('estado_validacion', 'asignada')
+                ->whereIn('evidencia_id', collect($evidencias)->pluck('id'))
+                ->count();
+            $this->assertEquals(0, $algunaEvidenciaNoAsignada, "Existen evidencias sin el estado asignada.");
         }
     }
 

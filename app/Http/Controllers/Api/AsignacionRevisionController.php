@@ -259,6 +259,9 @@ class AsignacionRevisionController extends Controller
 
         $asignacionRevision = AsignacionRevision::create($data);
 
+        $evidencia->estado_validacion = 'asignada';
+        $evidencia->save();
+
         // Cargar relaciones para la respuesta
         $asignacionRevision->load($this->getEagerLoadRelations());
 
