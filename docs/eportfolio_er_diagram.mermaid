@@ -1,0 +1,189 @@
+erDiagram
+    %% Entidades de Estructura Jerárquica Base
+    FAMILIAS_PROFESIONALES {
+        bigint id PK
+        varchar nombre
+        varchar codigo UK
+        text descripcion
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CICLOS_FORMATIVOS {
+        bigint id PK
+        bigint familia_profesional_id FK
+        varchar nombre
+        varchar codigo UK
+        enum grado
+        text descripcion
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    MODULOS_FORMATIVOS {
+        bigint id PK
+        bigint ciclo_formativo_id FK
+        varchar nombre
+        varchar codigo
+        int horas_totales
+        varchar curso_escolar
+        varchar centro
+        bigint docente_id FK
+        text descripcion
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    RESULTADOS_APRENDIZAJE {
+        bigint id PK
+        bigint modulo_formativo_id FK
+        varchar codigo
+        text descripcion
+        decimal peso_porcentaje
+        int orden
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CRITERIOS_EVALUACION {
+        bigint id PK
+        bigint resultado_aprendizaje_id FK
+        varchar codigo
+        text descripcion
+        decimal peso_porcentaje
+        int orden
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    %% Entidades de Usuarios y Roles
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email UK
+        timestamp email_verified_at
+        varchar password
+        varchar remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ROLES {
+        bigint id PK
+        varchar name UK
+        text description
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    USER_ROLES {
+        bigint id PK
+        bigint user_id FK
+        bigint role_id FK
+        bigint modulo_formativo_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    MATRICULAS {
+        bigint id PK
+        bigint estudiante_id FK
+        bigint modulo_formativo_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    %% Entidades de Planificación y Evidencias
+    TAREAS {
+        bigint id PK
+        datetime fecha_apertura
+        datetime fecha_cierre
+        boolean activo
+        text enunciadoo
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CRITERIOS_TAREAS {
+        bigint tarea_id PK
+        bigint criterio_evaluacion_id PK
+    }
+
+    EVIDENCIAS {
+        bigint id PK
+        bigint estudiante_id FK
+        bigint tarea_id FK
+        varchar url
+        text descripcion
+        enum estado_validacion
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    %% Entidades de Evaluación y Feedback
+    EVALUACIONES_EVIDENCIAS {
+        bigint id PK
+        bigint evidencia_id FK
+        bigint user_id FK
+        decimal puntuacion
+        enum estado
+        text observaciones
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    COMENTARIOS {
+        bigint id PK
+        bigint evidencia_id FK
+        bigint user_id FK
+        text contenido
+        enum tipo
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    %% Entidades de Coevaluación
+    ASIGNACIONES_REVISION {
+        bigint id PK
+        bigint evidencia_id FK
+        bigint revisor_id FK
+        bigint asignado_por_id FK
+        date fecha_limite
+        enum estado
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    %% Relaciones de Estructura Jerárquica
+    FAMILIAS_PROFESIONALES ||--o{ CICLOS_FORMATIVOS : "tiene"
+    CICLOS_FORMATIVOS ||--o{ MODULOS_FORMATIVOS : "contiene"
+    MODULOS_FORMATIVOS ||--o{ RESULTADOS_APRENDIZAJE : "define"
+    RESULTADOS_APRENDIZAJE ||--o{ CRITERIOS_EVALUACION : "se_evalua_con"
+
+    %% Relaciones de Usuarios y Roles
+    USERS ||--o{ USER_ROLES : "tiene"
+    ROLES ||--o{ USER_ROLES : "asignado_a"
+    MODULOS_FORMATIVOS ||--o{ USER_ROLES : "contexto"
+    USERS ||--o{ MATRICULAS : "matriculado_en"
+    MODULOS_FORMATIVOS ||--o{ MATRICULAS : "matricula_estudiantes"
+    USERS ||--o{ MODULOS_FORMATIVOS : "imparte"
+
+    %% Relaciones de Planificación
+    TAREAS ||--o{CRITERIOS_TAREAS : "asociado_a_criterios"
+    CRITERIOS_EVALUACION ||--o{ CRITERIOS_TAREAS : "planificado_en"
+    
+    %% Relaciones de Evidencias
+    USERS ||--o{ EVIDENCIAS : "crea"
+    TAREAS ||--o{ EVIDENCIAS : "demuestra"
+
+    %% Relaciones de Evaluación
+    EVIDENCIAS ||--o{ EVALUACIONES_EVIDENCIAS : "evaluada_en"
+    USERS ||--o{ EVALUACIONES_EVIDENCIAS : "evalua"
+    EVIDENCIAS ||--o{ COMENTARIOS : "comentada_en"
+    USERS ||--o{ COMENTARIOS : "comenta"
+
+    %% Relaciones de Coevaluación
+    EVIDENCIAS ||--o{ ASIGNACIONES_REVISION : "asignada_para"
+    USERS ||--o{ ASIGNACIONES_REVISION : "revisa"
+    USERS ||--o{ ASIGNACIONES_REVISION : "asigna"
+    
