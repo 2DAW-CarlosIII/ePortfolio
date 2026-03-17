@@ -42,6 +42,7 @@ class UpdateModuloFormativoRequest extends FormRequest
             'horas_totales' => ['sometimes', 'required', 'integer', 'min:1', 'max:2000'],
             'curso_escolar' => ['sometimes', 'required', 'string', 'max:255'],
             'centro' => ['sometimes', 'required', 'string', 'max:255'],
+            'docente_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
             'descripcion' => ['sometimes', 'required', 'string', 'max:65535']
         ];
     }
