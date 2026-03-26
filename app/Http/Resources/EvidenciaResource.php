@@ -39,6 +39,7 @@ class EvidenciaResource extends JsonResource
                     default => 'yellow',
                 },
             ],
+            'evaluacion' => $this->evaluaciones ?? null,
             'tiempo_transcurrido' => $this->created_at?->diffForHumans()
         ];
     }
