@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\AsignacionRevision;
 use App\Models\CriterioEvaluacion;
 use App\Models\EvaluacionEvidencia;
 use App\Models\User;
@@ -136,6 +137,12 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
         $this->evidencia->tarea()->associate($tarea);
         $this->evidencia->estado_validacion = 'pendiente';
         $this->evidencia->save();
+        $asignacionRevision = $estudiante->asignacionesRevision()->create([
+            'evidencia_id' => $this->evidencia->id,
+            'asignado_por_id' => $estudiante->id,
+            'estado' => 'pendiente',
+            'fecha_limite' => now()->addDays(3)
+        ]);
 
         // Act
         $response = $this->postJson("/api/v1/evidencias/{$this->evidencia->id}/evaluaciones-evidencias", $data);
@@ -150,6 +157,12 @@ class EvaluacionEvidenciaApiTest extends FeatureTestCase
             'puntuacion' => $data['puntuacion'],
             'estado' => $data['estado'],
             'observaciones' => $data['observaciones']
+        ]);
+
+        $this->assertDatabaseHas('asignaciones_revision', [
+            'evidencia_id' => $this->evidencia->id,
+            'revisor_id' => $estudiante->id,
+            'estado' => 'completada'
         ]);
 
         $this->evidencia->refresh();

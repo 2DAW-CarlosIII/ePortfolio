@@ -38,6 +38,31 @@ class EvaluacionEvidencia extends Model
     protected $casts = [
         'puntuacion' => 'decimal:2'
     ];
+
+    protected static function booted(): void
+    {
+        static::created(function (EvaluacionEvidencia $evaluacion) {
+            $evidencia = $evaluacion->evidencia;
+            $modulo = $evidencia->getModuloFormativo();
+            if ($modulo && auth()->user()?->esDocenteModulo($modulo)) {
+                if($evaluacion->estado == 'aprobada') {
+                    $evidencia->estado_validacion = 'validada';
+                } elseif($evaluacion->estado == 'rechazada') {
+                    $evidencia->estado_validacion = 'rechazada';
+                }
+                $evidencia->save();
+            }
+
+            $asignacionRevision = auth()->user()?->asignacionesRevision()
+                ->where('evidencia_id', $evidencia->id)
+                ->first();
+            if ($asignacionRevision) {
+                $asignacionRevision->estado = 'completada';
+                $asignacionRevision->save();
+            }
+        });
+    }
+
     public function evidencia()
     {
         return $this->belongsTo(Evidencia::class, 'evidencia_id');
