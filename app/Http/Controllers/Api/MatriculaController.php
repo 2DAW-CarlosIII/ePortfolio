@@ -182,7 +182,9 @@ class MatriculaController extends Controller
     {
         $data= $request->validated();
         $data['modulo_formativo_id'] = $moduloFormativo->id;
-        $data['estudiante_id'] = $request->user()->id; // Asignar el ID del usuario autenticado como estudiante
+        if (!$request->user()->esAdministrador()) {
+            $data['estudiante_id'] = $request->user()->id; // Asignar el ID del usuario autenticado como estudiante
+        }
 
         $matricula = Matricula::create($data);
 

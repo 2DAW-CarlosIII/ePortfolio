@@ -109,8 +109,34 @@ class MatriculaApiTest extends FeatureTestCase
             ->assertJsonMissing(['id' => $modulo3->id]);
     }
 
-    public function test_can_create_matricula()
+    public function test_admin_can_create_matricula()
     {
+        $admin = User::factory()->create(['email' => config('app.admin.email')]);
+        Sanctum::actingAs($admin);
+
+        // Arrange
+        $data = [
+            'estudiante_id' => $this->user->id,
+        ];
+
+        // Act
+        $response = $this->postJson("/api/v1/modulos-formativos/{$this->moduloFormativo->id}/matriculas", $data);
+
+        // Assert
+        $response->assertCreated()
+                 ->assertJsonStructure([
+                     'data' => ['id', 'estudiante', 'modulo_formativo', 'created_at', 'updated_at']
+                 ]);
+        $this->assertDatabaseHas('matriculas', [
+            'estudiante_id' => $this->user->id,
+            'modulo_formativo_id' => $this->moduloFormativo->id,
+        ]);
+    }
+
+    public function test_estudiante_can_create_matricula()
+    {
+        Sanctum::actingAs($this->user);
+
         // Arrange
         $data = [];
 
@@ -122,6 +148,10 @@ class MatriculaApiTest extends FeatureTestCase
                  ->assertJsonStructure([
                      'data' => ['id', 'estudiante', 'modulo_formativo', 'created_at', 'updated_at']
                  ]);
+        $this->assertDatabaseHas('matriculas', [
+            'estudiante_id' => $this->user->id,
+            'modulo_formativo_id' => $this->moduloFormativo->id,
+        ]);
     }
 
     public function test_batchStore_admin_behaviour()

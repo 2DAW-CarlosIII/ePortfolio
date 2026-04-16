@@ -31,6 +31,7 @@ class StoreMatriculaRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'estudiante_id' => 'nullable|integer|exists:users,id',
         ];
     }
 
